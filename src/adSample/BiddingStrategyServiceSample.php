@@ -1,392 +1,397 @@
 <?php
+require_once (dirname(__FILE__) . '/../../conf/api_config.php');
+require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+
 /**
  * Sample Program for BiddingStrategyService.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-require_once(dirname(__FILE__) . '/../../conf/api_config.php');
-require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+class BiddingStrategyServiceSample{
+    private $serviceName = 'BiddingStrategyService';
 
-/**
- * Sample Program for BiddingStrategyService ADD.
- *
- * @param string $accountId Account ID
- * @return array BiddingStrategyValues entity
- * @throws Exception
- */
-function addBiddingStrategy($accountId)
-{
-    // Set Operand
-    $operand = array(
-        // Set EnhancedCpcBidding
-        array(
-            'accountId' => $accountId,
-            'biddingStrategyName' => 'SampleEnhancedCpc_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'biddingScheme' => array(
-                'biddingStrategyType' => 'ENHANCED_CPC',
-            ),
-        ),
-        // Set PageOnePromotedBidding
-        array(
-            'accountId' => $accountId,
-            'biddingStrategyName' => 'SamplePageOnePromoted_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'biddingScheme' => array(
-                'biddingStrategyType' => 'PAGE_ONE_PROMOTED',
-                'bidCeiling' => 500,
-                'bidMultiplier' => 1.00,
-                'bidChangesForRaisesOnly' => 'ACTIVE',
-                'raiseBidWhenBudgetConstrained' => 'ACTIVE',
-                'raiseBidWhenLowQualityScore' => 'ACTIVE',
-            ),
-        ),
-        // Set TargetCpaBidding
-        array(
-            'accountId' => $accountId,
-            'biddingStrategyName' => 'SampleTargetCpa_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'biddingScheme' => array(
-                'biddingStrategyType' => 'TARGET_CPA',
-                'targetCpa' => 500,
-                'bidCeiling' => 700,
-            ),
-        ),
-        // Set TargetSpendBidding
-        array(
-            'accountId' => $accountId,
-            'biddingStrategyName' => 'SampleTargetSpend_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'biddingScheme' => array(
-                'biddingStrategyType' => 'TARGET_SPEND',
-                'bidCeiling' => 700,
-            ),
-        ),
-        // Set TargetRoasBidding
-        array(
-            'accountId' => $accountId,
-            'biddingStrategyName' => 'SampleTargetRoas_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'biddingScheme' => array(
-                'biddingStrategyType' => 'TARGET_ROAS',
-                'targetRoas' => 10.00,
-                'bidCeiling' => 700,
-                'bidFloor' => 600,
-            ),
-        ),
-    );
+    /**
+     * Sample Program for BiddingStrategyService MUTATE.
+     *
+     * @param array $operation BiddingStrategyOperation entity.
+     * @param string $method Operator enum.
+     * @return array BiddingStrategyReturnValue entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method){
 
-    //xsi:type for biddingStrategy
-    $operand[0]['biddingScheme'] =
-        new SoapVar($operand[0]['biddingScheme'], SOAP_ENC_OBJECT, 'EnhancedCpcBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-    $operand[1]['biddingScheme'] =
-        new SoapVar($operand[1]['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-    $operand[2]['biddingScheme'] =
-        new SoapVar($operand[2]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetCpaBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-    $operand[3]['biddingScheme'] =
-        new SoapVar($operand[3]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetSpendBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-    $operand[4]['biddingScheme'] =
-        new SoapVar($operand[4]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetRoasBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('mutate', $operation);
 
-
-    // Set Request
-    $biddingStrategyRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $biddingStrategyService = SoapUtils::getService('BiddingStrategyService');
-    $biddingStrategyResponse = $biddingStrategyService->invoke('mutate', $biddingStrategyRequest);
-
-    // Response
-    if (isset($biddingStrategyResponse->rval->values)) {
-        if (is_array($biddingStrategyResponse->rval->values)) {
-            $biddingStrategyReturnValues = $biddingStrategyResponse->rval->values;
-        } else {
-            $biddingStrategyReturnValues = array($biddingStrategyResponse->rval->values);
+        // Response
+        $returnValues = array();
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
-    } else {
-        throw new Exception("No response of add BiddingStrategyService.");
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->biddingStrategy)){
+                throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    // Error
-    foreach ($biddingStrategyReturnValues as $biddingStrategyReturnValue) {
-        if (!isset($biddingStrategyReturnValue->biddingStrategy)) {
-            throw new Exception("Fail to add BiddingStrategyService.");
+    /**
+     * Sample Program for BiddingStrategyService GET.
+     *
+     * @param array $selector BiddingStrategySelector entity.
+     * @return array BiddingStrategyReturnValue entity.
+     * @throws Exception
+     */
+    public function get($selector){
+
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('get', $selector);
+
+        // Response
+        $returnValues = null;
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of get ' . $this->serviceName . '.');
         }
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->biddingStrategy)){
+                throw new Exception('Fail to get ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    return $biddingStrategyReturnValues;
-}
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @return BiddingStrategyOperation entity.
+     */
+    public function createSampleAddRequest($accountId){
 
-/**
- * Sample Program for BiddingStrategyService Set.
- *
- * @param string $accountId Account ID
- * @param array $biddingStrategyValues BiddingStrategyValues entity for set.
- * @return array BiddingStrategyValues entity
- * @throws Exception
- */
-function setBiddingStrategy($accountId, $biddingStrategyValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($biddingStrategyValues as $biddingStrategyValue) {
+        // Create operands
+        $operands = array(
 
-        $biddingStrategy = array();
-
-        // Set BiddingScheme
-        if ($biddingStrategyValue->biddingStrategy->biddingStrategyType === 'ENHANCED_CPC') {
-            // Set EnhancedCpcBidding
-            $biddingStrategy = array(
-                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
-                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId,
-                'biddingStrategyName' => 'SampleEnhancedCpc_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+            // Create EnhancedCpcBidding
+            array(
+                'accountId' => $accountId,
+                'biddingStrategyName' => 'SampleEnhancedCpc_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'biddingScheme' => array(
-                    'biddingStrategyType' => 'ENHANCED_CPC',
-                ),
-            );
-            //xsi:type for biddingStrategy
-            $biddingStrategy['biddingScheme'] =
-                new SoapVar($biddingStrategy['biddingScheme'], SOAP_ENC_OBJECT, 'EnhancedCpcBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    'biddingStrategyType' => 'ENHANCED_CPC'
+                )
+            ),
 
-        } else if ($biddingStrategyValue->biddingStrategy->biddingStrategyType === 'PAGE_ONE_PROMOTED') {
-            // Set PageOnePromotedBidding
-            $biddingStrategy = array(
-                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
-                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId,
-                'biddingStrategyName' => 'SamplePageOnePromoted_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+            // Create PageOnePromotedBidding
+            array(
+                'accountId' => $accountId,
+                'biddingStrategyName' => 'SamplePageOnePromoted_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'biddingScheme' => array(
                     'biddingStrategyType' => 'PAGE_ONE_PROMOTED',
-                    'bidCeiling' => 550,
-                    'bidMultiplier' => 5.00,
-                    'bidChangesForRaisesOnly' => 'DEACTIVE',
-                    'raiseBidWhenBudgetConstrained' => 'DEACTIVE',
-                    'raiseBidWhenLowQualityScore' => 'DEACTIVE',
-                ),
-            );
-            //xsi:type for biddingStrategy
-            $biddingStrategy['biddingScheme'] =
-                new SoapVar($biddingStrategy['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    'bidCeiling' => 500,
+                    'bidMultiplier' => 1.00,
+                    'bidChangesForRaisesOnly' => 'ACTIVE',
+                    'raiseBidWhenBudgetConstrained' => 'ACTIVE',
+                    'raiseBidWhenLowQualityScore' => 'ACTIVE'
+                )
+            ),
 
-        } else if ($biddingStrategyValue->biddingStrategy->biddingStrategyType === 'TARGET_CPA') {
-            // Set TargetCpaBidding
-            $biddingStrategy = array(
-                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
-                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId,
-                'biddingStrategyName' => 'SampleTargetCpa_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+            // Create TargetCpaBidding
+            array(
+                'accountId' => $accountId,
+                'biddingStrategyName' => 'SampleTargetCpa_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'biddingScheme' => array(
                     'biddingStrategyType' => 'TARGET_CPA',
-                    'targetCpa' => 550,
-                    'bidCeiling' => 750,
-                ),
-            );
-            //xsi:type for biddingStrategy
-            $biddingStrategy['biddingScheme'] =
-                new SoapVar($biddingStrategy['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    'targetCpa' => 500,
+                    'bidCeiling' => 700
+                )
+            ),
 
-        } else if ($biddingStrategyValue->biddingStrategy->biddingStrategyType === 'TARGET_SPEND') {
-            // Set TargetSpendBidding
-            $biddingStrategy = array(
-                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
-                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId,
-                'biddingStrategyName' => 'SampleTargetSpend_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+            // Create TargetSpendBidding
+            array(
+                'accountId' => $accountId,
+                'biddingStrategyName' => 'SampleTargetSpend_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'biddingScheme' => array(
                     'biddingStrategyType' => 'TARGET_SPEND',
-                    'bidCeiling' => 750,
-                ),
-            );
-            //xsi:type for biddingStrategy
-            $biddingStrategy['biddingScheme'] =
-                new SoapVar($biddingStrategy['biddingScheme'], SOAP_ENC_OBJECT, 'TargetSpendBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    'bidCeiling' => 700
+                )
+            ),
 
-        } else if ($biddingStrategyValue->biddingStrategy->biddingStrategyType === 'TARGET_ROAS') {
-            // Set TargetRoasBidding
-            $biddingStrategy = array(
-                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
-                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId,
-                'biddingStrategyName' => 'SampleTargetRoas_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+            // Create TargetRoasBidding
+            array(
+                'accountId' => $accountId,
+                'biddingStrategyName' => 'SampleTargetRoas_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'biddingScheme' => array(
                     'biddingStrategyType' => 'TARGET_ROAS',
-                    'targetRoas' => 15.00,
-                    'bidCeiling' => 750,
-                    'bidFloor' => 650,),
-            );
-            //xsi:type for biddingStrategy
-            $biddingStrategy['biddingScheme'] =
-                new SoapVar($biddingStrategy['biddingScheme'], SOAP_ENC_OBJECT, 'TargetRoasBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-        }
-
-        $operand[] = $biddingStrategy;
-    }
-
-    // Set Request
-    $biddingStrategyRequest = array(
-        'operations' => array(
-            'operator' => 'SET',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $biddingStrategyService = SoapUtils::getService('BiddingStrategyService');
-    $biddingStrategyResponse = $biddingStrategyService->invoke('mutate', $biddingStrategyRequest);
-
-    // Response
-    if (isset($biddingStrategyResponse->rval->values)) {
-        if (is_array($biddingStrategyResponse->rval->values)) {
-            $biddingStrategyReturnValues = $biddingStrategyResponse->rval->values;
-        } else {
-            $biddingStrategyReturnValues = array($biddingStrategyResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of set BiddingStrategyService.");
-    }
-
-    // Error
-    foreach ($biddingStrategyReturnValues as $biddingStrategyReturnValue) {
-        if (!isset($biddingStrategyReturnValue->biddingStrategy)) {
-            throw new Exception("Fail to set BiddingStrategyService.");
-        }
-    }
-
-    return $biddingStrategyReturnValues;
-}
-
-/**
- * Sample Program for BiddingStrategyService Remove.
- *
- * @param string $accountId Account ID
- * @param array $biddingStrategyValues BiddingStrategyValues entity for remove.
- * @return array BiddingStrategyValues entity
- * @throws Exception
- */
-function removeBiddingStrategy($accountId, $biddingStrategyValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($biddingStrategyValues as $biddingStrategyValue) {
-        $operand[] = array(
-            'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
-            'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId,
+                    'targetRoas' => 10.00,
+                    'bidCeiling' => 700,
+                    'bidFloor' => 600
+                )
+            )
         );
+
+        // Set xsi:type
+        $operands[0]['biddingScheme'] = new SoapVar($operands[0]['biddingScheme'], SOAP_ENC_OBJECT, 'EnhancedCpcBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+        $operands[1]['biddingScheme'] = new SoapVar($operands[1]['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+        $operands[2]['biddingScheme'] = new SoapVar($operands[2]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetCpaBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+        $operands[3]['biddingScheme'] = new SoapVar($operands[3]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetSpendBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+        $operands[4]['biddingScheme'] = new SoapVar($operands[4]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetRoasBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Set Request
-    $biddingStrategyRequest = array(
-        'operations' => array(
-            'operator' => 'REMOVE',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
+     * @return BiddingStrategyOperation entity.
+     */
+    public function createSampleSetRequest($accountId, $biddingStrategyValues){
 
-    // Call API
-    $biddingStrategyService = SoapUtils::getService('BiddingStrategyService');
-    $biddingStrategyResponse = $biddingStrategyService->invoke('mutate', $biddingStrategyRequest);
+        // Create operands
+        $operands = array();
+        foreach($biddingStrategyValues as $biddingStrategyValue){
 
-    // Response
-    if (isset($biddingStrategyResponse->rval->values)) {
-        if (is_array($biddingStrategyResponse->rval->values)) {
-            $biddingStrategyReturnValues = $biddingStrategyResponse->rval->values;
-        } else {
-            $biddingStrategyReturnValues = array($biddingStrategyResponse->rval->values);
+            // Set operand
+            $operand = array(
+                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
+                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId
+            );
+
+            // Set BiddingScheme
+            switch($biddingStrategyValue->biddingStrategy->biddingStrategyType){
+
+                // EnhancedCpcBiddingScheme
+                case 'ENHANCED_CPC' :
+                    $operand['biddingStrategyName'] = 'SampleEnhancedCpc_UpdateOn_' . SoapUtils::getCurrentTimestamp();
+                    $operand['biddingScheme'] = array(
+                        'biddingStrategyType' => 'ENHANCED_CPC'
+                    );
+
+                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'EnhancedCpcBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    break;
+
+                // PageOnePromotedBiddingScheme
+                case 'PAGE_ONE_PROMOTED' :
+                    $operand['biddingStrategyName'] = 'SamplePageOnePromoted_UpdateOn_' . SoapUtils::getCurrentTimestamp();
+                    $operand['biddingScheme'] = array(
+                        'biddingStrategyType' => 'PAGE_ONE_PROMOTED',
+                        'bidCeiling' => 550,
+                        'bidMultiplier' => 5.00,
+                        'bidChangesForRaisesOnly' => 'DEACTIVE',
+                        'raiseBidWhenBudgetConstrained' => 'DEACTIVE',
+                        'raiseBidWhenLowQualityScore' => 'DEACTIVE'
+                    );
+
+                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    break;
+
+                // PageOnePromotedBiddingScheme
+                case 'TARGET_CPA' :
+                    $operand['biddingStrategyName'] = 'SampleTargetCpa_UpdateOn_' . SoapUtils::getCurrentTimestamp();
+                    $operand['biddingScheme'] = array(
+                        'biddingStrategyType' => 'TARGET_CPA',
+                        'targetCpa' => 550,
+                        'bidCeiling' => 750
+                    );
+
+                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    break;
+
+                // TargetSpendBiddingScheme
+                case 'TARGET_SPEND' :
+                    $operand['biddingStrategyName'] = 'SampleTargetSpend_UpdateOn_' . SoapUtils::getCurrentTimestamp();
+                    $operand['biddingScheme'] = array(
+                        'biddingStrategyType' => 'TARGET_SPEND',
+                        'bidCeiling' => 750
+                    );
+
+                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'TargetSpendBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    break;
+
+                // TargetRoasBiddingScheme
+                case 'TARGET_ROAS' :
+                    $operand['biddingStrategyName'] = 'SampleTargetRoas_UpdateOn_' . SoapUtils::getCurrentTimestamp();
+                    $operand['biddingScheme'] = array(
+                        'biddingStrategyType' => 'TARGET_ROAS',
+                        'targetRoas' => 15.00,
+                        'bidCeiling' => 750,
+                        'bidFloor' => 650
+                    );
+
+                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'TargetRoasBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    break;
+            }
+
+            array_push($operands, $operand);
         }
-    } else {
-        throw new Exception("No response of remove BiddingStrategyService.");
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Error
-    foreach ($biddingStrategyReturnValues as $biddingStrategyReturnValue) {
-        if (!isset($biddingStrategyReturnValue->biddingStrategy)) {
-            throw new Exception("Fail to remove BiddingStrategyService.");
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
+     * @return BiddingStrategyOperation entity.
+     */
+    public function createSampleRemoveRequest($accountId, $biddingStrategyValues){
+
+        // Create operands
+        $operands = array();
+        foreach($biddingStrategyValues as $biddingStrategyValue){
+
+            // Create operand
+            $operand = array(
+                'accountId' => $biddingStrategyValue->biddingStrategy->accountId,
+                'biddingStrategyId' => $biddingStrategyValue->biddingStrategy->biddingStrategyId
+            );
+
+            array_push($operands, $operand);
         }
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    return $biddingStrategyReturnValues;
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
+     * @return BiddingStrategySelector entity.
+     */
+    public function createSampleGetRequest($accountId, $biddingStrategyValues){
+
+        // Get biddingStrategyIds
+        $biddingStrategyIds = array();
+        foreach($biddingStrategyValues as $biddingStrategyValue){
+            if(isset($biddingStrategyValue->biddingStrategy)){
+                $biddingStrategyIds[] = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
+            }
+        }
+
+        // Create selector
+        $selector = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'biddingStrategyIds' => $biddingStrategyIds,
+                'biddingStrategyTypes' => array(
+                    'ENHANCED_CPC',
+                    'PAGE_ONE_PROMOTED',
+                    'TARGET_CPA',
+                    'TARGET_SPEND',
+                    'TARGET_ROAS'
+                ),
+                'paging' => array(
+                    'startIndex' => 1,
+                    'numberResults' => 20
+                )
+            )
+        );
+
+        return $selector;
+    }
 }
 
-/**
- * Sample Program for BiddingStrategyService Get.
- *
- * @param string $accountId Account ID
- * @param array $biddingStrategyValues BiddingStrategyValues entity for get.
- * @return array BiddingStrategyValues entity
- * @throws Exception
- */
-function getBiddingStrategy($accountId, $biddingStrategyValues)
-{
-    // Set biddingStrategyIds
-    $biddingStrategyIds = array();
-    foreach ($biddingStrategyValues as $biddingStrategyValue) {
-        $biddingStrategyIds[] = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
-    }
-
-    // Set Selector
-    $biddingStrategyRequest = array(
-        'selector' => array(
-            'accountId' => $accountId,
-            'biddingStrategyIds' => $biddingStrategyIds,
-            'biddingStrategyTypes' => array(
-                'ENHANCED_CPC',
-                'PAGE_ONE_PROMOTED',
-                'TARGET_CPA',
-                'TARGET_SPEND',
-                'TARGET_ROAS',
-            ),
-            'paging' => array(
-                'startIndex' => 1,
-                'numberResults' => 20,
-            ),
-        ),
-    );
-
-    // Call API
-    $biddingStrategyService = SoapUtils::getService('BiddingStrategyService');
-    $biddingStrategyResponse = $biddingStrategyService->invoke('get', $biddingStrategyRequest);
-
-    // Response
-    if (isset($biddingStrategyResponse->rval->values)) {
-        if (is_array($biddingStrategyResponse->rval->values)) {
-            $biddingStrategyReturnValues = $biddingStrategyResponse->rval->values;
-        } else {
-            $biddingStrategyReturnValues = array($biddingStrategyResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of get BiddingStrategyService.");
-    }
-
-    // Error
-    foreach ($biddingStrategyReturnValues as $biddingStrategyReturnValue) {
-        if (!isset($biddingStrategyReturnValue->biddingStrategy)) {
-            throw new Exception("Fail to get BiddingStrategyService.");
-        }
-    }
-
-    return $biddingStrategyReturnValues;
-}
-
-
-if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
+if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
     return;
 }
 
-// BiddingStrategyServiceSample
-try {
+/**
+ * execute BiddingStrategyServiceSample.
+ */
+try{
+    $biddingStrategyServiceSample = new BiddingStrategyServiceSample();
+
     $accountId = SoapUtils::getAccountId();
 
+    // =================================================================
     // BiddingStrategyService ADD
-    $biddingStrategyValues = addBiddingStrategy($accountId);
+    // =================================================================
+    // Create operands
+    $operation = $biddingStrategyServiceSample->createSampleAddRequest($accountId);
 
-    // BiddingStrategyService GET
-    getBiddingStrategy($accountId, $biddingStrategyValues);
+    // Run
+    $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'ADD');
 
+    // =================================================================
     // BiddingStrategyService SET
-    setBiddingStrategy($accountId, $biddingStrategyValues);
+    // =================================================================
+    // Create operands
+    $operation = $biddingStrategyServiceSample->createSampleSetRequest($accountId, $biddingStrategyValues);
 
+    // Run
+    $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'SET');
+
+    // =================================================================
+    // BiddingStrategyService GET
+    // =================================================================
+    // Create selector
+    $selector = $biddingStrategyServiceSample->createSampleGetRequest($accountId, $biddingStrategyValues);
+
+    // Run
+    $biddingStrategyValues = $biddingStrategyServiceSample->get($selector);
+
+    // =================================================================
     // BiddingStrategyService REMOVE
-    removeBiddingStrategy($accountId, $biddingStrategyValues);
+    // =================================================================
+    // Create operands
+    $operation = $biddingStrategyServiceSample->createSampleRemoveRequest($accountId, $biddingStrategyValues);
 
-} catch (Exception $e) {
-    printf($e->getMessage() ."\n");
+    // Run
+    $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
+
+}catch(Exception $e){
+    printf($e->getMessage() . "\n");
 }
-

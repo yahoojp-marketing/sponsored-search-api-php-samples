@@ -335,8 +335,12 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
 }
 
 try{
+    $campaignService = new CampaignServiceSample();
+    $adGroupService = new AdGroupServiceSample();
+    $adGroupCriterionService = new AdGroupCriterionServiceSample();
     $feedFolderService = new FeedFolderServiceSample();
     $feedItemService = new FeedItemServiceSample();
+    $adGroupAdService = new AdGroupAdServiceSample();
 
     $accountId = SoapUtils::getAccountId();
     $campaignId = 0;
@@ -412,6 +416,9 @@ try{
     // FeedItemServiceSample(AD_CUSTOMIZER) ADD
     $feedItemValues = $feedItemService->addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeIds);
 
+    //waiting for sandbox review process
+    sleep(20);
+
     // FeedItemServiceSample(AD_CUSTOMIZER) SET
     $feedItemService->setFeedItem($accountId, $feedAttributeIds, $feedItemValues);
 
@@ -428,7 +435,8 @@ try{
     // AdGroupCriterionService,AdGroupService,CampaignService
     //=================================================================
     // AdGroupAdService
-    removeAdGroupAd($accountId, $campaignId, $adGroupId, $adGroupAdValues);
+    $operation = $adGroupAdService->createSampleRemoveRequest($accountId, $adGroupAdValues);
+    $adGroupAdService->mutate($operation, 'REMOVE');
 
     // FeedItemService
     $feedItemService->removeFeedItem($accountId, $feedItemValues);
@@ -437,13 +445,16 @@ try{
     $feedFolderService->removeFeedFolder($accountId, $feedFolderValues);
 
     // AdGroupCriterionService
-    removeAdGroupCriterion($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
+    $operation = $adGroupCriterionService->createSampleRemoveRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
+    $adGroupCriterionService->mutate($operation, 'REMOVE');
 
     // AdGroupService
-    removeAdGroup($accountId, $campaignId, $adGroupValues);
+    $operation = $adGroupService->createSampleRemoveRequest($accountId, $adGroupValues);
+    $adGroupService->mutate($operation, 'REMOVE');
 
     // CampaignService
-    removeCampaign($accountId, $campaignValues);
+    $operation = $campaignService->createSampleRemoveRequest($accountId, $campaignValues);
+    $campaignService->mutate($operation, 'REMOVE');
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

@@ -1,313 +1,445 @@
 <?php
+require_once (dirname(__FILE__) . '/../../conf/api_config.php');
+require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+
 /**
  * Sample Program for CampaignServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-require_once(dirname(__FILE__) . '/../../conf/api_config.php');
-require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
-/**
- * Sample Program for CampaignService ADD.
- *
- * @param string $accountId Account ID
- * @param string $biddingStrategyId Auto bidding ID
- * @return array CampaignValues entity
- * @throws Exception
- */
-function addCampaign($accountId, $biddingStrategyId)
-{
-    // Set Operand
-    $operand = array(
-        // Set AutoBidding Campaign
-        array(
-            'accountId' => $accountId,
-            'campaignName' => 'SampleAutoBiddingCampaign_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'ACTIVE',
-            'startDate' => '20300101',
-            'endDate' => '20301231',
-            'budget' => array(
-                'period' => 'DAILY',
-                'amount' => 1000,
-                'deliveryMethod' => 'STANDARD',
-            ),
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyId' => $biddingStrategyId,
-            ),
-            'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
-            'settings' => array(
-                array(
-                    'type' => 'GEO_TARGET_TYPE_SETTING',
-                    'positiveGeoTargetType' => 'AREA_OF_INTENT'
+class CampaignServiceSample{
+    private $serviceName = 'CampaignService';
+
+    /**
+     * Sample Program for CampaignService MUTATE.
+     *
+     * @param array $operation CampaignOperation entity.
+     * @param string $method Operator enum.
+     * @return array CampaignReturnValue entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method){
+
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('mutate', $operation);
+
+        // Response
+        $returnValues = array();
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
+        }
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->campaign)){
+                throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * Sample Program for CampaignService GET.
+     *
+     * @param array $selector CampaignSelector entity.
+     * @return array CampaignReturnValue entity.
+     * @throws Exception
+     */
+    public function get($selector){
+
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('get', $selector);
+
+        // Response
+        $returnValues = null;
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of get ' . $this->serviceName . '.');
+        }
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->campaign)){
+                throw new Exception('Fail to get ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $biddingStrategyId BiddingStrategyID
+     * @return CampaignOperation entity.
+     */
+    public function createSampleAddRequest($accountId, $biddingStrategyId){
+
+        // Create operands
+        $operands = array(
+
+            // Create AutoBidding　Standard Campaign
+            array(
+                'accountId' => $accountId,
+                'campaignName' => 'SampleAutoBiddingStandardCampaign_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'period' => 'DAILY',
+                    'amount' => 1000,
+                    'deliveryMethod' => 'STANDARD'
                 ),
-            ),
-        ),
-        // Set ManualCpc Campaign
-        array(
-            'accountId' => $accountId,
-            'campaignName' => 'SampleManualCpcCampaign_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'ACTIVE',
-            'startDate' => '20300101',
-            'endDate' => '20301231',
-            'budget' => array(
-                'period' => 'DAILY',
-                'amount' => 1000,
-                'deliveryMethod' => 'STANDARD',
-            ),
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyType' => 'MANUAL_CPC',
-            ),
-            'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
-            'settings' => array(
-                array(
-                    'type' => 'GEO_TARGET_TYPE_SETTING',
-                    'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyId' => $biddingStrategyId
                 ),
+                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'settings' => array(
+                    array(
+                        'type' => 'GEO_TARGET_TYPE_SETTING',
+                        'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    )
+                ),
+                'campaignType' => 'STANDARD'
             ),
-        ),
-    );
 
-    //xsi:type for settings
-    $operand[0]['settings'][0] =
-        new SoapVar($operand[0]['settings'][0],
-            SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
-    $operand[1]['settings'][0] =
-        new SoapVar($operand[1]['settings'][0],
-            SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
-
-
-    // Set Request
-    $campaignRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $campaignService = SoapUtils::getService('CampaignService');
-    $campaignResponse = $campaignService->invoke('mutate', $campaignRequest);
-
-    // Response
-    if (isset($campaignResponse->rval->values)) {
-        if (is_array($campaignResponse->rval->values)) {
-            $campaignReturnValues = $campaignResponse->rval->values;
-        } else {
-            $campaignReturnValues = array($campaignResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of add CampaignService.");
-    }
-
-    // Error
-    foreach ($campaignReturnValues as $campaignReturnValue) {
-        if (!isset($campaignReturnValue->campaign)) {
-            throw new Exception("Fail to add CampaignService.");
-        }
-    }
-
-    return $campaignReturnValues;
-}
-
-/**
- * Sample Program for CampaignService Set.
- *
- * @param string $accountId Account ID
- * @param array $campaignValues CampaignValues entity for set.
- * @param string $biddingStrategyId Auto bidding ID
- * @return array CampaignValues entity
- * @throws Exception
- */
-function setCampaign($accountId, $campaignValues, $biddingStrategyId)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($campaignValues as $campaignValue) {
-        $operand[] = array(
-            'accountId' => $campaignValue->campaign->accountId,
-            'campaignId' => $campaignValue->campaign->campaignId,
-            'campaignName' => 'Sample_UpdateOn_' . $campaignValue->campaign->campaignId . '_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'PAUSED',
-            'startDate' => '20300101',
-            'endDate' => '20301231',
-            'budget' => array(
-                'amount' => 2000,
-                'deliveryMethod' => 'STANDARD',
+            // Create ManualCpc Standard Campaign
+            array(
+                'accountId' => $accountId,
+                'campaignName' => 'SampleManualCpcStandardCampaign_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'period' => 'DAILY',
+                    'amount' => 1000,
+                    'deliveryMethod' => 'STANDARD'
+                ),
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyType' => 'MANUAL_CPC'
+                ),
+                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'settings' => array(
+                    array(
+                        'type' => 'GEO_TARGET_TYPE_SETTING',
+                        'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    )
+                ),
+                'campaignType' => 'STANDARD'
             ),
-            // Change Auto Bidding Strategy
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyId' => $biddingStrategyId,
+
+            // Create AutoBidding　MobileApp Campaign for IOS
+            array(
+                'accountId' => $accountId,
+                'campaignName' => 'SampleAutoBiddingIOSCampaign_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'period' => 'DAILY',
+                    'amount' => 1000,
+                    'deliveryMethod' => 'STANDARD'
+                ),
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyId' => $biddingStrategyId
+                ),
+                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'settings' => array(
+                    array(
+                        'type' => 'GEO_TARGET_TYPE_SETTING',
+                        'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    )
+                ),
+                'campaignType' => 'MOBILE_APP',
+                'appStore' => 'IOS',
+                'appId' => SoapUtils::getCurrentTimestamp()
             ),
+
+            // Create ManualCpc MobileApp Campaign for IOS
+            array(
+                'accountId' => $accountId,
+                'campaignName' => 'SampleManualCpcIOSCampaign_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'period' => 'DAILY',
+                    'amount' => 1000,
+                    'deliveryMethod' => 'STANDARD'
+                ),
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyType' => 'MANUAL_CPC'
+                ),
+                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'settings' => array(
+                    array(
+                        'type' => 'GEO_TARGET_TYPE_SETTING',
+                        'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    )
+                ),
+                'campaignType' => 'MOBILE_APP',
+                'appStore' => 'IOS',
+                'appId' => SoapUtils::getCurrentTimestamp()
+            ),
+
+            // Create AutoBidding　MobileApp Campaign for ANDROID
+            array(
+                'accountId' => $accountId,
+                'campaignName' => 'SampleAutoBiddingAndroidCampaign_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'period' => 'DAILY',
+                    'amount' => 1000,
+                    'deliveryMethod' => 'STANDARD'
+                ),
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyId' => $biddingStrategyId
+                ),
+                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'settings' => array(
+                    array(
+                        'type' => 'GEO_TARGET_TYPE_SETTING',
+                        'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    )
+                ),
+                'campaignType' => 'MOBILE_APP',
+                'appStore' => 'ANDROID',
+                'appId' => 'jp.co.yahoo.' . SoapUtils::getCurrentTimestamp()
+            ),
+
+            // Create ManualCpc MobileApp Campaign for ANDROID
+            array(
+                'accountId' => $accountId,
+                'campaignName' => 'SampleManualCpcAndroidCampaign_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'period' => 'DAILY',
+                    'amount' => 1000,
+                    'deliveryMethod' => 'STANDARD'
+                ),
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyType' => 'MANUAL_CPC'
+                ),
+                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'settings' => array(
+                    array(
+                        'type' => 'GEO_TARGET_TYPE_SETTING',
+                        'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    )
+                ),
+                'campaignType' => 'MOBILE_APP',
+                'appStore' => 'ANDROID',
+                'appId' => 'jp.co.yahoo.' . SoapUtils::getCurrentTimestamp()
+            )
         );
-    }
 
-    // Set Request
-    $campaignRequest = array(
-        'operations' => array(
-            'operator' => 'SET',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
+        // Set xsi:type
+        $operands[0]['settings'][0] = new SoapVar($operands[0]['settings'][0], SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
+        $operands[1]['settings'][0] = new SoapVar($operands[1]['settings'][0], SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
 
-    // Call API
-    $campaignService = SoapUtils::getService('CampaignService');
-    $campaignResponse = $campaignService->invoke('mutate', $campaignRequest);
-
-    // Response
-    if (isset($campaignResponse->rval->values)) {
-        if (is_array($campaignResponse->rval->values)) {
-            $campaignReturnValues = $campaignResponse->rval->values;
-        } else {
-            $campaignReturnValues = array($campaignResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of set CampaignService.");
-    }
-
-    // Error
-    foreach ($campaignReturnValues as $campaignReturnValue) {
-        if (!isset($campaignReturnValue->campaign)) {
-            throw new Exception("Fail to set CampaignService.");
-        }
-    }
-
-    return $campaignReturnValues;
-}
-
-/**
- * Sample Program for CampaignService Remove.
- *
- * @param string $accountId Account ID
- * @param array $campaignValues CampaignValues entity for remove.
- * @return array CampaignValues entity
- * @throws Exception
- */
-function removeCampaign($accountId, $campaignValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($campaignValues as $campaignValue) {
-        $operand[] = array(
-            'accountId' => $campaignValue->campaign->accountId,
-            'campaignId' => $campaignValue->campaign->campaignId,
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
         );
+
+        return $operation;
     }
 
-    // Set Request
-    $campaignRequest = array(
-        'operations' => array(
-            'operator' => 'REMOVE',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $biddingStrategyId BiddingStrategyID
+     * @param array $campaignValues CampaignReturnValue entity.
+     * @return CampaignOperation entity.
+     */
+    public function createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues){
 
-    // Call API
-    $campaignService = SoapUtils::getService('CampaignService');
-    $campaignResponse = $campaignService->invoke('mutate', $campaignRequest);
+        // Create operands
+        $operands = array();
+        foreach($campaignValues as $campaignValue){
 
-    // Response
-    if (isset($campaignResponse->rval->values)) {
-        if (is_array($campaignResponse->rval->values)) {
-            $campaignReturnValues = $campaignResponse->rval->values;
-        } else {
-            $campaignReturnValues = array($campaignResponse->rval->values);
+            // Create operand
+            $operand = array(
+                'accountId' => $campaignValue->campaign->accountId,
+                'campaignId' => $campaignValue->campaign->campaignId,
+                'campaignName' => 'Sample_UpdateOn_' . $campaignValue->campaign->campaignId . '_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'PAUSED',
+                'startDate' => '20300101',
+                'endDate' => '20301231',
+                'budget' => array(
+                    'amount' => 2000,
+                    'deliveryMethod' => 'STANDARD'
+                ),
+
+                // Change Auto Bidding Strategy
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyId' => $biddingStrategyId
+                )
+            );
+
+            array_push($operands, $operand);
         }
-    } else {
-        throw new Exception("No response of remove CampaignService.");
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Error
-    foreach ($campaignReturnValues as $campaignReturnValue) {
-        if (!isset($campaignReturnValue->campaign)) {
-            throw new Exception("Fail to remove CampaignService.");
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $campaignValues CampaignReturnValue entity.
+     * @return CampaignOperation entity.
+     */
+    public function createSampleRemoveRequest($accountId, $campaignValues){
+
+        // Create operands
+        $operands = array();
+        foreach($campaignValues as $campaignValue){
+
+            // Create operand
+            $operand = array(
+                'accountId' => $campaignValue->campaign->accountId,
+                'campaignId' => $campaignValue->campaign->campaignId
+            );
+
+            array_push($operands, $operand);
         }
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    return $campaignReturnValues;
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $campaignValues CampaignReturnValue entity.
+     * @return CampaignSelector entity.
+     */
+    public function createSampleGetRequest($accountId, $campaignValues){
+
+        // Get campaignIds
+        $campaignIds = array();
+        foreach($campaignValues as $campaignValue){
+            if(isset($campaignValue->campaign)){
+                $campaignIds[] = $campaignValue->campaign->campaignId;
+            }
+        }
+
+        // Create selector
+        $selector = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'campaignIds' => $campaignIds,
+                'userStatuses' => array(
+                    'ACTIVE',
+                    'PAUSED'
+                ),
+                'paging' => array(
+                    'startIndex' => 1,
+                    'numberResults' => 20
+                )
+            )
+        );
+
+        return $selector;
+    }
 }
 
-/**
- * Sample Program for CampaignService Get.
- *
- * @param string $accountId Account ID
- * @param array $campaignValues CampaignValues entity for get.
- * @return array CampaignValues entity
- * @throws Exception
- */
-function getCampaign($accountId, $campaignValues)
-{
-    // Set campaignIds
-    $campaignIds = array();
-    foreach ($campaignValues as $campaignValue) {
-        $campaignIds[] = $campaignValue->campaign->campaignId;
-    }
-
-    // Set Selector
-    $campaignRequest = array(
-        'selector' => array(
-            'accountId' => $accountId,
-            'campaignIds' => $campaignIds,
-            'userStatuses' => array(
-                'ACTIVE',
-                'PAUSED',
-            ),
-            'paging' => array(
-                'startIndex' => 1,
-                'numberResults' => 20,
-            ),
-        ),
-    );
-
-    // Call API
-    $campaignService = SoapUtils::getService('CampaignService');
-    $campaignResponse = $campaignService->invoke('get', $campaignRequest);
-
-    // Response
-    if (isset($campaignResponse->rval->values)) {
-        if (is_array($campaignResponse->rval->values)) {
-            $campaignReturnValues = $campaignResponse->rval->values;
-        } else {
-            $campaignReturnValues = array($campaignResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of get CampaignService.");
-    }
-
-    // Error
-    foreach ($campaignReturnValues as $campaignReturnValue) {
-        if (!isset($campaignReturnValue->campaign)) {
-            throw new Exception("Fail to get CampaignService.");
-        }
-    }
-
-    return $campaignReturnValues;
-}
-
-
-if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
+if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
     return;
 }
 
-// CampaignServiceSample
-try {
+/**
+ * execute CampaignServiceSample.
+ */
+try{
+    $campaignServiceSample = new CampaignServiceSample();
+
     $accountId = SoapUtils::getAccountId();
     $biddingStrategyId = SoapUtils::getBiddingStrategyId();
 
-    // CampaignServiceSample ADD
-    $campaignValues = addCampaign($accountId, $biddingStrategyId);
+    // =================================================================
+    // CampaignService ADD
+    // =================================================================
+    // Create operands
+    $operation = $campaignServiceSample->createSampleAddRequest($accountId, $biddingStrategyId);
 
-    // CampaignServiceSample GET
-    getCampaign($accountId, $campaignValues);
+    // Run
+    $campaignValues = $campaignServiceSample->mutate($operation, 'ADD');
 
-    // CampaignServiceSample SET
-    setCampaign($accountId, $campaignValues, $biddingStrategyId);
+    // =================================================================
+    // CampaignService SET
+    // =================================================================
+    // Create operands
+    $operation = $campaignServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues);
 
-    // CampaignServiceSample REMOVE
-    removeCampaign($accountId, $campaignValues);
+    // Run
+    $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
 
-} catch (Exception $e) {
+    // =================================================================
+    // CampaignService GET
+    // =================================================================
+    // Create selector
+    $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
+
+    // Run
+    $campaignValues = $campaignServiceSample->get($selector);
+
+    // =================================================================
+    // CampaignService REMOVE
+    // =================================================================
+    // Create operands
+    $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+
+    // Run
+    $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+
+}catch(Exception $e){
     printf($e->getMessage() . "\n");
 }
-

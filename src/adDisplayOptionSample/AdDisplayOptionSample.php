@@ -35,8 +35,8 @@ $addFeedItemRequest1 = array(
                     'feedAttributeValue' => 'http://www.quicklink.sample.co.jp',
                 ),
             ),
-            'startDate' => '20131215',
-            'endDate' => '20141215',
+            'startDate' => '20151231',
+            'endDate' => '20161231',
             'scheduling' => array(
                 'schedules' => array(
                     0 => array(
@@ -93,8 +93,8 @@ $addFeedItemRequest2 = array(
                     'placeholderField' => 'CALL_PHONE_NUMBER',
                     'feedAttributeValue' => '0120-123-456',
                 )),
-            'startDate' => '20131215',
-            'endDate' => '20141215',
+            'startDate' => '20161231',
+            'endDate' => '20171231',
             'scheduling' => array(
                 'schedules' => array(
                     0 => array(
@@ -317,7 +317,7 @@ $getCampaignFeedRequest = array(
         'campaignIds' => array(
             SoapUtils::getCampaignId(),
         ),
-        'feedItemEds' => array(
+        'feedItemIds' => array(
             $feedItem1->feedItemId,
         ),
         'placeholderTypes' => array(

@@ -343,6 +343,9 @@ try {
     // FeedItemServiceSample GET
     $feedItemServiceSample->getFeedItem($accountId, $feedItemValues);
 
+    //waiting for sandbox review process
+    sleep(20);
+
     // FeedItemServiceSample(AD_CUSTOMIZER) SET
     $feedItemServiceSample->setFeedItem($accountId, $feedAttributeIds, $feedItemValues);
 

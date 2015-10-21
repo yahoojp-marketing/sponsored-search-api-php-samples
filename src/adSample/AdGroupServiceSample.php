@@ -1,293 +1,349 @@
 <?php
+require_once (dirname(__FILE__) . '/../../conf/api_config.php');
+require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+
 /**
  * Sample Program for AdGroupServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-require_once(dirname(__FILE__) . '/../../conf/api_config.php');
-require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+class AdGroupServiceSample{
+    private $serviceName = 'AdGroupService';
 
-/**
- * Sample Program for AdGroupService ADD.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param string $biddingStrategyId Auto bidding ID
- * @return array AdGroupValues entity
- * @throws Exception
- */
-function addAdGroup($accountId, $campaignId, $biddingStrategyId)
-{
-    // Set Operand
-    $operand = array(
-        // Set AutoBidding AdGroup
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'ACTIVE',
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyId' => $biddingStrategyId,
-                'initialBid' => array(
-                    'maxCpc' => 120,
-                ),
-            ),
-        ),
-        // Set ManualCpc AdGroup
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'ACTIVE',
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyType' => 'MANUAL_CPC',
-                'initialBid' => array(
-                    'maxCpc' => 120,
-                ),
-            ),
-        ),
-    );
+    /**
+     * Sample Program for AdGroupService MUTATE.
+     *
+     * @param array $operation AdGroupOperation entity.
+     * @param string $method Operator enum.
+     * @return array AdGroupValues entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method){
 
-    // Set Request
-    $adGroupRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'operand' => $operand,
-        ),
-    );
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('mutate', $operation);
 
-    // Call API
-    $adGroupService = SoapUtils::getService('AdGroupService');
-    $adGroupResponse = $adGroupService->invoke('mutate', $adGroupRequest);
-
-    // Response
-    if (isset($adGroupResponse->rval->values)) {
-        if (is_array($adGroupResponse->rval->values)) {
-            $adGroupReturnValues = $adGroupResponse->rval->values;
-        } else {
-            $adGroupReturnValues = array($adGroupResponse->rval->values);
+        // Response
+        $returnValues = array();
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
-    } else {
-        throw new Exception("No response of add AdGroupService.");
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->adGroup)){
+                throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    // Error
-    foreach ($adGroupReturnValues as $adGroupReturnValue) {
-        if (!isset($adGroupReturnValue->adGroup)) {
-            throw new Exception("Fail to add AdGroupService.");
+    /**
+     * Sample Program for AdGroupService GET.
+     *
+     * @param array $selector AdGroupSelector entity.
+     * @return array AdGroupValues entity.
+     * @throws Exception
+     */
+    public function get($selector){
+
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('get', $selector);
+
+        // Response
+        $returnValues = null;
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of get ' . $this->serviceName . '.');
         }
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->adGroup)){
+                throw new Exception('Fail to get ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    return $adGroupReturnValues;
-}
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $biddingStrategyId BiddingStrategyID
+     * @param long $campaignId CampaignID
+     * @param long $appCampaignId AppCampaignID
+     * @return AdGroupOperation entity.
+     */
+    public function createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId){
 
-/**
- * Sample Program for AdGroupService Set.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param array $adGroupValues AdGroupValues entity for set.
- * @param string $biddingStrategyId Auto bidding ID
- * @return array AdGroupValues entity
- * @throws Exception
- */
-function setAdGroup($accountId, $campaignId, $adGroupValues, $biddingStrategyId)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($adGroupValues as $adGroupValue) {
+        // Create operands
+        $operands = array(
 
-        $operand[] = array(
-            'accountId' => $adGroupValue->adGroup->accountId,
-            'campaignId' => $adGroupValue->adGroup->campaignId,
-            'adGroupId' => $adGroupValue->adGroup->adGroupId,
-            'adGroupName' => 'Sample_UpdateOn_' . $adGroupValue->adGroup->adGroupId . '_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'PAUSED',
-            // Change Auto Bidding Strategy
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyId' => $biddingStrategyId,
-                'initialBid' => array(
-                    'maxCpc' => 200,
-                ),
+            // Create AutoBidding AdGroup for Standard Campaign
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
+                'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyId' => $biddingStrategyId,
+                    'initialBid' => array(
+                        'maxCpc' => 120
+                    )
+                )
             ),
+
+            // Create ManualCpc AdGroup for Standard Campaign
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
+                'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyType' => 'MANUAL_CPC',
+                    'initialBid' => array(
+                        'maxCpc' => 120
+                    )
+                )
+            ),
+
+            // Create AutoBidding AdGroup for MobileApp Campaign
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $appCampaignId,
+                'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyId' => $biddingStrategyId,
+                    'initialBid' => array(
+                        'maxCpc' => 120
+                    )
+                )
+            ),
+
+            // Create ManualCpc AdGroup for MobileApp Campaign
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $appCampaignId,
+                'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'ACTIVE',
+                'biddingStrategyConfiguration' => array(
+                    'biddingStrategyType' => 'MANUAL_CPC',
+                    'initialBid' => array(
+                        'maxCpc' => 120
+                    )
+                )
+            )
         );
-    }
 
-    // Set Request
-    $adGroupRequest = array(
-        'operations' => array(
-            'operator' => 'SET',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $adGroupService = SoapUtils::getService('AdGroupService');
-    $adGroupResponse = $adGroupService->invoke('mutate', $adGroupRequest);
-
-    // Response
-    if (isset($adGroupResponse->rval->values)) {
-        if (is_array($adGroupResponse->rval->values)) {
-            $adGroupReturnValues = $adGroupResponse->rval->values;
-        } else {
-            $adGroupReturnValues = array($adGroupResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of set AdGroupService.");
-    }
-
-    // Error
-    foreach ($adGroupReturnValues as $adGroupReturnValue) {
-        if (!isset($adGroupReturnValue->adGroup)) {
-            throw new Exception("Fail to set AdGroupService.");
-        }
-    }
-
-    return $adGroupReturnValues;
-}
-
-/**
- * Sample Program for AdGroupService Remove.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param array $adGroupValues AdGroupValues entity for remove.
- * @return array AdGroupValues entity
- * @throws Exception
- */
-function removeAdGroup($accountId, $campaignId, $adGroupValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($adGroupValues as $adGroupValue) {
-        $operand[] = array(
-            'accountId' => $adGroupValue->adGroup->accountId,
-            'campaignId' => $adGroupValue->adGroup->campaignId,
-            'adGroupId' => $adGroupValue->adGroup->adGroupId,
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
         );
+
+        return $operation;
     }
 
-    // Set Request
-    $adGroupRequest = array(
-        'operations' => array(
-            'operator' => 'REMOVE',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'operand' => $operand,
-        ),
-    );
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $biddingStrategyId BiddingStrategyID
+     * @param array $adGroupValues AdGroupValues entity.
+     * @return AdGroupOperation entity.
+     */
+    public function createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues){
 
-    // Call API
-    $adGroupService = SoapUtils::getService('AdGroupService');
-    $adGroupResponse = $adGroupService->invoke('mutate', $adGroupRequest);
+        // Create operands
+        $operands = array();
+        foreach($adGroupValues as $adGroupValue){
 
-    // Response
-    if (isset($adGroupResponse->rval->values)) {
-        if (is_array($adGroupResponse->rval->values)) {
-            $adGroupReturnValues = $adGroupResponse->rval->values;
-        } else {
-            $adGroupReturnValues = array($adGroupResponse->rval->values);
+            // Create operand
+            $operand = array(
+                'accountId' => $adGroupValue->adGroup->accountId,
+                'campaignId' => $adGroupValue->adGroup->campaignId,
+                'adGroupId' => $adGroupValue->adGroup->adGroupId,
+                'adGroupName' => 'Sample_UpdateOn_' . $adGroupValue->adGroup->adGroupId . '_' . SoapUtils::getCurrentTimestamp(),
+                'userStatus' => 'PAUSED',
+                'biddingStrategyConfiguration' => array(
+                    'initialBid' => array(
+                        'maxCpc' => 200
+                    )
+                )
+            );
+
+            // Create BiddingStrategyConfiguration
+            if($adGroupValue->adGroup->biddingStrategyConfiguration->biddingStrategyType === 'MANUAL_CPC'){
+                $operand['biddingStrategyConfiguration']['biddingStrategyId'] = $biddingStrategyId;
+            }
+
+            array_push($operands, $operand);
         }
-    } else {
-        throw new Exception("No response of remove AdGroupService.");
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Error
-    foreach ($adGroupReturnValues as $adGroupReturnValue) {
-        if (!isset($adGroupReturnValue->adGroup)) {
-            throw new Exception("Fail to remove AdGroupService.");
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $adGroupValues AdGroupValues entity.
+     * @return AdGroupOperation entity.
+     */
+    public function createSampleRemoveRequest($accountId, $adGroupValues){
+
+        // Create operands
+        $operands = array();
+        foreach($adGroupValues as $adGroupValue){
+
+            // Create operand
+            $operand = array(
+                'accountId' => $adGroupValue->adGroup->accountId,
+                'campaignId' => $adGroupValue->adGroup->campaignId,
+                'adGroupId' => $adGroupValue->adGroup->adGroupId
+            );
+
+            array_push($operands, $operand);
         }
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    return $adGroupReturnValues;
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $appCampaignId AppCampaignID
+     * @param array $adGroupValues AdGroupValues entity.
+     * @return AdGroupSelector entity.
+     */
+    public function createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues){
+
+        // Get adGroupIds
+        $adGroupIds = array();
+        foreach($adGroupValues as $adGroupValue){
+            if(isset($adGroupValue->adGroup)){
+                $adGroupIds[] = $adGroupValue->adGroup->adGroupId;
+            }
+        }
+
+        // Create selector
+        $selector = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'campaignIds' => array(
+                    $campaignId,
+                    $appCampaignId
+                ),
+                'adGroupIds' => $adGroupIds,
+                'userStatuses' => array(
+                    'ACTIVE',
+                    'PAUSED'
+                ),
+                'paging' => array(
+                    'startIndex' => 1,
+                    'numberResults' => 20
+                )
+            )
+        );
+
+        return $selector;
+    }
 }
 
-/**
- * Sample Program for AdGroupService Get.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param array $adGroupValues AdGroupValues entity for get.
- * @return array AdGroupValues entity
- * @throws Exception
- */
-function getAdGroup($accountId, $campaignId, $adGroupValues)
-{
-    // Set adGroupIds
-    $adGroupIds = array();
-    foreach ($adGroupValues as $adGroupValue) {
-        $adGroupIds[] = $adGroupValue->adGroup->adGroupId;
-    }
-
-    // Set Selector
-    $adGroupRequest = array(
-        'selector' => array(
-            'accountId' => $accountId,
-            'campaignIds' => array($campaignId),
-            'adGroupIds' => $adGroupIds,
-            'userStatuses' => array(
-                'ACTIVE',
-                'PAUSED',
-            ),
-            'paging' => array(
-                'startIndex' => 1,
-                'numberResults' => 20,
-            ),
-        ),
-    );
-
-    // Call API
-    $adGroupService = SoapUtils::getService('AdGroupService');
-    $adGroupResponse = $adGroupService->invoke('get', $adGroupRequest);
-
-    // Response
-    if (isset($adGroupResponse->rval->values)) {
-        if (is_array($adGroupResponse->rval->values)) {
-            $adGroupReturnValues = $adGroupResponse->rval->values;
-        } else {
-            $adGroupReturnValues = array($adGroupResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of get AdGroupService.");
-    }
-
-    // Error
-    foreach ($adGroupReturnValues as $adGroupReturnValue) {
-        if (!isset($adGroupReturnValue->adGroup)) {
-            throw new Exception("Fail to get AdGroupService.");
-        }
-    }
-
-    return $adGroupReturnValues;
-}
-
-
-if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
+if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
     return;
 }
 
-// AdGroupServiceSample
-try {
+/**
+ * execute AdGroupServiceSample.
+ */
+try{
+    $adGroupServiceSample = new AdGroupServiceSample();
+
     $accountId = SoapUtils::getAccountId();
-    $campaignId = SoapUtils::getCampaignId();
     $biddingStrategyId = SoapUtils::getBiddingStrategyId();
+    $campaignId = SoapUtils::getCampaignId();
+    $appCampaignId = SoapUtils::getAppCampaignId();
 
-    // AdGroupServiceSample ADD
-    $adGroupValues = addAdGroup($accountId, $campaignId, $biddingStrategyId);
+    // =================================================================
+    // AdGroupService ADD
+    // =================================================================
+    // Create operands
+    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId);
 
-    // AdGroupServiceSample GET
-    getAdGroup($accountId, $campaignId, $adGroupValues);
+    // Run
+    $adGroupValues = $adGroupServiceSample->mutate($operation, 'ADD');
 
-    // AdGroupServiceSample SET
-    setAdGroup($accountId, $campaignId, $adGroupValues, $biddingStrategyId);
+    // =================================================================
+    // AdGroupService SET
+    // =================================================================
+    // Create operands
+    $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues);
 
-    // AdGroupServiceSample REMOVE
-    removeAdGroup($accountId, $campaignId, $adGroupValues);
+    // Run
+    $adGroupValues = $adGroupServiceSample->mutate($operation, 'SET');
 
-} catch (Exception $e) {
+    // =================================================================
+    // AdGroupService GET
+    // =================================================================
+    // Create selector
+    $selector = $adGroupServiceSample->createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues);
+
+    // Run
+    $adGroupValues = $adGroupServiceSample->get($selector);
+
+    // =================================================================
+    // AdGroupService REMOVE
+    // =================================================================
+    // Create operands
+    $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
+
+    // Run
+    $adGroupServiceSample->mutate($operation, 'REMOVE');
+
+}catch(Exception $e){
     printf($e->getMessage() . "\n");
 }
-

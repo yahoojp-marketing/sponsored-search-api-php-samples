@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------
 // common defines
 //-----------------------------------------------------------------
-define('API_VERSION', 'V5.2');
+define('API_VERSION', 'V5.3');
 define('API_NS',      'http://ss.yahooapis.jp/V5');
 define('XMLSCHEMANS', 'http://www.w3.org/2001/XMLSchema-instance');
 
@@ -22,41 +22,44 @@ define('APIACCOUNTPASSWORD',  'xxxxxx');
 //-----------------------------------------------------------------
 // Onbehalf Account (if sandbox, can not use these params.)
 //-----------------------------------------------------------------
-define('ONBEHALFOFACCOUNTID', '');
-define('ONBEHALFOFPASSWORD',  '');
+define('ONBEHALFOFACCOUNTID', 'xxxxxxxx');
+define('ONBEHALFOFPASSWORD',  'xxxxxxxx');
 
 //-----------------------------------------------------------------
 // Account
 //-----------------------------------------------------------------
 define('ACCOUNTID',           'xxxxxxxx');
 
+//-----------------------------------------------------------------
 // for BidLandscapeSample
 //-----------------------------------------------------------------
 // BiddingStrategy
-//-----------------------------------------------------------------
-define('BIDDINGSTRATEGYID',   'xxxxxxxx');
+define('BIDDINGSTRATEGYID', 'xxxxxxxx');
 
-//-----------------------------------------------------------------
 // Campaign
-//-----------------------------------------------------------------
-define('CAMPAIGNID',          'xxxxxxxx');
+define('CAMPAIGNID',        'xxxxxxxx');
+define('APPCAMPAIGNID',     'xxxxxxxx');
 
-//-----------------------------------------------------------------
 // AdGroup
-//-----------------------------------------------------------------
-define('ADGROUPID',           'xxxxxxxx');
+define('ADGROUPID',         'xxxxxxxx');
+define('APPADGROUPID',      'xxxxxxxx');
 
-//-----------------------------------------------------------------
 // AdGroupCriterions(optional)
-//-----------------------------------------------------------------
 //define('ADGROUPCRITERIONIDS', 'xxxxxxxx,xxxxxxxx');
 
-// for adCustomizer
+//-----------------------------------------------------------------
+// for adCustomizerSample
 //-----------------------------------------------------------------
 // FeedFolder
-//-----------------------------------------------------------------
 define('FEEDFOLDERID',           'xxxxxxxx');
+// FeedItem
 define('INTEGERFEEDATTRIBUTEID', 'xxxxxxxx');
 define('PRICEFEEDFOLDERID',      'xxxxxxxx');
 define('DATEFEEDFOLDERID',       'xxxxxxxx');
 define('STRINGFEEDFOLDERID',     'xxxxxxxx');
+
+//-----------------------------------------------------------------
+// for siteRetargetingSample
+//-----------------------------------------------------------------
+// RetargetingList
+define('TARGETLISTID',     'xxxxxxxx');
