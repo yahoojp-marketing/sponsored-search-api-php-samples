@@ -1,216 +1,245 @@
 <?php
+require_once (dirname(__FILE__) . '/../../conf/api_config.php');
+require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+
 /**
  * Sample Program for CampaignCriterionServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-require_once(dirname(__FILE__) . '/../../conf/api_config.php');
-require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+class CampaignCriterionServiceSample{
+    private $serviceName = 'CampaignCriterionService';
 
-/**
- * Sample Program for CampaignCriterionService ADD.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @return array CampaignCriterionValues entity
- * @throws Exception
- */
-function addCampaignCriterion($accountId, $campaignId)
-{
-    // Set Operand
-    $operand = array(
-        // Set ScheduleTarget
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'criterionUse' => 'NEGATIVE',
-            'criterion' => array(
-                'type' => 'KEYWORD',
-                'text' => 'sample text',
-                'matchType' => 'PHRASE'
-            )
-        ),
-    );
+    /**
+     * Sample Program for CampaignCriterionService MUTATE.
+     *
+     * @param array $operation CampaignCriterionOperation entity.
+     * @param string $method Operator enum.
+     * @return array CampaignCriterionReturnValue entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method){
 
-    //xsi:type for criterion of Keyword
-    $operand[0]['criterion'] =
-        new SoapVar($operand[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
-    //xsi:type for operand of NegativeCampaignCriterion
-    $operand[0] =
-        new SoapVar($operand[0], SOAP_ENC_OBJECT, 'NegativeCampaignCriterion', API_NS, 'operand', XMLSCHEMANS);
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('mutate', $operation);
 
-    // Set Request
-    $campaignCriterionRequest= array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'criterionUse' => 'NEGATIVE',
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $campaignCriterionService = SoapUtils::getService('CampaignCriterionService');
-    $campaignCriterionResponse = $campaignCriterionService->invoke('mutate', $campaignCriterionRequest);
-
-    // Response
-    if (isset($campaignCriterionResponse->rval->values)) {
-        if (is_array($campaignCriterionResponse->rval->values)) {
-            $campaignCriterionReturnValues = $campaignCriterionResponse->rval->values;
-        } else {
-            $campaignCriterionReturnValues = array($campaignCriterionResponse->rval->values);
+        // Response
+        $returnValues = array();
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
-    } else {
-        throw new Exception("No response of add CampaignCriterionService.");
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->campaignCriterion)){
+                throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    // Error
-    foreach ($campaignCriterionReturnValues as $campaignCriterionReturnValue) {
-        if (!isset($campaignCriterionReturnValue->campaignCriterion)) {
-            throw new Exception("Fail to add CampaignCriterionService.");
+    /**
+     * Sample Program for CampaignCriterionService GET.
+     *
+     * @param array $selector CampaignCriterionSelector entity.
+     * @return array CampaignCriterionReturnValue entity.
+     * @throws Exception
+     */
+    public function get($selector){
+
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('get', $selector);
+
+        // Response
+        $returnValues = null;
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of get ' . $this->serviceName . '.');
         }
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->campaignCriterion)){
+                throw new Exception('Fail to get ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    return $campaignCriterionReturnValues;
-}
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @return CampaignOperation entity.
+     */
+    public function createSampleAddRequest($accountId, $campaignId){
 
-/**
- * Sample Program for CampaignCriterionService Remove.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param array $campaignCriterionValues CampaignCriterionValues entity for remove.
- * @return array CampaignCriterionValues entity
- * @throws Exception
- */
-function removeCampaignCriterion($accountId, $campaignId, $campaignCriterionValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($campaignCriterionValues as $campaignCriterionValue) {
-        $operand[] = array(
-            'accountId' => $campaignCriterionValue->campaignCriterion->accountId,
-            'campaignId' => $campaignCriterionValue->campaignCriterion->campaignId,
-            'criterionUse' => $campaignCriterionValue->campaignCriterion->criterionUse,
-            'criterion' => array(
-                'criterionId' => $campaignCriterionValue->campaignCriterion->criterion->criterionId,
-                'type' => $campaignCriterionValue->campaignCriterion->criterion->type,
+        // Create operands
+        $operands = array(
+
+            // Set ScheduleTarget
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
+                'criterionUse' => 'NEGATIVE',
+                'criterion' => array(
+                    'type' => 'KEYWORD',
+                    'text' => 'sample text',
+                    'matchType' => 'PHRASE'
+                )
             )
         );
+
+        // Set xsi:type
+        $operands[0]['criterion'] = new SoapVar($operands[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
+        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'NegativeCampaignCriterion', API_NS, 'operand', XMLSCHEMANS);
+
+        // Set Request
+        $operation = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
+                'criterionUse' => 'NEGATIVE',
+                'operand' => $operands
+            )
+        );
+        return $operation;
     }
 
-    // Set Request
-    $campaignCriterionRequest= array(
-        'operations' => array(
-            'operator' => 'REMOVE',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'criterionUse' => 'NEGATIVE',
-            'operand' => $operand,
-        ),
-    );
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $campaignCriterionValues CampaignCriterionReturnValue entity.
+     * @return CampaignOperation entity.
+     */
+    public function createSampleRemoveRequest($accountId, $campaignId, $campaignCriterionValues){
 
-    // Call API
-    $campaignCriterionService = SoapUtils::getService('CampaignCriterionService');
-    $campaignCriterionResponse = $campaignCriterionService->invoke('mutate', $campaignCriterionRequest);
-
-    // Response
-    if (isset($campaignCriterionResponse->rval->values)) {
-        if (is_array($campaignCriterionResponse->rval->values)) {
-            $campaignCriterionReturnValues = $campaignCriterionResponse->rval->values;
-        } else {
-            $campaignCriterionReturnValues = array($campaignCriterionResponse->rval->values);
+        // Create operands
+        $operands = array();
+        foreach($campaignCriterionValues as $campaignCriterionValue){
+            $operands[] = array(
+                'accountId' => $campaignCriterionValue->campaignCriterion->accountId,
+                'campaignId' => $campaignCriterionValue->campaignCriterion->campaignId,
+                'criterionUse' => $campaignCriterionValue->campaignCriterion->criterionUse,
+                'criterion' => array(
+                    'criterionId' => $campaignCriterionValue->campaignCriterion->criterion->criterionId,
+                    'type' => $campaignCriterionValue->campaignCriterion->criterion->type
+                )
+            );
         }
-    } else {
-        throw new Exception("No response of remove CampaignCriterionService.");
+
+        // Create Request
+        $operation = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
+                'criterionUse' => 'NEGATIVE',
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Error
-    foreach ($campaignCriterionReturnValues as $campaignCriterionReturnValue) {
-        if (!isset($campaignCriterionReturnValue->campaignCriterion)) {
-            throw new Exception("Fail to remove CampaignCriterionService.");
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param array $campaignCriterionValues CampaignCriterionReturnValue entity.
+     * @return CampaignCriterionSelector entity.
+     */
+    public function createSampleGetRequest($accountId, $campaignId, $campaignCriterionValues){
+
+        // Get campaignCriterionIds
+        $campaignCriterionIds = array();
+        foreach($campaignCriterionValues as $campaignCriterionValue){
+            $campaignCriterionIds[] = $campaignCriterionValue->campaignCriterion->criterion->criterionId;
         }
-    }
 
-    return $campaignCriterionValues;
+        // Create Selector
+        $selector = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'campaignIds' => array(
+                    $campaignId
+                ),
+                'criterionIds' => $campaignCriterionIds,
+                'criterionUse' => 'NEGATIVE',
+                'paging' => array(
+                    'startIndex' => 1,
+                    'numberResults' => 20
+                )
+            )
+        );
+
+        return $selector;
+    }
 }
 
-/**
- * Sample Program for CampaignCriterionService Get.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param array $campaignCriterionValues CampaignCriterionValues entity for get.
- * @return array CampaignCriterionValues entity
- * @throws Exception
- */
-function getCampaignCriterion($accountId, $campaignId, $campaignCriterionValues)
-{
-    // Set campaignCriterionIds
-    $campaignCriterionIds = array();
-    foreach ($campaignCriterionValues as $campaignCriterionValue) {
-        $campaignCriterionIds[] = $campaignCriterionValue->campaignCriterion->criterion->criterionId;
-    }
-
-    // Set Selector
-    $campaignCriterionRequest= array(
-        'selector' => array(
-            'accountId' => $accountId,
-            'campaignIds' => array($campaignId),
-            'criterionIds' => $campaignCriterionIds,
-            'criterionUse' => 'NEGATIVE',
-            'paging' => array(
-                'startIndex' => 1,
-                'numberResults' => 20,
-            ),
-        ),
-    );
-
-    // Call API
-    $campaignCriterionService = SoapUtils::getService('CampaignCriterionService');
-    $campaignCriterionResponse = $campaignCriterionService->invoke('get', $campaignCriterionRequest);
-
-    // Response
-    if (isset($campaignCriterionResponse->rval->values)) {
-        if (is_array($campaignCriterionResponse->rval->values)) {
-            $campaignCriterionReturnValues = $campaignCriterionResponse->rval->values;
-        } else {
-            $campaignCriterionReturnValues = array($campaignCriterionResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of get CampaignCriterionService.");
-    }
-
-    // Error
-    foreach ($campaignCriterionReturnValues as $campaignCriterionReturnValue) {
-        if (!isset($campaignCriterionReturnValue->campaignCriterion)) {
-            throw new Exception("Fail to get CampaignCriterionService.");
-        }
-    }
-
-    return $campaignCriterionReturnValues;
-}
-
-
-if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
+if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
     return;
 }
 
-// CampaignCriterionServiceSample
-try {
+/**
+ * execute CampaignServiceSample.
+ */
+try{
+    $campaignCriterionServiceSample = new CampaignCriterionServiceSample();
+
     $accountId = SoapUtils::getAccountId();
     $campaignId = SoapUtils::getCampaignId();
 
-    // CampaignCriterionServiceSample ADD
-    $campaignCriterionValues = addCampaignCriterion($accountId, $campaignId);
+    // =================================================================
+    // CampaignCriterionService ADD
+    // =================================================================
+    // Create operands
+    $operation = $campaignCriterionServiceSample->createSampleAddRequest($accountId, $campaignId);
 
-    // CampaignCriterionServiceSample GET
-    getCampaignCriterion($accountId, $campaignId, $campaignCriterionValues);
+    // Run
+    $campaignCriterionValues = $campaignCriterionServiceSample->mutate($operation, 'ADD');
 
-    // CampaignCriterionServiceSample REMOVE
-    removeCampaignCriterion($accountId, $campaignId, $campaignCriterionValues);
+    // =================================================================
+    // CampaignCriterionService GET
+    // =================================================================
+    // Create selector
+    $selector = $campaignCriterionServiceSample->createSampleGetRequest($accountId, $campaignId, $campaignCriterionValues);
 
-} catch (Exception $e) {
-    printf($e->getMessage() ."\n");
+    // Run
+    $campaignCriterionValues = $campaignCriterionServiceSample->get($selector);
+
+    // =================================================================
+    // CampaignCriterionService REMOVE
+    // =================================================================
+    // Create operands
+    $operation = $campaignCriterionServiceSample->createSampleRemoveRequest($accountId, $campaignId, $campaignCriterionValues);
+
+    // Run
+    $campaignCriterionValues = $campaignCriterionServiceSample->mutate($operation, 'REMOVE');
+
+}catch(Exception $e){
+    printf($e->getMessage() . "\n");
 }
-

@@ -1,334 +1,344 @@
 <?php
+require_once (dirname(__FILE__) . '/../../conf/api_config.php');
+require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+
 /**
  * Sample Program for CampaignTargetServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-require_once(dirname(__FILE__) . '/../../conf/api_config.php');
-require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+class CampaignTargetServiceSample{
+    private $serviceName = 'CampaignTargetService';
 
-/**
- * Sample Program for CampaignTargetService ADD.
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @return array CampaignTargetValues entity
- * @throws Exception
- */
-function addCampaignTarget($accountId, $campaignId)
-{
-    // Set Operand
-    $operand = array(
-        // Set ScheduleTarget
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'target' => array(
-                'targetType' => 'SCHEDULE',
-                'dayOfWeek' => 'MONDAY',
-                'startHour' => 10,
-                'startMinute' => 'ZERO',
-                'endHour' => 11,
-                'endMinute' => 'THIRTY',
-            ),
-            'bidMultiplier' => 1.0
-        ),
-        // Set LocationTarget
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'target' => array(
-                'targetType' => 'LOCATION',
-                'targetId' => 'JP-13-0048',
-                'excludedType' => 'INCLUDED'
-            ),
-            'bidMultiplier' => 0.95
-        ),
-        // Set NetworkTarget
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'target' => array(
-                'targetType' => 'NETWORK',
-                'networkCoverageType' => 'YAHOO_SEARCH'
-            )
-        ),
-    );
+    /**
+     * Sample Program for CampaignTargetService MUTATE.
+     *
+     * @param array $operation CampaignTargetOperation entity.
+     * @param string $method Operator enum.
+     * @return array CampaignTargetReturnValue entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method){
 
-    //xsi:type for target
-    $operand[0]['target'] =
-        new SoapVar($operand[0]['target'], SOAP_ENC_OBJECT, 'ScheduleTarget', API_NS, 'target', XMLSCHEMANS);
-    $operand[1]['target'] =
-        new SoapVar($operand[1]['target'], SOAP_ENC_OBJECT, 'LocationTarget', API_NS, 'target', XMLSCHEMANS);
-    $operand[2]['target'] =
-        new SoapVar($operand[2]['target'], SOAP_ENC_OBJECT, 'NetworkTarget', API_NS, 'target', XMLSCHEMANS);
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('mutate', $operation);
 
-    // Set Request
-    $campaignTargetRequest= array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $campaignTargetService = SoapUtils::getService('CampaignTargetService');
-    $campaignTargetResponse = $campaignTargetService->invoke('mutate', $campaignTargetRequest);
-
-    // Response
-    if (isset($campaignTargetResponse->rval->values)) {
-        if (is_array($campaignTargetResponse->rval->values)) {
-            $campaignTargetReturnValues = $campaignTargetResponse->rval->values;
-        } else {
-            $campaignTargetReturnValues = array($campaignTargetResponse->rval->values);
+        // Response
+        $returnValues = array();
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
-    } else {
-        throw new Exception("No response of add CampaignTargetService.");
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->campaignTarget)){
+                throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    // Error
-    foreach ($campaignTargetReturnValues as $campaignTargetReturnValue) {
-        if (!isset($campaignTargetReturnValue->campaignTarget)) {
-            throw new Exception("Fail to add CampaignTargetService.");
+    /**
+     * Sample Program for CampaignTargetService GET.
+     *
+     * @param array $selector CampaignTargetSelector entity.
+     * @return array CampaignTargetReturnValue entity.
+     * @throws Exception
+     */
+    public function get($selector){
+
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke('get', $selector);
+
+        // Response
+        $returnValues = null;
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of get ' . $this->serviceName . '.');
         }
+
+        // Error
+        foreach($returnValues as $returnValue){
+            if(!isset($returnValue->campaignTarget)){
+                throw new Exception('Fail to get ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
     }
 
-    return $campaignTargetReturnValues;
-}
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @return CampaignOperation entity.
+     */
+    public function createSampleAddRequest($accountId, $campaignId){
 
-/**
- * Sample Program for CampaignTargetService Set.
- *
- * @param string $accountId Account ID
- * @param array $campaignTargetValues CampaignTargetValues entity for set.
- * @return array CampaignTargetValues entity
- * @throws Exception
- */
-function setCampaignTarget($accountId, $campaignTargetValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($campaignTargetValues as $campaignTargetValue) {
+        // Create operands
+        $operands = array(
 
-        $target = array();
-
-        // Set Target
-        if ($campaignTargetValue->campaignTarget->target->targetType === 'SCHEDULE') {
             // Set ScheduleTarget
-            $target = array(
-                'accountId' => $campaignTargetValue->campaignTarget->accountId,
-                'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
                 'target' => array(
-                    'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
-                    'targetType' => 'SCHEDULE'
+                    'targetType' => 'SCHEDULE',
+                    'dayOfWeek' => 'MONDAY',
+                    'startHour' => 10,
+                    'startMinute' => 'ZERO',
+                    'endHour' => 11,
+                    'endMinute' => 'THIRTY'
                 ),
-                'bidMultiplier' => 0.5
-            );
-            //xsi:type for targets of ScheduleTarget
-            $target['target'] =
-                new SoapVar($target['target'], SOAP_ENC_OBJECT, 'ScheduleTarget', API_NS, 'target', XMLSCHEMANS);
+                'bidMultiplier' => 1.0
+            ),
 
-        } else if ($campaignTargetValue->campaignTarget->target->targetType === 'LOCATION') {
             // Set LocationTarget
-            $target = array(
-                'accountId' => $campaignTargetValue->campaignTarget->accountId,
-                'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
                 'target' => array(
-                    'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
-                    'targetType' => 'LOCATION'
+                    'targetType' => 'LOCATION',
+                    'targetId' => 'JP-13-0048',
+                    'excludedType' => 'INCLUDED'
                 ),
-                'bidMultiplier' => 0.5
-            );
-            //xsi:type for targets of LocationTarget
-            $target['target'] =
-                new SoapVar($target['target'], SOAP_ENC_OBJECT, 'LocationTarget', API_NS, 'target', XMLSCHEMANS);
+                'bidMultiplier' => 0.95
+            ),
 
-        } else if ($campaignTargetValue->campaignTarget->target->targetType === 'LOCATION') {
-            // Set PlatformTarget
-            $target = array(
-                'accountId' => $campaignTargetValue->campaignTarget->accountId,
-                'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+            // Set NetworkTarget
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
                 'target' => array(
-                    'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
-                    'targetType' => 'PLATFORM'
-                ),
-                'bidMultiplier' => 0.5
-            );
-            //xsi:type for targets of PlatformTarget
-            $target['target'] =
-                new SoapVar($target['target'], SOAP_ENC_OBJECT, 'PlatformTarget', API_NS, 'target', XMLSCHEMANS);
-        }
-
-        $operand[] = $target;
-    }
-
-    // Set Request
-    $campaignTargetRequest= array(
-        'operations' => array(
-            'operator' => 'SET',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $campaignTargetService = SoapUtils::getService('CampaignTargetService');
-    $campaignTargetResponse = $campaignTargetService->invoke('mutate', $campaignTargetRequest);
-
-    // Response
-    if (isset($campaignTargetResponse->rval->values)) {
-        if (is_array($campaignTargetResponse->rval->values)) {
-            $campaignTargetReturnValues = $campaignTargetResponse->rval->values;
-        } else {
-            $campaignTargetReturnValues = array($campaignTargetResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of set CampaignTargetService.");
-    }
-
-    // Error
-    foreach ($campaignTargetReturnValues as $campaignTargetReturnValue) {
-        if (!isset($campaignTargetReturnValue->campaignTarget)) {
-            throw new Exception("Fail to set CampaignTargetService.");
-        }
-    }
-
-    return $campaignTargetReturnValues;
-}
-
-/**
- * Sample Program for CampaignTargetService Remove.
- *
- * @param string $accountId Account ID
- * @param array $campaignTargetValues CampaignTargetValues entity for remove.
- * @return array CampaignTargetValues entity
- * @throws Exception
- */
-function removeCampaignTarget($accountId, $campaignTargetValues)
-{
-    // Set Operand
-    $operand = array();
-    foreach ($campaignTargetValues as $campaignTargetValue) {
-        $operand[] = array(
-            'accountId' => $campaignTargetValue->campaignTarget->accountId,
-            'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
-            'target' => array(
-                'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
-                'targetType' => $campaignTargetValue->campaignTarget->target->targetType,
+                    'targetType' => 'NETWORK',
+                    'networkCoverageType' => 'YAHOO_SEARCH'
+                )
             )
         );
+
+        // xsi:type for target
+        $operands[0]['target'] = new SoapVar($operands[0]['target'], SOAP_ENC_OBJECT, 'ScheduleTarget', API_NS, 'target', XMLSCHEMANS);
+        $operands[1]['target'] = new SoapVar($operands[1]['target'], SOAP_ENC_OBJECT, 'LocationTarget', API_NS, 'target', XMLSCHEMANS);
+        $operands[2]['target'] = new SoapVar($operands[2]['target'], SOAP_ENC_OBJECT, 'NetworkTarget', API_NS, 'target', XMLSCHEMANS);
+
+        // Create Request
+        $operation = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Set Request
-    $campaignTargetRequest= array(
-        'operations' => array(
-            'operator' => 'REMOVE',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignTargetValues CampaignTargetReturnValue entity.
+     * @return CampaignOperation entity.
+     */
+    public function createSampleSetRequest($accountId, $campaignTargetValues){
 
-    // Call API
-    $campaignTargetService = SoapUtils::getService('CampaignTargetService');
-    $campaignTargetResponse = $campaignTargetService->invoke('mutate', $campaignTargetRequest);
+        // Create operands
+        $operands = array();
+        foreach($campaignTargetValues as $campaignTargetValue){
 
-    // Response
-    if (isset($campaignTargetResponse->rval->values)) {
-        if (is_array($campaignTargetResponse->rval->values)) {
-            $campaignTargetReturnValues = $campaignTargetResponse->rval->values;
-        } else {
-            $campaignTargetReturnValues = array($campaignTargetResponse->rval->values);
+            $target = array();
+
+            // Set Target
+            if($campaignTargetValue->campaignTarget->target->targetType === 'SCHEDULE'){
+                // Set ScheduleTarget
+                $target = array(
+                    'accountId' => $campaignTargetValue->campaignTarget->accountId,
+                    'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+                    'target' => array(
+                        'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
+                        'targetType' => 'SCHEDULE'
+                    ),
+                    'bidMultiplier' => 0.5
+                );
+                // xsi:type for targets of ScheduleTarget
+                $target['target'] = new SoapVar($target['target'], SOAP_ENC_OBJECT, 'ScheduleTarget', API_NS, 'target', XMLSCHEMANS);
+
+            }else if($campaignTargetValue->campaignTarget->target->targetType === 'LOCATION'){
+                // Set LocationTarget
+                $target = array(
+                    'accountId' => $campaignTargetValue->campaignTarget->accountId,
+                    'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+                    'target' => array(
+                        'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
+                        'targetType' => 'LOCATION'
+                    ),
+                    'bidMultiplier' => 0.5
+                );
+                // xsi:type for targets of LocationTarget
+                $target['target'] = new SoapVar($target['target'], SOAP_ENC_OBJECT, 'LocationTarget', API_NS, 'target', XMLSCHEMANS);
+
+            }else if($campaignTargetValue->campaignTarget->target->targetType === 'LOCATION'){
+                // Set PlatformTarget
+                $target = array(
+                    'accountId' => $campaignTargetValue->campaignTarget->accountId,
+                    'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+                    'target' => array(
+                        'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
+                        'targetType' => 'PLATFORM'
+                    ),
+                    'bidMultiplier' => 0.5
+                );
+                // xsi:type for targets of PlatformTarget
+                $target['target'] = new SoapVar($target['target'], SOAP_ENC_OBJECT, 'PlatformTarget', API_NS, 'target', XMLSCHEMANS);
+            }
+
+            $operands[] = $target;
         }
-    } else {
-        throw new Exception("No response of remove CampaignTargetService.");
+
+        // Create Request
+        $operation = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    // Error
-    foreach ($campaignTargetReturnValues as $campaignTargetReturnValue) {
-        if (!isset($campaignTargetReturnValue->campaignTarget)) {
-            throw new Exception("Fail to remove CampaignTargetService.");
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignTargetValues CampaignTargetReturnValue entity.
+     * @return CampaignOperation entity.
+     */
+    public function createSampleRemoveRequest($accountId, $campaignTargetValues){
+
+        // Create operands
+        $operands = array();
+        foreach($campaignTargetValues as $campaignTargetValue){
+            $operands[] = array(
+                'accountId' => $campaignTargetValue->campaignTarget->accountId,
+                'campaignId' => $campaignTargetValue->campaignTarget->campaignId,
+                'target' => array(
+                    'targetId' => $campaignTargetValue->campaignTarget->target->targetId,
+                    'targetType' => $campaignTargetValue->campaignTarget->target->targetType
+                )
+            );
         }
+
+        // Create Request
+        $operation = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
     }
 
-    return $campaignTargetReturnValues;
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $campaignTargetValues CampaignTargetReturnValue entity.
+     * @return CampaignTargetSelector entity.
+     */
+    public function createSampleGetRequest($accountId, $campaignTargetValues){
+
+        // Get campaignIds
+        $campaignIds = array();
+        foreach($campaignTargetValues as $campaignTargetValue){
+            $campaignIds[] = $campaignTargetValue->campaignTarget->campaignId;
+        }
+
+        // Create Selector
+        $selector = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'campaignIds' => $campaignIds,
+                'paging' => array(
+                    'startIndex' => 1,
+                    'numberResults' => 20
+                )
+            )
+        );
+
+        return $selector;
+    }
 }
 
-/**
- * Sample Program for CampaignTargetService Get.
- *
- * @param string $accountId Account ID
- * @param array $campaignTargetValues CampaignTargetValues entity for get.
- * @return array CampaignTargetValues entity
- * @throws Exception
- */
-function getCampaignTarget($accountId, $campaignTargetValues)
-{
-    // Set campaignIds
-    $campaignIds = array();
-    foreach ($campaignTargetValues as $campaignTargetValue) {
-        $campaignIds[] = $campaignTargetValue->campaignTarget->campaignId;
-    }
-
-    // Set Selector
-    $campaignTargetRequest= array(
-        'selector' => array(
-            'accountId' => $accountId,
-            'campaignIds' => $campaignIds,
-            'paging' => array(
-                'startIndex' => 1,
-                'numberResults' => 20,
-            ),
-        ),
-    );
-
-    // Call API
-    $campaignTargetService = SoapUtils::getService('CampaignTargetService');
-    $campaignTargetResponse = $campaignTargetService->invoke('get', $campaignTargetRequest);
-
-    // Response
-    if (isset($campaignTargetResponse->rval->values)) {
-        if (is_array($campaignTargetResponse->rval->values)) {
-            $campaignTargetReturnValues = $campaignTargetResponse->rval->values;
-        } else {
-            $campaignTargetReturnValues = array($campaignTargetResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of get CampaignTargetService.");
-    }
-
-    // Error
-    foreach ($campaignTargetReturnValues as $campaignTargetReturnValue) {
-        if (!isset($campaignTargetReturnValue->campaignTarget)) {
-            throw new Exception("Fail to get CampaignTargetService.");
-        }
-    }
-
-    return $campaignTargetReturnValues;
-}
-
-
-if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
+if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
     return;
 }
 
-// CampaignTargetServiceSample
-try {
+/**
+ * execute CampaignServiceSample.
+ */
+try{
+    $campaignTargetServiceSample = new CampaignTargetServiceSample();
+
     $accountId = SoapUtils::getAccountId();
     $campaignId = SoapUtils::getCampaignId();
 
-    // CampaignTargetServiceSample ADD
-    $campaignTargetValues = addCampaignTarget($accountId, $campaignId);
+    // =================================================================
+    // CampaignTargetService ADD
+    // =================================================================
+    // Create operands
+    $operation = $campaignTargetServiceSample->createSampleAddRequest($accountId, $campaignId);
 
-    // CampaignTargetServiceSample GET
-    getCampaignTarget($accountId, $campaignTargetValues);
+    // Run
+    $campaignTargetValues = $campaignTargetServiceSample->mutate($operation, 'ADD');
 
-    // CampaignTargetServiceSample SET
-    setCampaignTarget($accountId, $campaignTargetValues);
+    // =================================================================
+    // CampaignTargetService SET
+    // =================================================================
+    // Create operands
+    $operation = $campaignTargetServiceSample->createSampleSetRequest($accountId, $campaignTargetValues);
 
-    // CampaignTargetServiceSample REMOVE
-    removeCampaignTarget($accountId, $campaignTargetValues);
+    // Run
+    $campaignTargetValues = $campaignTargetServiceSample->mutate($operation, 'SET');
 
-} catch (Exception $e) {
-    printf($e->getMessage() ."\n");
+    // =================================================================
+    // CampaignTargetService GET
+    // =================================================================
+    // Create selector
+    $selector = $campaignTargetServiceSample->createSampleGetRequest($accountId, $campaignTargetValues);
+
+    // Run
+    $campaignTargetValues = $campaignTargetServiceSample->get($selector);
+
+    // =================================================================
+    // CampaignTargetService REMOVE
+    // =================================================================
+    // Create operands
+    $operation = $campaignTargetServiceSample->createSampleRemoveRequest($accountId, $campaignTargetValues);
+
+    // Run
+    $campaignTargetServiceSample->mutate($operation, 'REMOVE');
+
+}catch(Exception $e){
+    printf($e->getMessage() . "\n");
 }
-

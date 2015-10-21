@@ -13,14 +13,17 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Ver5.2.0
+Ver5.3.0
 
 ■変更履歴
 -----------
-2015/5/20:
+2015/09/16:
+- Version5.3に対応しました。
+
+2015/05/20:
 - Version5.2に対応しました。
 
-2014/6/13:
+2014/06/13:
 - Version5.1に対応しました。
 
 2013/12/15:
@@ -53,31 +56,36 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 
 ・以下は直接実行できるサンプルプログラムです。
 
-- accountSample/AccountSample.php                     :AccountServiceによるアカウント参照、更新処理のサンプルです。
-- adCustomizerSample/AdCustomizerSample               :AdGroupAdService/FeedItemService/FeedFolderService/AdGroupCriterionService/AdGroupService/CampaignServiceによるデータ自動挿入機能の登録、参照、更新、削除処理のサンプルです。
-- adCustomizerSample/FeedFolderServiceSample.php      :FeedFolderServiceによるフィードフォルダーの登録、参照、更新、削除処理のサンプルです。
-- adCustomizerSample/FeedItemServiceSample.php        :FeedItemServiceによるフィードアイテムの登録、参照、更新、削除処理のサンプルです。
-- adDisplayOptionSample/AdDisplayOptionSample.php     :FeedItemService/CampaignFeedService/AdGroupFeedServiceによる広告表示オプションの登録、参照、更新処理のサンプルです。
-- adSample/AdSample.php                               :BiddingStrategyService/CampaignService/CampaignTargetService/CampaignCriterionService/AdGroupService/AdGroupCriterionService/AdGroupAdService/AdGroupBidMultiplierServiceによる入稿処理のサンプルです。
-- adSample/BiddingStrategyServiceSample.php           :BiddingStrategyServiceによる自動入札設定の登録、参照、更新、削除処理のサンプルです。
-- adSample/CampaignServiceSample.php                  :CampaignServiceによるキャンペーンの登録、参照、更新、削除処理のサンプルです。
-- adSample/CampaignTargetServiceSample.php            :CampaignTargetServiceによるキャンペーンターゲティング設定の登録、参照、更新、削除処理のサンプルです。
-- adSample/CampaignCriterionServiceSample.php         :CampaignCriterionServiceによるキャンペーン除外クライテリアの登録、参照処理のサンプルです。
-- adSample/AdGroupServiceSample.php                   :AdGroupServiceによる広告グループの登録、参照、更新、削除処理のサンプルです。
-- adSample/AdGroupCriterionServiceSample.php          :AdGroupCriterionServiceによる広告グループクライテリアの登録、参照、更新、削除処理のサンプルです。
-- adSample/AdGroupBidMultiplierServiceSample.php      :AdGroupBidMultiplierServiceによる広告グループ入札価格調整率の参照、更新処理のサンプルです。
-- adSample/AdGroupAdServiceSample.php                 :AdGroupAdServiceによる広告の登録、参照、更新、削除処理のサンプルです。
-- balanceSample/BalanceSample.php                     :BalanceServiceによるアカウント残高を参照する処理のサンプルです。
-- bidLandscapeSample/BidLandscapeSample.php           :BidLandscapeServiceによるビットのシュミレート情報を参照する処理のサンプルです。
-- bulkDownloadSample/BulkDownloadSample.php           :BulkServiceによるダウンロード処理のサンプルです。
-- bulkUploadSample/BulkUploadSample.php               :BulkServiceによるアップロード処理のサンプルです。
-- customerSyncSample/CustomerSyncSample.php           :CustomerSyncServiceによるアカウント、キャンペーン情報の更新履歴参照処理のサンプルです。
-- conversionTrackerSample/ConversionTrackerSample.php :ConversionTrackerServiceによるコンバージョントラック情報の登録、参照、更新処理のサンプルです。
-- dictionarySample/DictionarySample.php               :DictionaryServiceによる審査否認理由の参照、地域コード参照処理のサンプルです。
-- keywordEstimatorSample/KeywordEstimatorSample.php   :KeywordEstimatorServiceによるキャンペーン及び広告グループのキーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
-- reportDownloadSample/ReportDownloadSample.php       :ReportDefinitionService, ReportServiceを使用したレポートダウンロード処理のサンプルです。
-- targetingIdeaSample/TargetingIdeaSample.php         :TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
-- trafficEstimatorSample/TrafficEstimatorSample.php   :TrafficEstimatorServiceによる指定キーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
+- accountSample/AccountSample.php                                           :AccountServiceによるアカウント参照、更新処理のサンプルです。
+- adCustomizerSample/AdCustomizerSample                                     :BiddingStrategyService/CampaignService/AdGroupService/AdGroupCriterionService/FeedFolderService/FeedItemService/AdGroupAdServiceによるデータ自動挿入機能の登録、参照、更新、削除処理のサンプルです。
+- adCustomizerSample/FeedFolderServiceSample.php                            :FeedFolderServiceによるフィードフォルダーの登録、参照、更新、削除処理のサンプルです。
+- adCustomizerSample/FeedItemServiceSample.php                              :FeedItemServiceによるフィードアイテムの登録、参照、更新、削除処理のサンプルです。
+- adDisplayOptionSample/AdDisplayOptionSample.php                           :FeedItemService/CampaignFeedService/AdGroupFeedServiceによる広告表示オプションの登録、参照、更新処理のサンプルです。
+- adSample/AdSample.php                                                     :BiddingStrategyService/CampaignService/CampaignTargetService/CampaignCriterionService/AdGroupService/AdGroupCriterionService/AdGroupAdService/AdGroupBidMultiplierServiceによる入稿処理のサンプルです。
+- adSample/BiddingStrategyServiceSample.php                                 :BiddingStrategyServiceによる自動入札設定の登録、参照、更新、削除処理のサンプルです。
+- adSample/CampaignServiceSample.php                                        :CampaignServiceによるキャンペーンの登録、参照、更新、削除処理のサンプルです。
+- adSample/CampaignTargetServiceSample.php                                  :CampaignTargetServiceによるキャンペーンターゲティング設定の登録、参照、更新、削除処理のサンプルです。
+- adSample/CampaignCriterionServiceSample.php                               :CampaignCriterionServiceによるキャンペーン除外クライテリアの登録、参照処理のサンプルです。
+- adSample/AdGroupServiceSample.php                                         :AdGroupServiceによる広告グループの登録、参照、更新、削除処理のサンプルです。
+- adSample/AdGroupCriterionServiceSample.php                                :AdGroupCriterionServiceによる広告グループクライテリアの登録、参照、更新、削除処理のサンプルです。
+- adSample/AdGroupBidMultiplierServiceSample.php                            :AdGroupBidMultiplierServiceによる広告グループ入札価格調整率の参照、更新処理のサンプルです。
+- adSample/AdGroupAdServiceSample.php                                       :AdGroupAdServiceによる広告の登録、参照、更新、削除処理のサンプルです。
+- balanceSample/BalanceSample.php                                           :BalanceServiceによるアカウント残高を参照する処理のサンプルです。
+- bidLandscapeSample/BidLandscapeSample.php                                 :BidLandscapeServiceによるビットのシュミレート情報を参照する処理のサンプルです。
+- bulkDownloadSample/BulkDownloadSample.php                                 :BulkServiceによるダウンロード処理のサンプルです。
+- bulkUploadSample/BulkUploadSample.php                                     :BulkServiceによるアップロード処理のサンプルです。
+- customerSyncSample/CustomerSyncSample.php                                 :CustomerSyncServiceによるアカウント、キャンペーン情報の更新履歴参照処理のサンプルです。
+- conversionTrackerSample/ConversionTrackerSample.php                       :ConversionTrackerServiceによるコンバージョントラック情報の登録、参照、更新処理のサンプルです。
+- dictionarySample/DictionarySample.php                                     :DictionaryServiceによる審査否認理由の参照、地域コード参照処理のサンプルです。
+- keywordEstimatorSample/KeywordEstimatorSample.php                         :KeywordEstimatorServiceによるキャンペーン及び広告グループのキーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
+- reportDownloadSample/ReportDownloadSample.php                             :ReportDefinitionService, ReportServiceを使用したレポートダウンロード処理のサンプルです。
+- siteRetargetingSample/AdGroupRetargetingListServiceSample.php             :AdGroupRetargetingListServiceによる広告グループ用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
+- siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php    :NegativeCampaignRetargetingListServiceによるキャンペーン用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
+- siteRetargetingSample/RetargetingListServiceSample.php                    :RetargetingListServiceによるリターゲティングリストの登録、参照、更新処理のサンプルです。
+- siteRetargetingSample/SiteRetargetingSample.php                           :RetargetingListService/BiddingStrategyService/CampaignService/NegativeCampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
+- targetingIdeaSample/TargetingIdeaSample.php                               :TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
+- trafficEstimatorSample/TrafficEstimatorSample.php                         :TrafficEstimatorServiceによる指定キーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
+
 
 ・以下は各サンプルプログラムから利用されるクラスです。
 
@@ -130,6 +138,10 @@ PRICEFEEDFOLDERID      : PlaceholderFieldがAD_CUSTOMIZER_PRICEで登録され�
 DATEFEEDFOLDERID       : PlaceholderFieldがAD_CUSTOMIZER_DATEで登録されたフィードアトリビュートIDを記述（必須）
 STRINGFEEDFOLDERID     : PlaceholderFieldがAD_CUSTOMIZER_STRINGで登録されたフィードアトリビュートIDを記述（必須）
 
+以下、IDはSiteRetargetingSampleを動作させる際に必要となります。
+TARGETLISTID    : ターゲットリストID（任意、存在しない場合は新規作成を試みます）
+
+
 --------------------------------
 【実行】
 --------------------------------
@@ -138,23 +150,22 @@ STRINGFEEDFOLDERID     : PlaceholderFieldがAD_CUSTOMIZER_STRINGで登録され�
 
 ■実行例
 ---------------------------------------
-$ php src/accountSample/AccountSample.php
-$ php src/adCustomizerSample/AdCustomizerSample.php
-$ php src/adCustomizerSample/FeedFolderServiceSample.php
-$ php src/adCustomizerSample/FeedItemServiceSample.php
-$ php src/adDisplayOptionSample/AdDisplayOptionSample.php
-$ php src/adSample/AdSample.php
-$ php src/balanceSample/BalanceSample.php
-$ php src/bidLandscapeSample/BidLandscapeSample.php
-$ php src/bulkDownloadSample/BulkDownloadSample.php
-$ php src/bulkUploadSample/BulkUploadSample.php
-$ php src/customerSyncSample/CustomerSyncSample.php
-$ php src/conversionTrackerSample/ConversionTrackerSample.php
-$ php src/dictionarySample/DictionarySample.php
-$ php src/keywordEstimatorSample/KeywordEstimatorSample.php
-$ php src/reportDownloadSample/ReportDownloadSample.php
-$ php src/targetingIdeaSample/TargetingIdeaSample.php
-$ php src/trafficEstimatorSample/TrafficEstimatorSample.php
+php src/accountSample/AccountSample.php
+php src/adCustomizerSample/AdCustomizerSample.php
+php src/adDisplayOptionSample/AdDisplayOptionSample.php
+php src/adSample/AdSample.php
+php src/balanceSample/BalanceSample.php
+php src/bidLandscapeSample/BidLandscapeSample.php
+php src/bulkDownloadSample/BulkDownloadSample.php
+php src/bulkUploadSample/BulkUploadSample.php
+php src/customerSyncSample/CustomerSyncSample.php
+php src/conversionTrackerSample/ConversionTrackerSample.php
+php src/dictionarySample/DictionarySample.php
+php src/keywordEstimatorSample/KeywordEstimatorSample.php
+php src/reportDownloadSample/ReportDownloadSample.php
+php src/targetingIdeaSample/TargetingIdeaSample.php
+php src/trafficEstimatorSample/TrafficEstimatorSample.php
+php src/siteRetargetingSample/RetargetingListServiceSample.php
 ---------------------------------------
 
 データをダウンロードする処理を実行した場合には、
