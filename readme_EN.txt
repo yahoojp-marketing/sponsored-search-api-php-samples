@@ -6,22 +6,22 @@ Version 5.3.0
 [Change history]
 -----------
 2015/09/16:
-- Correspond to Version 5.3.
+- Correspond to Version 5.3.0.
 
 2015/05/20:
-- Correspond to Version 5.2.
+- Correspond to Version 5.2.0.
 
 2014/06/13:
-- Correspond to Version 5.1.
+- Correspond to Version 5.1.0.
 
 2013/12/15:
-- Correspond to Version 5.0.
+- Correspond to Version 5.0.0.
 
 2013/08/28:
-- Additional API from Version 4.2: Correspond to AdGroupBidMultiplierService.
+- Additional API from Version 4.2.0: Correspond to AdGroupBidMultiplierService.
 
 2013/07/22:
-- Correspond to Version 4.2. The change from Version 4.0 is as below.
+- Correspond to Version 4.2.0. The change from Version 4.0.0 is as below.
 -- Added AdDisplayOptionSample.php
 
 --------------------------------
