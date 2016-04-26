@@ -44,6 +44,13 @@ function createCampaign($accountId){
                         'positiveGeoTargetType' => 'AREA_OF_INTENT',
                     ),
             ),
+        	'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+        	'customParameters' => array(
+        			'parameters' => array(
+        				'key' => 'id1',
+        				'value' => '1234',
+        			),
+        	),
         ),
     );
 
@@ -109,6 +116,13 @@ function createAdGroup($accountId, $campaignId){
                     'maxCpc' => 120,
                 ),
             ),
+        	'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+        	'customParameters' => array(
+        			'parameters' => array(
+        					'key' => 'id1',
+        					'value' => '1234',
+        			),
+        	),
         ),
     );
 
@@ -176,6 +190,16 @@ function createAdGroupCriterion($accountId, $campaignId, $adGroupId){
                     'maxCpc' => 100,
                 ),
             ),
+        	'advancedUrl' => 'http://www.yahoo.co.jp',
+        	'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+        	'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+        	'customParameters' => array(
+        			'parameters' => array(
+        					'key' => 'id1',
+        					'value' => '1234',
+        			),
+        	),
+        	'advanced' => 'TRUE',
         ),
     );
 
@@ -248,9 +272,18 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
                 'headline' => 'sample headline',
                 'description' => 'sample {KEYWORD:keyword}',
                 'description2' => 'sample {KEYWORD:keyword}',
-                'url' => 'http://www.yahoo.co.jp/',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
+            		
+            	'advancedUrl' => 'http://www.yahoo.co.jp',
+            	'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+            	'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+            	'customParameters' => array(
+            			'parameters' => array(
+            					'key' => 'id1',
+            					'value' => '1234',
+            			),
+            	),            		
             ),
             'userStatus' => 'ACTIVE',
         ),
@@ -265,9 +298,18 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
                 'headline' => 'sample headline',
                 'description' => '{=COUNTDOWN("2016/12/15 18:00:00","ja")}',
                 'description2' => 'sample ad desc',
-                'url' => 'http://www.yahoo.co.jp/',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
+            		
+            	'advancedUrl' => 'http://www.yahoo.co.jp',
+            	'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+            	'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+            	'customParameters' => array(
+            			'parameters' => array(
+            					'key' => 'id1',
+            					'value' => '1234',
+            			),
+            	),
             ),
             'userStatus' => 'ACTIVE',
         ),
@@ -282,9 +324,18 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
                 'headline' => 'sample headline',
                 'description' => '{=COUNTDOWN('.$feedFolderName.'.'.$feedAttributeNames['AD_CUSTOMIZER_DATE'].',"ja")}',
                 'description2' => 'sample ad desc',
-                'url' => 'http://www.yahoo.co.jp/',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
+            		
+           		'advancedUrl' => 'http://www.yahoo.co.jp',
+           		'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+           		'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+           		'customParameters' => array(
+           				'parameters' => array(
+          						'key' => 'id1',
+           						'value' => '1234',
+           				),
+           		),
             ),
             'userStatus' => 'ACTIVE',
         ),

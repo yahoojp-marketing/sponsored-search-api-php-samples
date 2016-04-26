@@ -1,525 +1,735 @@
 <?php
-require_once(dirname(__FILE__) . '/../../conf/api_config.php');
-require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once (dirname(__FILE__) . '/../../conf/api_config.php');
+require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for FeedItemService,CampaignFeedService,AdGroupFeedService,
- * Copyright (C) 2013 Yahoo Japan Corporation. All Rights Reserved.
+ * Copyright (C) 2013 Yahoo Japan Corporation.
+ * All Rights Reserved.
  */
+class AdDisplayOptionSample{
 
-//=================================================================
-// FeedItemService
-//=================================================================
+    /**
+     * Sample Program for Service MUTATE.
+     *
+     * @param array $operation Exexute service operation entity.
+     * @param string $method Operator enum.
+     * @param string $serviceName Exexute Service Name.
+     * @return array Exexute service return value entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method, $serviceName){
 
-$feedItemService = SoapUtils::getService("FeedItemService");
+        // Call API
+        $service = SoapUtils::getService($serviceName);
+        $response = $service->invoke('mutate', $operation);
 
-//-----------------------------------------------------------------
-// FeedItemService::mutate(ADD) QUICKLINK
-//-----------------------------------------------------------------
-//request QUICKLINK
-$addFeedItemRequest1 = array(
-    'operations' => array(
-        'operator' => 'ADD',
-        'accountId' => SoapUtils::getAccountId(),
-        'placeholderType' => 'QUICKLINK',
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'placeholderType' => 'QUICKLINK',
-            'feedItemAttribute' => array(
-                array(
-                    'placeholderField' => 'LINK_TEXT',
-                    'feedAttributeValue' => 'samplelink',
-                ),
-                array(
-                    'placeholderField' => 'LINK_URL',
-                    'feedAttributeValue' => 'http://www.quicklink.sample.co.jp',
-                ),
-            ),
-            'startDate' => '20151231',
-            'endDate' => '20161231',
-            'scheduling' => array(
-                'schedules' => array(
-                    0 => array(
-                        'dayOfWeek' => 'SUNDAY',
-                        'startHour' => 14,
-                        'startMinute' => 'ZERO',
-                        'endHour' => 15,
-                        'endMinute' => 'THIRTY'
+        // Response
+        $returnValues = array();
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of ' . $method . ' ' . $serviceName . '.');
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * Sample Program for Service GET.
+     *
+     * @param array $selector Exexute Service selector entity.
+     * @param string $serviceName Exexute Service Name.
+     * @return array AdGroupBidMultiplierValues entity.
+     * @throws Exception
+     */
+    public function get($selector, $serviceName){
+
+        // Call API
+        $service = SoapUtils::getService($serviceName);
+        $response = $service->invoke('get', $selector);
+
+        // Response
+        $returnValues = null;
+        if(isset($response->rval->values)){
+            if(is_array($response->rval->values)){
+                $returnValues = $response->rval->values;
+            }else{
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        }else{
+            throw new Exception('No response of get ' . $serviceName . '.');
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * create Quicklink FeedItem sample request.
+     *
+     * @param long $accountId AccountID
+     * @return FeedItemOperation entity.
+     */
+    public function createFeedItemQuicklinkSampleAddRequest($accountId){
+        // -----------------------------------------------------------------
+        // FeedItemService::mutate(ADD) QUICKLINK
+        // -----------------------------------------------------------------
+        // request QUICKLINK
+        $addFeedItemRequest1 = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'placeholderType' => 'QUICKLINK',
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'placeholderType' => 'QUICKLINK',
+                    'feedItemAttribute' => array(
+                        array(
+                            'placeholderField' => 'LINK_TEXT',
+                            'feedAttributeValue' => 'samplelink'
+                        ),
+                        array(
+                            'placeholderField' => 'ADVANCED_URL',
+                            'feedAttributeValue' => 'http://www.quicklink.sample.co.jp'
+                        ),
+                        array(
+                            'placeholderField' => 'ADVANCED_MOBILE_URL',
+                            'feedAttributeValue' => 'http://www.quicklink.sample.co.jp/mobile'
+                        ),
+                        array(
+                            'placeholderField' => 'TRACKING_URL',
+                            'feedAttributeValue' => 'http://www.quicklink.sample.co.jp?url={lpurl}&amp;pid={_id1}'
+                        )
                     ),
-                    1 => array(
-                        'dayOfWeek' => 'MONDAY',
-                        'startHour' => 14,
-                        'startMinute' => 'ZERO',
-                        'endHour' => 15,
-                        'endMinute' => 'THIRTY'
-                    )
+                    'startDate' => '20161231',
+                    'endDate' => '20181231',
+                    'scheduling' => array(
+                        'schedules' => array(
+                            0 => array(
+                                'dayOfWeek' => 'SUNDAY',
+                                'startHour' => 14,
+                                'startMinute' => 'ZERO',
+                                'endHour' => 15,
+                                'endMinute' => 'THIRTY'
+                            ),
+                            1 => array(
+                                'dayOfWeek' => 'MONDAY',
+                                'startHour' => 14,
+                                'startMinute' => 'ZERO',
+                                'endHour' => 15,
+                                'endMinute' => 'THIRTY'
+                            )
+                        )
+                    ),
+                    'devicePreference' => 'SMART_PHONE',
+                    'customParameters' => array(
+                        'parameters' => array(
+                            'key' => 'id1',
+                            'value' => '1234'
+                        )
+                    ),
+                    'advanced' => 'TRUE'
                 )
-            ),
-            'devicePreference' => 'SMART_PHONE',
-        ),
-    )
-);
+            )
+        );
 
-//call API
-$addFeedItemResponse1 = $feedItemService->invoke('mutate', $addFeedItemRequest1);
+        return $addFeedItemRequest1;
+    }
 
-//response
-if (isset($addFeedItemResponse1->rval->values->feedItem)) {
-    $feedItem1 = $addFeedItemResponse1->rval->values->feedItem;
-} else if (isset($addFeedItemResponse1->rval->values) &&
-    is_array($addFeedItemResponse1->rval->values) &&
-    isset($addFeedItemResponse1->rval->values[0]->feedItem)
-) {
-    $feedItem1 = $addFeedItemResponse1->rval->values[0]->feedItem;
-} else {
-    echo 'Fail to add FeedItem.';
-    exit();
-}
-
-//-----------------------------------------------------------------
-// FeedItemService::mutate(ADD) CALLEXTENSION
-//-----------------------------------------------------------------
-//request CALLEXTENSION
-$addFeedItemRequest2 = array(
-    'operations' => array(
-        'operator' => 'ADD',
-        'accountId' => SoapUtils::getAccountId(),
-        'placeholderType' => 'CALLEXTENSION',
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'placeholderType' => 'CALLEXTENSION',
-            'feedItemAttribute' => array(
-                array(
-                    'placeholderField' => 'CALL_PHONE_NUMBER',
-                    'feedAttributeValue' => '0120-123-456',
-                )),
-            'startDate' => '20161231',
-            'endDate' => '20171231',
-            'scheduling' => array(
-                'schedules' => array(
-                    0 => array(
-                        'dayOfWeek' => 'SUNDAY',
-                        'startHour' => 10,
-                        'startMinute' => 'ZERO',
-                        'endHour' => 12,
-                        'endMinute' => 'THIRTY'
+    /**
+     * create Callextension FeedItem sample request.
+     *
+     * @param long $accountId AccountID
+     * @return FeedItemOperation entity.
+     */
+    public function createFeedItemCallExtensionSampleAddRequest($accountId){
+        // -----------------------------------------------------------------
+        // FeedItemService::mutate(ADD) CALLEXTENSION
+        // -----------------------------------------------------------------
+        // request CALLEXTENSION
+        $addFeedItemRequest2 = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'placeholderType' => 'CALLEXTENSION',
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'placeholderType' => 'CALLEXTENSION',
+                    'feedItemAttribute' => array(
+                        array(
+                            'placeholderField' => 'CALL_PHONE_NUMBER',
+                            'feedAttributeValue' => '0120-123-456'
+                        )
                     ),
-                    1 => array(
-                        'dayOfWeek' => 'MONDAY',
-                        'startHour' => 10,
-                        'startMinute' => 'ZERO',
-                        'endHour' => 12,
-                        'endMinute' => 'THIRTY'
+                    'startDate' => '20161231',
+                    'endDate' => '20171231',
+                    'scheduling' => array(
+                        'schedules' => array(
+                            0 => array(
+                                'dayOfWeek' => 'SUNDAY',
+                                'startHour' => 10,
+                                'startMinute' => 'ZERO',
+                                'endHour' => 12,
+                                'endMinute' => 'THIRTY'
+                            ),
+                            1 => array(
+                                'dayOfWeek' => 'MONDAY',
+                                'startHour' => 10,
+                                'startMinute' => 'ZERO',
+                                'endHour' => 12,
+                                'endMinute' => 'THIRTY'
+                            )
+                        )
                     )
                 )
             )
-        )
-    )
-);
+        );
 
-//call API
-$addFeedItemResponse2 = $feedItemService->invoke('mutate', $addFeedItemRequest2);
+        return $addFeedItemRequest2;
+    }
 
-//response
-if (isset($addFeedItemResponse2->rval->values->feedItem)) {
-    $feedItem2 = $addFeedItemResponse2->rval->values->feedItem;
-} else if (isset($addFeedItemResponse2->rval->values) &&
-    is_array($addFeedItemResponse2->rval->values) &&
-    isset($addFeedItemResponse2->rval->values[0]->feedItem)
-) {
-    $feedItem2 = $addFeedItemResponse2->rval->values[0]->feedItem;
-} else {
-    echo 'Fail to add FeedItem.';
-    exit();
-}
-
-//-----------------------------------------------------------------
-// FeedItemService::get
-//-----------------------------------------------------------------
-//request
-$getFeedItemRequest = array(
-    'selector' => array(
-        'accountId' => SoapUtils::getAccountId(),
-        'feedItemIds' => array(
-            $feedItem1->feedItemId,
-            $feedItem2->feedItemId,
-        ),
-        'placeholderTypes' => array(
-            'QUICKLINK',
-            'CALLEXTENSION'
-        ),
-        'approvalStatuses' => array(
-            'APPROVED',
-            'REVIEW',
-            'PRE_DISAPPROVED',
-            'APPROVED_WITH_REVIEW',
-            'POST_DISAPPROVED',
-        ),
-        'paging' => array(
-            'startIndex' => '1',
-            'numberResults' => '20'
-        ),
-    ),
-);
-
-//call API
-$getFeedItemResponse = $feedItemService->invoke('get', $getFeedItemRequest);
-
-//response
-if (isset($getFeedItemResponse->rval->values->feedItem)) {
-    $feedItem = $getFeedItemResponse->rval->values->feedItem;
-} else if (isset($getFeedItemResponse->rval->values[0]->feedItem)) {
-    $feedItem = $getFeedItemResponse->rval->values[0]->feedItem;
-} else {
-    echo 'Fail to get FeedItem.';
-    exit();
-}
-
-//waiting for sandbox review process
-sleep(20);
-
-//-----------------------------------------------------------------
-// FeedItemService::mutate(SET) QUICKLINK
-//-----------------------------------------------------------------
-//request QUICKLINK
-$setFeedItemRequest1 = array(
-    'operations' => array(
-        'operator' => 'SET',
-        'accountId' => SoapUtils::getAccountId(),
-        'placeholderType' => 'QUICKLINK',
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'feedItemId' => $feedItem1->feedItemId,
-            'placeholderType' => 'QUICKLINK',
-            'feedItemAttribute' => array(
-                array(
-                    'placeholderField' => 'LINK_TEXT',
-                    'feedAttributeValue' => 'editlink',
+    /**
+     * create FeedItem sample request.
+     *
+     * @param long $accountId AccountID
+     * @param array $feedItemIds FeedItemIDs
+     * @return AdGroupBidMultiplierSelector entity.
+     */
+    public function createFeedItemSampleGetRequest($accountId, array $feedItemIds){
+        // -----------------------------------------------------------------
+        // FeedItemService::get
+        // -----------------------------------------------------------------
+        // request
+        $getFeedItemRequest = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'feedItemIds' => $feedItemIds,
+                'placeholderTypes' => array(
+                    'QUICKLINK',
+                    'CALLEXTENSION'
                 ),
-                array(
-                    'placeholderField' => 'LINK_URL',
-                    'feedAttributeValue' => 'http://www.quicklink.edit.co.jp',
+                'approvalStatuses' => array(
+                    'APPROVED',
+                    'REVIEW',
+                    'PRE_DISAPPROVED',
+                    'APPROVED_WITH_REVIEW',
+                    'POST_DISAPPROVED'
                 ),
-            ),
-            // unset startDate/endDate
-            'startDate' => null,
-            'endDate' => null
-        ),
-    ),
-);
-
-//call API
-$setFeedItemResponse1 = $feedItemService->invoke('mutate', $setFeedItemRequest1);
-
-//response
-if (isset($setFeedItemResponse1->rval->values->feedItem)) {
-    $feedItem1 = $setFeedItemResponse1->rval->values->feedItem;
-} else if (isset($setFeedItemResponse1->rval->values) &&
-    is_array($setFeedItemResponse1->rval->values) &&
-    isset($setFeedItemResponse1->rval->values[0]->feedItem)
-) {
-    $feedItem1 = $setFeedItemResponse1->rval->values[0]->feedItem;
-} else {
-    echo 'Fail to set FeedItem.';
-    exit();
-}
-
-//-----------------------------------------------------------------
-// FeedItemService::mutate(SET) CALLEXTENSION
-//-----------------------------------------------------------------
-//request CALLEXTENSION
-$setFeedItemRequest2 = array(
-    'operations' => array(
-        'operator' => 'SET',
-        'accountId' => SoapUtils::getAccountId(),
-        'placeholderType' => 'CALLEXTENSION',
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'feedItemId' => $feedItem2->feedItemId,
-            'placeholderType' => 'CALLEXTENSION',
-            'feedItemAttribute' => array(
-                array(
-                    'placeholderField' => 'CALL_PHONE_NUMBER',
-                    'feedAttributeValue' => '0120-456-789',
-                ),
-            ),
-            // unset scheduling
-            'scheduling' => null
-        ),
-    ),
-);
-
-//call API
-$setFeedItemResponse2 = $feedItemService->invoke('mutate', $setFeedItemRequest2);
-
-//response
-if (isset($setFeedItemResponse2->rval->values->feedItem)) {
-    $feedItem2 = $setFeedItemResponse2->rval->values->feedItem;
-} else if (isset($setFeedItemResponse2->rval->values) &&
-    is_array($setFeedItemResponse2->rval->values) &&
-    isset($setFeedItemResponse2->rval->values[0]->feedItem)
-) {
-    $feedItem2 = $setFeedItemResponse2->rval->values[0]->feedItem;
-} else {
-    echo 'Fail to set FeedItem.';
-    exit();
-}
-//=================================================================
-// CampaignFeedService
-//=================================================================
-
-$campaignFeedService = SoapUtils::getService("CampaignFeedService");
-
-//-----------------------------------------------------------------
-// CampaignFeedService::mutate(SET)
-//-----------------------------------------------------------------
-//request add QUICKLINK setting
-$setCampaignFeedRequest = array(
-    'operations' => array(
-        'operator' => 'SET',
-        'accountId' => SoapUtils::getAccountId(),
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'campaignId' => SoapUtils::getCampaignId(),
-            'placeholderType' => 'QUICKLINK',
-            'campaignFeed' => array(
-                'feedItemId' => $feedItem1->feedItemId,
-            ),
-            'devicePlatform' => 'SMART_PHONE'
-        )
-    )
-);
-
-//call API
-$setCampaignFeedResponse = $campaignFeedService->invoke('mutate', $setCampaignFeedRequest);
-
-//response
-if (isset($setCampaignFeedResponse->rval->values->campaignFeedList)) {
-    $campaignFeed = $setCampaignFeedResponse->rval->values->campaignFeedList;
-} else if (isset($setCampaignFeedResponse->rval->values) &&
-    is_array($setCampaignFeedResponse->rval->values) &&
-    isset($setCampaignFeedResponse->rval->values[0]->campaignFeedList)
-) {
-    $campaignFeed = $setCampaignFeedResponse->rval->values[0]->campaignFeedList;
-} else {
-    echo 'Fail to set CampaignFeed.';
-    exit();
-}
-
-
-//-----------------------------------------------------------------
-// CampaignFeedService::get
-//-----------------------------------------------------------------
-//request
-$getCampaignFeedRequest = array(
-    'selector' => array(
-        'accountId' => SoapUtils::getAccountId(),
-        'campaignIds' => array(
-            SoapUtils::getCampaignId(),
-        ),
-        'feedItemIds' => array(
-            $feedItem1->feedItemId,
-        ),
-        'placeholderTypes' => array(
-            'QUICKLINK',
-            'CALLEXTENSION'
-        ),
-        'paging' => array(
-            'startIndex' => '1',
-            'numberResults' => '20'
-        ),
-    )
-);
-
-//call API
-$getCampaignFeedResponse = $campaignFeedService->invoke('get', $getCampaignFeedRequest);
-
-//response
-if (isset($getCampaignFeedResponse->rval->values->campaignFeedList)) {
-    $campaignFeed = $getCampaignFeedResponse->rval->values->campaignFeedList;
-} else if (isset($getCampaignFeedResponse->rval->values[0]->campaignFeedList)) {
-    $campaignFeed = $getCampaignFeedResponse->rval->values[0]->campaignFeedList;
-} else {
-    echo 'Fail to get CampaignFeed.';
-    exit();
-}
-
-
-//=================================================================
-// AdGroupFeedService
-//=================================================================
-
-$adGroupFeedService = SoapUtils::getService("AdGroupFeedService");
-
-//-----------------------------------------------------------------
-// AdGroupFeedService::mutate(SET)
-//-----------------------------------------------------------------
-//request add CALLEXTENSION setting
-$setAdGroupFeedRequest = array(
-    'operations' => array(
-        'operator' => 'SET',
-        'accountId' => SoapUtils::getAccountId(),
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'campaignId' => SoapUtils::getCampaignId(),
-            'adGroupId' => SoapUtils::getadGroupId(),
-            'placeholderType' => 'CALLEXTENSION',
-            'adGroupFeed' => array(
-                'feedItemId' => $feedItem2->feedItemId,
+                'paging' => array(
+                    'startIndex' => '1',
+                    'numberResults' => '20'
+                )
             )
-        )
-    )
-);
+        );
 
-//call API
-$setAdGroupFeedResponse = $adGroupFeedService->invoke('mutate', $setAdGroupFeedRequest);
+        return $getFeedItemRequest;
+    }
 
-//response
-if (isset($setAdGroupFeedResponse->rval->values->adGroupFeedList)) {
-    $adGroupFeed = $setAdGroupFeedResponse->rval->values->adGroupFeedList;
-} else if (isset($setAdGroupFeedResponse->rval->values) &&
-    is_array($setAdGroupFeedResponse->rval->values) &&
-    isset($setAdGroupFeedResponse->rval->values[0]->adGroupFeedList)
-) {
-    $adGroupFeed = $setAdGroupFeedResponse->rval->values[0]->adGroupFeedList;
-} else {
-    echo 'Fail to set AdGroupFeed.';
-    exit();
+    /**
+     * create Quicklink FeedItem sample set request.
+     *
+     * @param long $accountId AccountID
+     * @param long $feedItemId FeedItemID
+     * @return FeedItemOperation entity.
+     */
+    public function createFeedItemQuicklinkSampleSetRequest($accountId, $feedItemId){
+        // -----------------------------------------------------------------
+        // FeedItemService::mutate(SET) QUICKLINK
+        // -----------------------------------------------------------------
+        // request QUICKLINK
+        $setFeedItemRequest1 = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'placeholderType' => 'QUICKLINK',
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'feedItemId' => $feedItemId,
+                    'placeholderType' => 'QUICKLINK',
+                    'feedItemAttribute' => array(
+                        array(
+                            'placeholderField' => 'LINK_TEXT',
+                            'feedAttributeValue' => 'editlink'
+                        ),
+                        array(
+                            'placeholderField' => 'LINK_URL',
+                            'feedAttributeValue' => 'http://www.quicklink.edit.co.jp'
+                        )
+                    ),
+                    // unset startDate/endDate
+                    'startDate' => null,
+                    'endDate' => null,
+                    'customParameters' => array(
+                        'isRemove' => 'FALSE',
+                        'parameters' => array(
+                            'key' => 'id1',
+                            'value' => '5678'
+                        )
+                    ),
+                    'advanced' => 'TRUE'
+                )
+            )
+        );
+        return $setFeedItemRequest1;
+    }
+
+    /**
+     * create CallExtension FeedItem sample set request.
+     *
+     * @param long $accountId AccountID
+     * @param long $feedItemId FeedItemID
+     * @return FeedItemOperation entity.
+     */
+    public function createFeedItemCallExtensionSampleSetRequest($accountId, $feedItemId){
+        // -----------------------------------------------------------------
+        // FeedItemService::mutate(SET) CALLEXTENSION
+        // -----------------------------------------------------------------
+        // request CALLEXTENSION
+        $setFeedItemRequest2 = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'placeholderType' => 'CALLEXTENSION',
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'feedItemId' => $feedItemId,
+                    'placeholderType' => 'CALLEXTENSION',
+                    'feedItemAttribute' => array(
+                        array(
+                            'placeholderField' => 'CALL_PHONE_NUMBER',
+                            'feedAttributeValue' => '0120-456-789'
+                        )
+                    ),
+                    // unset scheduling
+                    'scheduling' => null
+                )
+            )
+        );
+        return $setFeedItemRequest2;
+    }
+
+    /**
+     * create CampaignFeed sample set request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $feedItemId QuicklinkFeedItemID
+     * @param String $placeholderType PlaceholderType enum
+     * @return CampaignFeedOperation entity.
+     */
+    public function createCampaignFeedSampleSetRequest($accountId, $campaignId, $feedItemId, $placeholderType){
+        // -----------------------------------------------------------------
+        // CampaignFeedService::mutate(SET)
+        // -----------------------------------------------------------------
+        // request add QUICKLINK setting
+        $setCampaignFeedRequest = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'campaignId' => $campaignId,
+                    'placeholderType' => $placeholderType,
+                    'campaignFeed' => array(
+                        'feedItemId' => $feedItemId
+                    ),
+                    'devicePlatform' => 'SMART_PHONE'
+                )
+            )
+        );
+
+        return $setCampaignFeedRequest;
+    }
+
+    /**
+     * create CampaignFeed sample get request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $feedItemId QuicklinkFeedItemID
+     * @return CampaignFeedOperation entity.
+     */
+    public function createCampaignFeedSampleGetRequest($accountId, $campaignId, $feedItemId){
+        // -----------------------------------------------------------------
+        // CampaignFeedService::get
+        // -----------------------------------------------------------------
+        // request
+        $getCampaignFeedRequest = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'campaignIds' => array(
+                    $campaignId
+                ),
+                'feedItemIds' => array(
+                    $feedItemId
+                ),
+                'placeholderTypes' => array(
+                    'QUICKLINK',
+                    'CALLEXTENSION'
+                ),
+                'paging' => array(
+                    'startIndex' => '1',
+                    'numberResults' => '20'
+                )
+            )
+        );
+
+        return $getCampaignFeedRequest;
+    }
+
+    /**
+     * create AdGroupFeed sample set request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $adGroupId AdGroupID
+     * @param long $feedItemId CallextensionFeedItemID
+     *        　* @param String $placeholderType PlaceholderType enum
+     * @return AdGroupFeedSOperation entity.
+     */
+    public function createAdGroupFeedSampleSetRequest($accountId, $campaignId, $adGroupId, $feedItemId, $placeholderType){
+        // -----------------------------------------------------------------
+        // AdGroupFeedService::mutate(SET)
+        // -----------------------------------------------------------------
+        // request add CALLEXTENSION setting
+        $setAdGroupFeedRequest = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'campaignId' => $campaignId,
+                    'adGroupId' => $adGroupId,
+                    'placeholderType' => $placeholderType,
+                    'adGroupFeed' => array(
+                        'feedItemId' => $feedItemId
+                    )
+                )
+            )
+        );
+
+        return $setAdGroupFeedRequest;
+    }
+
+    /**
+     * create AdGroupFeed sample get request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $adGroupId AdGroupID
+     * @param long $feedItemId CallextensionFeedItemID
+     * @return AdGroupFeedSOperation entity.
+     */
+    public function createAdGroupFeedSampleGetRequest($accountId, $campaignId, $adGroupId, $feedItemId){
+        // -----------------------------------------------------------------
+        // AdGroupFeedService::get
+        // -----------------------------------------------------------------
+        // request
+        $getAdGroupFeedRequest = array(
+            'selector' => array(
+                'accountId' => $accountId,
+                'campaignIds' => array(
+                    $campaignId
+                ),
+                'adGroupIds' => array(
+                    $adGroupId
+                ),
+                'feedItemEds' => array(
+                    $feedItemId
+                ),
+                'placeholderTypes' => array(
+                    'QUICKLINK',
+                    'CALLEXTENSION'
+                ),
+                'paging' => array(
+                    'startIndex' => '1',
+                    'numberResults' => '20'
+                )
+            )
+        );
+
+        return $getAdGroupFeedRequest;
+    }
+
+    /**
+     * create CampaignFeed sample remove quicklink setting request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param String $placeholderType PlaceholderType enum
+     * @return CampaignFeedOperation entity.
+     */
+    public function createCampaignFeedSampleRemoveRequest($accountId, $campaignId, $placeholderType){
+        // -----------------------------------------------------------------
+        // CampaignFeedService::mutate(SET)
+        // -----------------------------------------------------------------
+        // request remove QUICKLINK setting
+        $setCampaignFeedRequest = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'campaignId' => $campaignId,
+                    'placeholderType' => $placeholderType,
+                    'campaignFeed' => array()
+                )
+            )
+        );
+
+        return $setCampaignFeedRequest;
+    }
+
+    /**
+     * create dGroupFeed sample remove CallExtension setting request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $adGroupId AdGroupID
+     * @param String $placeholderType PlaceholderType enum
+     * @return AdGroupFeedOperation entity.
+     */
+    public function createAdGroupFeedSampleRemoveRequest($accountId, $campaignId, $adGroupId, $placeholderType){
+        // -----------------------------------------------------------------
+        // AdGroupFeedService::mutate(SET)
+        // -----------------------------------------------------------------
+        // request remove CALLEXTENSION setting
+        $setAdGroupFeedRequest = array(
+            'operations' => array(
+                'operator' => 'SET',
+                'accountId' => $accountId,
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'campaignId' => $campaignId,
+                    'adGroupId' => $adGroupId,
+                    'placeholderType' => $placeholderType,
+                    'adGroupFeed' => array()
+                )
+            )
+        );
+        return $setAdGroupFeedRequest;
+    }
+
+    /**
+     * create FeedItem sample remove request.
+     *
+     * @param long $accountId AccountID
+     * @param String $placeholderType PlaceholderType enum
+     * @param long $feedItemId FeedItemID
+     * @return FeedItemOperation entity.
+     */
+    public function createFeedItemSampleRemoveRequest($accountId, $placeholderType, $feedItemId){
+        // -----------------------------------------------------------------
+        // FeedItemService::mutate(REMOVE)
+        // -----------------------------------------------------------------
+        // request
+        $removeFeedItemRequest = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
+                'placeholderType' => $placeholderType,
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'feedItemId' => $feedItemId,
+                    'placeholderType' => $placeholderType
+                )
+            )
+        );
+
+        return $removeFeedItemRequest;
+    }
 }
 
-//-----------------------------------------------------------------
-// AdGroupFeedService::get
-//-----------------------------------------------------------------
-//request
-$getAdGroupFeedRequest = array(
-    'selector' => array(
-        'accountId' => SoapUtils::getAccountId(),
-        'campaignIds' => array(
-            SoapUtils::getCampaignId(),
-        ),
-        'adGroupIds' => array(
-            SoapUtils::getadGroupId(),
-        ),
-        'feedItemEds' => array(
-            $feedItem2->feedItemId,
-        ),
-        'placeholderTypes' => array(
-            'QUICKLINK',
-            'CALLEXTENSION'
-        ),
-        'paging' => array(
-            'startIndex' => '1',
-            'numberResults' => '20'
-        ),
-    )
-);
-
-//call API
-$getAdGroupFeedResponse = $adGroupFeedService->invoke('get', $getAdGroupFeedRequest);
-
-//response
-if (isset($getAdGroupFeedResponse->rval->values->adGroupFeedList)) {
-    $adGroupFeed = $getAdGroupFeedResponse->rval->values->adGroupFeedList;
-} else if (isset($getAdGroupFeedResponse->rval->values[0]->adGroupFeedList)) {
-    $adGroupFeed = $getAdGroupFeedResponse->rval->values[0]->adGroupFeedList;
-} else {
-    echo 'Fail to get adGroupFeed.';
-    exit();
+if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+    return;
 }
 
-//-----------------------------------------------------------------
-// CampaignFeedService::mutate(SET)
-//-----------------------------------------------------------------
-//request remove QUICKLINK setting
-$setCampaignFeedRequest = array(
-    'operations' => array(
-        'operator' => 'SET',
-        'accountId' => SoapUtils::getAccountId(),
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'campaignId' => SoapUtils::getCampaignId(),
-            'placeholderType' => 'QUICKLINK',
-            'campaignFeed' => array()
-        )
-    )
-);
+/**
+ * execute AdGroupBidMultiplierServiceSample.
+ */
+try{
+    // =================================================================
+    // FeedItemService
+    // =================================================================
 
-//call API
-$setCampaignFeedResponse = $campaignFeedService->invoke('mutate', $setCampaignFeedRequest);
+    $feedItemService = SoapUtils::getService("FeedItemService");
+    $adDisplayOptionSample = new AdDisplayOptionSample();
 
-//response
-if (isset($setCampaignFeedResponse->rval->values->campaignFeedList)) {
-    $campaignFeed = $setCampaignFeedResponse->rval->values->campaignFeedList;
-} else if (isset($setCampaignFeedResponse->rval->values) &&
-    is_array($setCampaignFeedResponse->rval->values) &&
-    isset($setCampaignFeedResponse->rval->values[0]->campaignFeedList)
-) {
-    $campaignFeed = $setCampaignFeedResponse->rval->values[0]->campaignFeedList;
-} else {
-    echo 'Fail to set CampaignFeed.';
-    exit();
+    $accountId = SoapUtils::getAccountId();
+    $campaignId = SoapUtils::getCampaignId();
+    $adGroupId = SoapUtils::getAdGroupId();
+    $feedItem1 = null;
+    $feedItem2 = null;
+
+    // create QuickLink FeedItem
+    $addFeedItemRequest1 = $adDisplayOptionSample->createFeedItemQuicklinkSampleAddRequest($accountId);
+    $addFeedItemResponse1 = $adDisplayOptionSample->mutate($addFeedItemRequest1, 'add', 'FeedItemService');
+
+    // Error
+    foreach($addFeedItemResponse1 as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to add FeedItemService');
+        }else{
+            $feedItem1 = $returnValue->feedItem;
+        }
+    }
+
+    // create CallExtension FeedItem
+    $addFeedItemRequest2 = $adDisplayOptionSample->createFeedItemCallExtensionSampleAddRequest($accountId);
+    $addFeedItemResponse2 = $adDisplayOptionSample->mutate($addFeedItemRequest2, 'add', 'FeedItemService');
+
+    // Error
+    foreach($addFeedItemResponse2 as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to add FeedItemService');
+        }else{
+            // response
+            $feedItem2 = $returnValue->feedItem;
+        }
+    }
+
+    // get FeedItem
+    $getFeedItemRequest = $adDisplayOptionSample->createFeedItemSampleGetRequest($accountId, array(
+        $feedItem1->feedItemId,
+        $feedItem2->feedItemId
+    ));
+    $getFeedItemResponse = $adDisplayOptionSample->get($getFeedItemRequest, 'FeedItemService');
+
+    // Error
+    foreach($getFeedItemResponse as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to get FeedItemService');
+        }
+    }
+
+    // waiting for sandbox review process
+    sleep(20);
+
+    // set FeedItem Quicklink
+    $setFeedItemRequest1 = $adDisplayOptionSample->createFeedItemQuicklinkSampleSetRequest($accountId, $feedItem1->feedItemId);
+    $setFeedItemResponse1 = $adDisplayOptionSample->mutate($setFeedItemRequest1, 'set', 'FeedItemService');
+
+    // Error
+    foreach($setFeedItemResponse1 as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to set FeedItemService');
+        }
+    }
+
+    // set FeedItem CallExtension
+    $setFeedItemRequest2 = $adDisplayOptionSample->createFeedItemCallExtensionSampleSetRequest($accountId, $feedItem2->feedItemId);
+    $setFeedItemResponse2 = $adDisplayOptionSample->mutate($setFeedItemRequest2, 'set', 'FeedItemService');
+
+    // Error
+    foreach($setFeedItemResponse2 as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to set FeedItemService');
+        }
+    }
+
+    // =================================================================
+    // CampaignFeedService
+    // =================================================================
+
+    // set CampaignFeed
+    $setCampaignFeedRequest = $adDisplayOptionSample->createCampaignFeedSampleSetRequest($accountId, $campaignId, $feedItem1->feedItemId, $feedItem1->placeholderType);
+    $setCampaignFeedResponse = $adDisplayOptionSample->mutate($setCampaignFeedRequest, 'set', "CampaignFeedService");
+
+    // Error
+    foreach($setCampaignFeedResponse as $returnValue){
+        if(!isset($returnValue->campaignFeedList)){
+            throw new Exception('Fail to set CampaignFeedService');
+        }
+    }
+
+    // get CampaignFeed
+    $getCampaignFeedRequest = $adDisplayOptionSample->createCampaignFeedSampleGetRequest($accountId, $campaignId, $feedItem1->feedItemId);
+    $getCampaignFeedResponse = $adDisplayOptionSample->get($getCampaignFeedRequest, "CampaignFeedService");
+
+    // Error
+    foreach($getCampaignFeedResponse as $returnValue){
+        if(!isset($returnValue->campaignFeedList)){
+            throw new Exception('Fail to get CampaignFeedService');
+        }
+    }
+
+    // =================================================================
+    // AdGroupFeedService
+    // =================================================================
+
+    // set AdGroupFeed
+    $setAdGroupFeedRequest = $adDisplayOptionSample->createAdGroupFeedSampleSetRequest($accountId, $campaignId, $adGroupId, $feedItem2->feedItemId, $feedItem2->placeholderType);
+    $setAdGroupFeedResponse = $adDisplayOptionSample->mutate($setAdGroupFeedRequest, 'set', "AdGroupFeedService");
+
+    // Error
+    foreach($setAdGroupFeedResponse as $returnValue){
+        if(!isset($returnValue->adGroupFeedList)){
+            throw new Exception('Fail to set AdGroupFeedService');
+        }
+    }
+
+    // get AdGroupFeed
+    $getAdGroupFeedRequest = $adDisplayOptionSample->createAdGroupFeedSampleGetRequest($accountId, $campaignId, $adGroupId, $feedItem2->feedItemId);
+    $getAdGroupFeedResponse = $adDisplayOptionSample->get($getAdGroupFeedRequest, 'AdGroupFeedService');
+
+    // Error
+    foreach($getAdGroupFeedResponse as $returnValue){
+        if(!isset($returnValue->adGroupFeedList)){
+            throw new Exception('Fail to get AdGroupFeedService');
+        }
+    }
+
+    // remove Quicklink setting
+    $setCampaignFeedRequest = $adDisplayOptionSample->createCampaignFeedSampleRemoveRequest($accountId, $campaignId, $feedItem1->placeholderType);
+    $setCampaignFeedResponse = $adDisplayOptionSample->mutate($setCampaignFeedRequest, 'set', "CampaignFeedService");
+
+    // Error
+    foreach($setCampaignFeedResponse as $returnValue){
+        if(!isset($returnValue->campaignFeedList)){
+            throw new Exception('Fail to set CampaignFeedService');
+        }
+    }
+
+    // remove CallExtension setting
+    $setAdGroupFeedRequest = $adDisplayOptionSample->createAdGroupFeedSampleRemoveRequest($accountId, $campaignId, $adGroupId, $feedItem2->placeholderType);
+    $setAdGroupFeedResponse = $adDisplayOptionSample->mutate($setAdGroupFeedRequest, 'set', 'AdGroupFeedService');
+
+    // Error
+    foreach($setAdGroupFeedResponse as $returnValue){
+        if(!isset($returnValue->adGroupFeedList)){
+            throw new Exception('Fail to set AdGroupFeedService');
+        }
+    }
+
+    // remove Quicklink FeedItem
+    $removeFeedItemRequest = $adDisplayOptionSample->createFeedItemSampleRemoveRequest($accountId, $feedItem1->placeholderType, $feedItem1->feedItemId);
+    $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
+
+    // Error
+    foreach($removeFeedItemResponse as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to remove FeedItemService');
+        }
+    }
+
+    // remove Quicklink FeedItem
+    $removeFeedItemRequest = $adDisplayOptionSample->createFeedItemSampleRemoveRequest($accountId, $feedItem2->placeholderType, $feedItem2->feedItemId);
+    $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
+
+    // Error
+    foreach($removeFeedItemResponse as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to remove FeedItemService');
+        }
+    }
+}catch(Exception $e){
+    printf($e->getMessage() . "\n");
 }
-//-----------------------------------------------------------------
-// AdGroupFeedService::mutate(SET)
-//-----------------------------------------------------------------
-//request remove CALLEXTENSION setting
-$setAdGroupFeedRequest = array(
-    'operations' => array(
-        'operator' => 'SET',
-        'accountId' => SoapUtils::getAccountId(),
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'campaignId' => SoapUtils::getCampaignId(),
-            'adGroupId' => SoapUtils::getadGroupId(),
-            'placeholderType' => 'CALLEXTENSION',
-            'adGroupFeed' => array()
-        )
-    )
-);
-
-//call API
-$setAdGroupFeedResponse = $adGroupFeedService->invoke('mutate', $setAdGroupFeedRequest);
-
-//response
-if (isset($setAdGroupFeedResponse->rval->values->adGroupFeedList)) {
-    $adGroupFeed = $setAdGroupFeedResponse->rval->values->adGroupFeedList;
-} else if (isset($setAdGroupFeedResponse->rval->values) &&
-    is_array($setAdGroupFeedResponse->rval->values) &&
-    isset($setAdGroupFeedResponse->rval->values[0]->adGroupFeedList)
-) {
-    $adGroupFeed = $setAdGroupFeedResponse->rval->values[0]->adGroupFeedList;
-} else {
-    echo 'Fail to set AdGroupFeed.';
-    exit();
-}
-
-//-----------------------------------------------------------------
-// FeedItemService::mutate(REMOVE)
-//-----------------------------------------------------------------
-//request
-$removeFeedItemRequest = array(
-    'operations' => array(
-        'operator' => 'REMOVE',
-        'accountId' => SoapUtils::getAccountId(),
-        'placeholderType' => 'QUICKLINK',
-        'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'feedItemId' => $feedItem1->feedItemId,
-            'placeholderType' => 'QUICKLINK',
-        ),
-    ),
-);
-
-//call API
-$removeFeedItemResponse = $feedItemService->invoke('mutate', $removeFeedItemRequest);
-
-//response
-if (isset($removeFeedItemResponse->rval->values->feedItem)) {
-    $feedItem = $removeFeedItemResponse->rval->values->feedItem;
-} else if (isset($removeFeedItemResponse->rval->values[0]->feedItem)) {
-    $feedItem = $removeFeedItemResponse->rval->values[0]->feedItem;
-} else {
-    echo 'Fail to remove FeedItem.';
-    exit();
-}
-

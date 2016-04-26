@@ -112,7 +112,17 @@ class AdGroupCriterionServiceSample{
                     'bid' => array(
                         'maxCpc' => 100
                     )
-                )
+                ),
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
+                    )
+                ),
+                'advanced' => 'TRUE'
             )
         );
 
@@ -164,6 +174,16 @@ class AdGroupCriterionServiceSample{
                 'biddingStrategyConfiguration' => array(
                     'bid' => array(
                         'maxCpc' => 150
+                    )
+                ),
+                'destinationUrl' => 'http://www.yahoo2.co.jp/',
+                'advancedUrl' => 'http://www.yahoo2.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo2.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo2.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '5678'
                     )
                 )
             );
@@ -281,6 +301,7 @@ class AdGroupCriterionServiceSample{
                     'PRE_DISAPPROVED',
                     'POST_DISAPPROVED'
                 ),
+                'advanced' => 'TRUE',
                 'paging' => array(
                     'startIndex' => 1,
                     'numberResults' => 20

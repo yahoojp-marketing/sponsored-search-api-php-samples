@@ -119,7 +119,14 @@ class CampaignServiceSample{
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
                     )
                 ),
-                'campaignType' => 'STANDARD'
+                'campaignType' => 'STANDARD',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
+                    )
+                )
             ),
 
             // Create ManualCpc Standard Campaign
@@ -144,7 +151,14 @@ class CampaignServiceSample{
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
                     )
                 ),
-                'campaignType' => 'STANDARD'
+                'campaignType' => 'STANDARD',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
+                    )
+                )
             ),
 
             // Create AutoBidding　MobileApp Campaign for IOS
@@ -171,7 +185,14 @@ class CampaignServiceSample{
                 ),
                 'campaignType' => 'MOBILE_APP',
                 'appStore' => 'IOS',
-                'appId' => SoapUtils::getCurrentTimestamp()
+                'appId' => SoapUtils::getCurrentTimestamp(),
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
+                    )
+                )
             ),
 
             // Create ManualCpc MobileApp Campaign for IOS
@@ -198,7 +219,14 @@ class CampaignServiceSample{
                 ),
                 'campaignType' => 'MOBILE_APP',
                 'appStore' => 'IOS',
-                'appId' => SoapUtils::getCurrentTimestamp()
+                'appId' => SoapUtils::getCurrentTimestamp(),
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
+                    )
+                )
             ),
 
             // Create AutoBidding　MobileApp Campaign for ANDROID
@@ -304,6 +332,15 @@ class CampaignServiceSample{
                     'biddingStrategyId' => $biddingStrategyId
                 )
             );
+            if($campaignValue->campaign->campaignType == 'STANDARD'){
+                $operand['trackingUrl'] = 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id2}';
+                $operand['customParameters'] = array(
+                    'parameters' => array(
+                        'key' => 'id2',
+                        'value' => '5678'
+                    )
+                );
+            }
 
             array_push($operands, $operand);
         }
