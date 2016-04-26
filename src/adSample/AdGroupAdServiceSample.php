@@ -112,10 +112,20 @@ class AdGroupAdServiceSample{
                     'description2' => 'sample ad desc2',
                     'url' => 'http://www.yahoo.co.jp/',
                     'displayUrl' => 'www.yahoo.co.jp',
-                    'devicePreference' => 'SMART_PHONE'
+                    'devicePreference' => 'SMART_PHONE',
+                    'advancedUrl' => 'http://www.yahoo.co.jp',
+                    'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                    'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                    'customParameters' => array(
+                        'parameters' => array(
+                            'key' => 'id1',
+                            'value' => '1234'
+                        )
+                    )
                 ),
                 'userStatus' => 'ACTIVE'
-            ),
+            )
+            ,
 
             // Set AppAd
             array(
@@ -130,7 +140,15 @@ class AdGroupAdServiceSample{
                     'description2' => 'sample ad desc2',
                     'url' => 'http://www.yahoo.co.jp/',
                     'displayUrl' => 'www.yahoo.co.jp',
-                    'devicePreference' => 'SMART_PHONE'
+                    'devicePreference' => 'SMART_PHONE',
+                    'advancedUrl' => 'http://www.yahoo.co.jp',
+                    'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                    'customParameters' => array(
+                        'parameters' => array(
+                            'key' => 'id1',
+                            'value' => '1234'
+                        )
+                    )
                 ),
                 'userStatus' => 'ACTIVE'
             )
@@ -184,7 +202,16 @@ class AdGroupAdServiceSample{
                         'description' => 'mod sample ad desc',
                         'description2' => 'mod sample ad desc2',
                         'url' => 'http://www.yahoo.mod.co.jp/',
-                        'displayUrl' => 'www.yahoo.mod.co.jp'
+                        'displayUrl' => 'www.yahoo.mod.co.jp',
+                        'advancedUrl' => 'http://www.yahoo.mod.co.jp',
+                        'advancedMobileUrl' => 'http://www.yahoo.mod.co.jp/mobile',
+                        'trackingUrl' => 'http://www.yahoo.mod.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                        'customParameters' => array(
+                            'parameters' => array(
+                                'key' => 'id1',
+                                'value' => '5678'
+                            )
+                        )
                     ),
                     'userStatus' => 'PAUSED'
                 );
@@ -207,7 +234,16 @@ class AdGroupAdServiceSample{
                         'description' => 'mod sample ad desc',
                         'description2' => 'mod sample ad desc2',
                         'url' => 'http://www.yahoo.mod.co.jp/',
-                        'displayUrl' => 'www.yahoo.mod.co.jp'
+                        'displayUrl' => 'www.yahoo.mod.co.jp',
+                        'advancedUrl' => 'http://www.yahoo.mod.co.jp',
+                        'advancedMobileUrl' => 'http://www.yahoo.mod.co.jp/mobile',
+                        'trackingUrl' => 'http://www.yahoo.mod.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                        'customParameters' => array(
+                            'parameters' => array(
+                                'key' => 'id1',
+                                'value' => '5678'
+                            )
+                        )
                     ),
                     'userStatus' => 'PAUSED'
                 );
@@ -302,10 +338,11 @@ class AdGroupAdServiceSample{
                 ),
                 'adIds' => $adIds,
                 'adTypes' => array(
-                    'TEXT_AD2',
-//                     'MOBILE_AD',
-//                     'APP_AD'
-                ),
+                    'TEXT_AD2'
+                )
+// 'MOBILE_AD',
+// 'APP_AD'
+                ,
                 'userStatuses' => array(
                     'ACTIVE',
                     'PAUSED'
@@ -318,6 +355,7 @@ class AdGroupAdServiceSample{
                     'PRE_DISAPPROVED',
                     'POST_DISAPPROVED'
                 ),
+                'advanced' => 'TRUE',
                 'paging' => array(
                     'startIndex' => 1,
                     'numberResults' => 20

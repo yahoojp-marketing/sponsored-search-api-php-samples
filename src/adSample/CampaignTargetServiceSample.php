@@ -328,7 +328,7 @@ try{
     $selector = $campaignTargetServiceSample->createSampleGetRequest($accountId, $campaignTargetValues);
 
     // Run
-    $campaignTargetValues = $campaignTargetServiceSample->get($selector);
+    $campaignTargetServiceSample->get($selector);
 
     // =================================================================
     // CampaignTargetService REMOVE

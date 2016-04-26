@@ -2,8 +2,8 @@
 //-----------------------------------------------------------------
 // common defines
 //-----------------------------------------------------------------
-define('API_VERSION', 'V5.3');
-define('API_NS',      'http://ss.yahooapis.jp/V5');
+define('API_VERSION', 'V6.0');
+define('API_NS',      'http://ss.yahooapis.jp/V6');
 define('XMLSCHEMANS', 'http://www.w3.org/2001/XMLSchema-instance');
 
 //-----------------------------------------------------------------
@@ -22,8 +22,8 @@ define('APIACCOUNTPASSWORD',  'xxxxxx');
 //-----------------------------------------------------------------
 // Onbehalf Account (if sandbox, can not use these params.)
 //-----------------------------------------------------------------
-define('ONBEHALFOFACCOUNTID', 'xxxxxxxx');
-define('ONBEHALFOFPASSWORD',  'xxxxxxxx');
+define('ONBEHALFOFACCOUNTID', '');
+define('ONBEHALFOFPASSWORD',  '');
 
 //-----------------------------------------------------------------
 // Account
@@ -52,11 +52,13 @@ define('APPADGROUPID',      'xxxxxxxx');
 //-----------------------------------------------------------------
 // FeedFolder
 define('FEEDFOLDERID',           'xxxxxxxx');
+
 // FeedItem
 define('INTEGERFEEDATTRIBUTEID', 'xxxxxxxx');
 define('PRICEFEEDFOLDERID',      'xxxxxxxx');
 define('DATEFEEDFOLDERID',       'xxxxxxxx');
 define('STRINGFEEDFOLDERID',     'xxxxxxxx');
+
 
 //-----------------------------------------------------------------
 // for siteRetargetingSample

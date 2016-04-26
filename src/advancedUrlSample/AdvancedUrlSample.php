@@ -1,18 +1,19 @@
 <?php
 require_once (dirname(__FILE__) . '/../../conf/api_config.php');
 require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
-require_once (dirname(__FILE__) . '/BiddingStrategyServiceSample.php');
-require_once (dirname(__FILE__) . '/CampaignServiceSample.php');
-require_once (dirname(__FILE__) . '/CampaignTargetServiceSample.php');
-require_once (dirname(__FILE__) . '/CampaignCriterionServiceSample.php');
-require_once (dirname(__FILE__) . '/AdGroupServiceSample.php');
-require_once (dirname(__FILE__) . '/AdGroupCriterionServiceSample.php');
-require_once (dirname(__FILE__) . '/AdGroupBidMultiplierServiceSample.php');
-require_once (dirname(__FILE__) . '/AdGroupAdServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/CampaignTargetServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/CampaignCriterionServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/AdGroupCriterionServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/AdGroupBidMultiplierServiceSample.php');
+require_once (dirname(__FILE__) . '/../adSample/AdGroupAdServiceSample.php');
+require_once (dirname(__FILE__) . '/../adDisplayOptionSample/AdDisplayOptionSample.php');
 
 /**
- * Sample Program for AdSample.
- * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
+ * Sample Program for AdvancedUrlSample.
+ * Copyright (C) 2016 Yahoo Japan Corporation. All Rights Reserved.
  */
 try{
     $biddingStrategyServiceSample = new BiddingStrategyServiceSample();
@@ -23,6 +24,7 @@ try{
     $adGroupCriterionServiceSample = new AdGroupCriterionServiceSample();
     $adGroupBidMultiplierServiceSample = new AdGroupBidMultiplierServiceSample();
     $adGroupAdServiceSample = new AdGroupAdServiceSample();
+    $adDisplayOptionSample = new AdDisplayOptionSample();
 
     $accountId = SoapUtils::getAccountId();
     $biddingStrategyId = 0;
@@ -38,8 +40,8 @@ try{
     $operation = $biddingStrategyServiceSample->createSampleAddRequest($accountId);
     $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'ADD');
 
-    // sleep 30 second.
-    sleep(30);
+    // sleep 20 second.
+    sleep(20);
 
     // GET
     $selector = $biddingStrategyServiceSample->createSampleGetRequest($accountId, $biddingStrategyValues);
@@ -61,6 +63,9 @@ try{
             }
         }
     }
+
+    // sleep 20 second.
+    sleep(20);
 
     // =================================================================
     // CampaignService
@@ -183,9 +188,71 @@ try{
     $adGroupAdValues = $adGroupAdServiceSample->mutate($operation, 'SET');
 
     // =================================================================
-    // remove AsGroupAdService, AsGroupCriterionService, AsGroupService,
+    // FeedItemService
+    // =================================================================
+    // ADD
+    $operation = $adDisplayOptionSample->createFeedItemQuicklinkSampleAddRequest($accountId);
+    $feedItemValues = $adDisplayOptionSample->mutate($operation, 'ADD', "FeedItemService");
+    // Error
+    foreach($feedItemValues as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to add FeedItemService');
+        }else{
+            $feedItem = $returnValue->feedItem;
+        }
+    }
+
+    // GET
+    $selector = $adDisplayOptionSample->createFeedItemSampleGetRequest($accountId, array(
+        $feedItem->feedItemId
+    ));
+    $feedItemValues = $adDisplayOptionSample->get($selector, "FeedItemService");
+
+    // SET
+    $operation = $adDisplayOptionSample->createFeedItemQuicklinkSampleSetRequest($accountId, $feedItem->feedItemId);
+    $feedItemValues = $adDisplayOptionSample->mutate($operation, 'SET', "FeedItemService");
+
+    // =================================================================
+    // CampaignFeedService
+    // =================================================================
+
+    // SET
+    $operation = $adDisplayOptionSample->createCampaignFeedSampleSetRequest($accountId, $campaignId, $feedItem->feedItemId, $feedItem->placeholderType);
+    $campaignFeedValues = $adDisplayOptionSample->mutate($operation, 'SET', "CampaignFeedService");
+
+    // GET
+    $selector = $adDisplayOptionSample->createCampaignFeedSampleGetRequest($accountId, $campaignId, $feedItem->feedItemId);
+    $campaignFeedValues = $adDisplayOptionSample->get($selector, "FeedItemService");
+
+    // =================================================================
+    // AdGroupFeedService
+    // =================================================================
+
+    // SET
+    $operation = $adDisplayOptionSample->createAdGroupFeedSampleSetRequest($accountId, $campaignId, $adGroupId, $feedItem->feedItemId, $feedItem->placeholderType);
+    $campaignFeedValues = $adDisplayOptionSample->mutate($operation, 'SET', "AdGroupFeedService");
+
+    // GET
+    $selector = $adDisplayOptionSample->createAdGroupFeedSampleGetRequest($accountId, $campaignId, $adGroupId, $feedItem->feedItemId);
+    $campaignFeedValues = $adDisplayOptionSample->get($selector, "AdGroupFeedService");
+
+    // =================================================================
+    // remove CampaignFeedService, FeedItemService, AsGroupAdService, AsGroupCriterionService, AsGroupService,
     // CampaignCriterionService, CampaignTarget, BiddingStrategy, Campaign
     // =================================================================
+
+    // remove Quicklink setting for CampaignFeedService
+    $operation = $adDisplayOptionSample->createCampaignFeedSampleRemoveRequest($accountId, $campaignId, $feedItem->placeholderType);
+    $campaignFeedValues = $adDisplayOptionSample->mutate($operation, 'set', "CampaignFeedService");
+
+    // remove Quicklink setting for AdGroupFeedService
+    $operation = $adDisplayOptionSample->createAdGroupFeedSampleRemoveRequest($accountId, $campaignId, $adGroupId, $feedItem->placeholderType);
+    $campaignFeedValues = $adDisplayOptionSample->mutate($operation, 'set', "AdGroupFeedService");
+
+    // FeedItemService
+    $operation = $adDisplayOptionSample->createFeedItemSampleRemoveRequest($accountId, $feedItem->placeholderType, $feedItem->feedItemId);
+    $feedItemValues = $adDisplayOptionSample->mutate($operation, 'REMOVE', "FeedItemService");
+
     // AdGroupAdService
     $operation = $adGroupAdServiceSample->createSampleRemoveRequest($accountId, $adGroupAdValues);
     $adGroupAdValues = $adGroupAdServiceSample->mutate($operation, 'REMOVE');

@@ -109,6 +109,13 @@ class AdGroupServiceSample{
                     'initialBid' => array(
                         'maxCpc' => 120
                     )
+                ),
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
+                    )
                 )
             ),
 
@@ -122,6 +129,13 @@ class AdGroupServiceSample{
                     'biddingStrategyType' => 'MANUAL_CPC',
                     'initialBid' => array(
                         'maxCpc' => 120
+                    )
+                ),
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234'
                     )
                 )
             ),
@@ -198,6 +212,16 @@ class AdGroupServiceSample{
             // Create BiddingStrategyConfiguration
             if($adGroupValue->adGroup->biddingStrategyConfiguration->biddingStrategyType === 'MANUAL_CPC'){
                 $operand['biddingStrategyConfiguration']['biddingStrategyId'] = $biddingStrategyId;
+            }
+
+            if(!empty($adGroupValue->adGroup->trackingUrl)){
+                $operand['trackingUrl'] = 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id2}';
+                $operand['customParameters'] = array(
+                    'parameters' => array(
+                        'key' => 'id2',
+                        'value' => '5678'
+                    )
+                );
             }
 
             array_push($operands, $operand);
