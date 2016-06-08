@@ -56,18 +56,20 @@ $addReportDefinitionParam = array(
         'operator' => 'ADD',
         'accountId' => SoapUtils::getAccountId(),
         'operand' => array(
-            'accountId' => SoapUtils::getAccountId(),
-            'reportName' => 'ACCOUNT-REPORT',
-            'reportType' => 'ACCOUNT',
-            'dateRangeType' => 'YESTERDAY',
-            'sort' => '+' . $fields[0],
-            'fields' => $fields,
-            'compress' => 'NONE',
-            'isTemplate' => 'TRUE',
-            'intervalType' => 'ONETIME',
-            'format' => 'CSV',
-            'encode' => 'SJIS',
-            'language' => 'EN'
+            array(
+                'accountId' => SoapUtils::getAccountId(),
+                'reportName' => 'ACCOUNT-REPORT',
+                'reportType' => 'ACCOUNT',
+                'dateRangeType' => 'YESTERDAY',
+                'sort' => '+' . $fields[0],
+                'fields' => $fields,
+                'compress' => 'NONE',
+                'isTemplate' => 'TRUE',
+                'intervalType' => 'ONETIME',
+                'format' => 'CSV',
+                'encode' => 'SJIS',
+                'language' => 'EN'
+            )
         )
     )
 );
