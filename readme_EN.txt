@@ -5,6 +5,9 @@ Version 6.0.0
 
 [Change history]
 -----------
+2016/05/13:
+- Add CampaignExportSample at Version 6.0.
+
 2016/04/13:
 - Correspond to Version 6.0.
 
@@ -75,6 +78,7 @@ The following programs are stored.
 - siteRetargetingSample/SiteRetargetingSample.php                           : Sample of Get and Mutate operation for site retargeting function via RetargetingListService/BiddingStrategyService/CampaignService/NegativeCampaignRetargetingListService/AdGroupService/AdGroupRetargetingListService.
 - targetingIdeaSample/TargetingIdeaSample.php                               : Sample of Get the related keywords based on the specified value via TargetingIdeaService.
 - trafficEstimatorSample/TrafficEstimatorSample.php                         : Sample of Get the estimate keyword data of the selected keyword via KeywordEstimatorService.
+- campaignExportSample/CampaignExportSample.java                            : Sample of Add the export job and Download via CampaignExportService.
 
 * Class is used from sample programs below.
 
@@ -82,7 +86,7 @@ The following programs are stored.
 - SoapUtils.class.php : It is a sample for the process via LocationService and the common process.
 
 [download directory]
-It stores the downloded file when you execute ReportDownloadSample.
+It stores the downloded file when you execute ReportDownloadSample,CampaignExportSample.
 
 [upload directory]
 Currently not available.
@@ -163,6 +167,7 @@ php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php
 php src/trafficEstimatorSample/TrafficEstimatorSample.php
+php src/campaignExportSample/CampaignExportSample.php
 ---------------------------------------
 
 When the operation for data download is executed, the file will be stored in the directory of download.

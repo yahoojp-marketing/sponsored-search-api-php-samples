@@ -5,6 +5,9 @@ Version 6.0.0
 
 ■変更履歴
 -----------
+2016/05/13:
+- CampaignExportSample(Version 6.0)を追加しました。
+
 2016/04/13:
 - Version 6.0に対応しました。
 
@@ -75,6 +78,7 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - siteRetargetingSample/SiteRetargetingSample.php                        : RetargetingListService/BiddingStrategyService/CampaignService/NegativeCampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
 - targetingIdeaSample/TargetingIdeaSample.php                            : TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
 - trafficEstimatorSample/TrafficEstimatorSample.php                      : TrafficEstimatorServiceによる指定キーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
+- campaignExportSample/CampaignExportSample.php                          : CampaignExportServiceによるExportジョブ登録、CSVダウンロードのサンプルです。
 
 ・以下は各サンプルプログラムから利用されるクラスです。
 
@@ -82,7 +86,7 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - SoapUtils.class.php ：LocationServiceを使用したリクエスト先の取得処理のサンプル及びその他共通処理です。
 
 ■downloadディレクトリ
-ReportDownloadSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
+ReportDownloadSample,CampaignExportSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
 
 ■uploadディレクトリ
 現在は利用しません。
@@ -163,6 +167,7 @@ php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php
 php src/trafficEstimatorSample/TrafficEstimatorSample.php
+php src/campaignExportSample/CampaignExportSample.php
 ---------------------------------------
 
 データをダウンロードする処理を実行した場合には、downloadディレクトリにファイルが格納されます。
