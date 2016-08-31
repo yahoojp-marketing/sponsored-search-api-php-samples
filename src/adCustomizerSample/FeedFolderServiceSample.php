@@ -173,14 +173,13 @@ class FeedFolderServiceSample{
      */
     function removeFeedFolder($accountId, $feedFolderValues){
         // Set Operand
-        $operand = array();
+        $operands = array();
         foreach($feedFolderValues as $feedFolderValue){
             $operand = array(
-                array(
-                    'accountId' => $accountId,
-                    'feedFolderId' => $feedFolderValue->feedFolder->feedFolderId
-                )
+                'accountId' => $accountId,
+                'feedFolderId' => $feedFolderValue->feedFolder->feedFolderId
             );
+            array_push($operands, $operand);
         }
 
         // Set Request
@@ -188,7 +187,7 @@ class FeedFolderServiceSample{
             'operations' => array(
                 'operator' => 'REMOVE',
                 'accountId' => $accountId,
-                'operand' => $operand
+                'operand' => $operands
             )
         );
 
@@ -270,7 +269,7 @@ class FeedFolderServiceSample{
             }
         }
 
-        return $feedFolderResponse;
+        return $feedFolderReturnValues;
     }
 }
 
@@ -285,12 +284,13 @@ try{
     $feedFolderServiceSample = new FeedFolderServiceSample();
 
     $accountId = SoapUtils::getAccountId();
+    $feedFolderValues = array();
 
     // FeedFolderServiceSample ADD
     $feedFolderValues = $feedFolderServiceSample->addFeedFolder($accountId);
 
     // FeedFolderServiceSample GET
-    $feedFolderServiceSample->getFeedFolder($accountId, $feedFolderValues);
+    $feedFolderValues = $feedFolderServiceSample->getFeedFolder($accountId, $feedFolderValues);
 
     // FeedFolderServiceSample SET
     $feedFolderServiceSample->setFeedFolder($accountId, $feedFolderValues);

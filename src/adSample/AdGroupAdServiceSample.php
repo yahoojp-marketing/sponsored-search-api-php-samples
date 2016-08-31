@@ -110,11 +110,24 @@ class AdGroupAdServiceSample{
                     'headline' => 'sample headline',
                     'description' => 'sample ad desc',
                     'description2' => 'sample ad desc2',
-                    'url' => 'http://www.yahoo.co.jp/',
                     'displayUrl' => 'www.yahoo.co.jp',
                     'devicePreference' => 'SMART_PHONE',
                     'advancedUrl' => 'http://www.yahoo.co.jp',
+                    'additionalAdvancedUrls' => array(
+                        'additionalAdvancedUrl' => array(
+                            array('url' => 'http://www1.yahoo.co.jp'),
+                            array('url' => 'http://www2.yahoo.co.jp'),
+                            array('url' => 'http://www3.yahoo.co.jp')
+                        ),
+                    ),
                     'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                    'additionalAdvancedMobileUrls' => array(
+                        'additionalAdvancedMobileUrl' => array(
+                            array('url' => 'http://www1.yahoo.co.jp/mobile'),
+                            array('url' => 'http://www2.yahoo.co.jp/mobile'),
+                            array('url' => 'http://www3.yahoo.co.jp/mobile')
+                        ),
+                    ),
                     'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
                     'customParameters' => array(
                         'parameters' => array(
@@ -138,7 +151,6 @@ class AdGroupAdServiceSample{
                     'headline' => 'sample',
                     'description' => 'sample ad desc',
                     'description2' => 'sample ad desc2',
-                    'url' => 'http://www.yahoo.co.jp/',
                     'displayUrl' => 'www.yahoo.co.jp',
                     'devicePreference' => 'SMART_PHONE',
                     'advancedUrl' => 'http://www.yahoo.co.jp',
@@ -196,28 +208,8 @@ class AdGroupAdServiceSample{
                     'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
                     'adId' => $adGroupAdValue->adGroupAd->adId,
                     'adName' => 'SampleTextAd2_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
-                    'ad' => array(
-                        'type' => 'TEXT_AD2',
-                        'headline' => 'mod sample headline',
-                        'description' => 'mod sample ad desc',
-                        'description2' => 'mod sample ad desc2',
-                        'url' => 'http://www.yahoo.mod.co.jp/',
-                        'displayUrl' => 'www.yahoo.mod.co.jp',
-                        'advancedUrl' => 'http://www.yahoo.mod.co.jp',
-                        'advancedMobileUrl' => 'http://www.yahoo.mod.co.jp/mobile',
-                        'trackingUrl' => 'http://www.yahoo.mod.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-                        'customParameters' => array(
-                            'parameters' => array(
-                                'key' => 'id1',
-                                'value' => '5678'
-                            )
-                        )
-                    ),
                     'userStatus' => 'PAUSED'
                 );
-
-                // xsi:typ for ad of TextAd2
-                $ad['ad'] = new SoapVar($ad['ad'], SOAP_ENC_OBJECT, 'TextAd2', API_NS, 'ad', XMLSCHEMANS);
 
             }else if($adGroupAdValue->adGroupAd->ad->type === 'APP_AD'){
 
@@ -228,28 +220,8 @@ class AdGroupAdServiceSample{
                     'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
                     'adId' => $adGroupAdValue->adGroupAd->adId,
                     'adName' => 'SampleAppAd_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
-                    'ad' => array(
-                        'type' => 'APP_AD',
-                        'headline' => 'mod sample',
-                        'description' => 'mod sample ad desc',
-                        'description2' => 'mod sample ad desc2',
-                        'url' => 'http://www.yahoo.mod.co.jp/',
-                        'displayUrl' => 'www.yahoo.mod.co.jp',
-                        'advancedUrl' => 'http://www.yahoo.mod.co.jp',
-                        'advancedMobileUrl' => 'http://www.yahoo.mod.co.jp/mobile',
-                        'trackingUrl' => 'http://www.yahoo.mod.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-                        'customParameters' => array(
-                            'parameters' => array(
-                                'key' => 'id1',
-                                'value' => '5678'
-                            )
-                        )
-                    ),
                     'userStatus' => 'PAUSED'
                 );
-
-                // xsi:typ for ad of AppAd
-                $ad['ad'] = new SoapVar($ad['ad'], SOAP_ENC_OBJECT, 'AppAd', API_NS, 'ad', XMLSCHEMANS);
             }
 
             $operands[] = $ad;

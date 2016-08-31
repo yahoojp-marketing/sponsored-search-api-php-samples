@@ -97,7 +97,7 @@ class CampaignServiceSample{
         // Create operands
         $operands = array(
 
-            // Create AutoBidding　Standard Campaign
+            // Create AutoBidding Standard Campaign
             array(
                 'accountId' => $accountId,
                 'campaignName' => 'SampleAutoBiddingStandardCampaign_' . SoapUtils::getCurrentTimestamp(),
@@ -112,7 +112,7 @@ class CampaignServiceSample{
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyId' => $biddingStrategyId
                 ),
-                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -144,7 +144,7 @@ class CampaignServiceSample{
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyType' => 'MANUAL_CPC'
                 ),
-                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -161,7 +161,7 @@ class CampaignServiceSample{
                 )
             ),
 
-            // Create AutoBidding　MobileApp Campaign for IOS
+            // Create AutoBidding MobileApp Campaign for IOS
             array(
                 'accountId' => $accountId,
                 'campaignName' => 'SampleAutoBiddingIOSCampaign_' . SoapUtils::getCurrentTimestamp(),
@@ -176,7 +176,7 @@ class CampaignServiceSample{
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyId' => $biddingStrategyId
                 ),
-                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -210,7 +210,7 @@ class CampaignServiceSample{
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyType' => 'MANUAL_CPC'
                 ),
-                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -229,7 +229,7 @@ class CampaignServiceSample{
                 )
             ),
 
-            // Create AutoBidding　MobileApp Campaign for ANDROID
+            // Create AutoBidding MobileApp Campaign for ANDROID
             array(
                 'accountId' => $accountId,
                 'campaignName' => 'SampleAutoBiddingAndroidCampaign_' . SoapUtils::getCurrentTimestamp(),
@@ -244,7 +244,7 @@ class CampaignServiceSample{
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyId' => $biddingStrategyId
                 ),
-                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
+                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -457,7 +457,7 @@ try{
     $operation = $campaignServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues);
 
     // Run
-    $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    $campaignValues = $campaignServiceSample->mutate($operation, 'SET');
 
     // =================================================================
     // CampaignService GET

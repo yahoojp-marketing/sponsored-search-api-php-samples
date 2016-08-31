@@ -1,10 +1,13 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Version 6.0.0
+Version 6.1.0
 
 ■変更履歴
 -----------
+2016/08/31:
+- Version 6.1に対応しました。
+
 2016/05/13:
 - CampaignExportSample(Version 6.0)を追加しました。
 
@@ -72,12 +75,14 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - dictionarySample/DictionarySample.php                                  : DictionaryServiceによる審査否認理由の参照、地域コード参照処理のサンプルです。
 - keywordEstimatorSample/KeywordEstimatorSample.php                      : KeywordEstimatorServiceによるキャンペーン及び広告グループのキーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
 - reportDownloadSample/ReportDownloadSample.php                          : ReportDefinitionService, ReportServiceを使用したレポートダウンロード処理のサンプルです。
+- sharedCriterionSample/AccountSharedServiceSample.php                   : AccountSharedServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、更新、削除処理のサンプルです。
+- sharedCriterionSample/CampaignSharedSetServiceSample.php               : AccountSharedService/CampaignService/CampaignSharedSetServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、削除処理のサンプルです。
+- sharedCriterionSample/SharedCriterionServiceSample.php                 : AccountSharedService/SharedCriterionServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、削除処理のサンプルです。
 - siteRetargetingSample/AdGroupRetargetingListServiceSample.php          : AdGroupRetargetingListServiceによる広告グループ用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
 - siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php : NegativeCampaignRetargetingListServiceによるキャンペーン用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
 - siteRetargetingSample/RetargetingListServiceSample.php                 : RetargetingListServiceによるリターゲティングリストの登録、参照、更新処理のサンプルです。
 - siteRetargetingSample/SiteRetargetingSample.php                        : RetargetingListService/BiddingStrategyService/CampaignService/NegativeCampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
 - targetingIdeaSample/TargetingIdeaSample.php                            : TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
-- trafficEstimatorSample/TrafficEstimatorSample.php                      : TrafficEstimatorServiceによる指定キーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
 - campaignExportSample/CampaignExportSample.php                          : CampaignExportServiceによるExportジョブ登録、CSVダウンロードのサンプルです。
 
 ・以下は各サンプルプログラムから利用されるクラスです。
@@ -120,14 +125,14 @@ ADGROUPCRITERIONIDS      : 広告グループのクライテリアIDを記述（
                            ※カンマ区切りで複数IDを指定することができます。
 
 以下、IDはAdCustomizerSampleを動作させる際に必要となります。
-FEEDFOLDERID           : フィードフォルダーIDを記述（必須）
-INTEGERFEEDATTRIBUTEID : PlaceholderFieldがAD_CUSTOMIZER_INTEGERで登録されたフィードアトリビュートIDを記述（必須）
-PRICEFEEDFOLDERID      : PlaceholderFieldがAD_CUSTOMIZER_PRICEで登録されたフィードアトリビュートIDを記述（必須）
-DATEFEEDFOLDERID       : PlaceholderFieldがAD_CUSTOMIZER_DATEで登録されたフィードアトリビュートIDを記述（必須）
-STRINGFEEDFOLDERID     : PlaceholderFieldがAD_CUSTOMIZER_STRINGで登録されたフィードアトリビュートIDを記述（必須）
+FEEDFOLDERID            : フィードフォルダーIDを記述（必須）
+INTEGERFEEDATTRIBUTEID  : PlaceholderFieldがAD_CUSTOMIZER_INTEGERで登録されたフィードアトリビュートIDを記述（必須）
+PRICEFEEDFOLDERID       : PlaceholderFieldがAD_CUSTOMIZER_PRICEで登録されたフィードアトリビュートIDを記述（必須）
+DATEFEEDFOLDERID        : PlaceholderFieldがAD_CUSTOMIZER_DATEで登録されたフィードアトリビュートIDを記述（必須）
+STRINGFEEDFOLDERID      : PlaceholderFieldがAD_CUSTOMIZER_STRINGで登録されたフィードアトリビュートIDを記述（必須）
 
 以下、IDはSiteRetargetingSampleを動作させる際に必要となります。
-TARGETLISTID : ターゲットリストID（任意、存在しない場合は新規作成を試みます）
+TARGETLISTID  : ターゲットリストID（任意、存在しない場合は新規作成を試みます）
 
 
 --------------------------------
@@ -161,12 +166,14 @@ php src/customerSyncSample/CustomerSyncSample.php
 php src/dictionarySample/DictionarySample.php
 php src/keywordEstimatorSample/KeywordEstimatorSample.php
 php src/reportDownloadSample/ReportDownloadSample.php
+php src/sharedCriterionSample/AccountSharedServiceSample.php
+php src/sharedCriterionSample/CampaignSharedSetServiceSample.php
+php src/sharedCriterionSample/SharedCriterionServiceSample.php
 php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
 php src/siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php
 php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php
-php src/trafficEstimatorSample/TrafficEstimatorSample.php
 php src/campaignExportSample/CampaignExportSample.php
 ---------------------------------------
 

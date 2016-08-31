@@ -23,58 +23,56 @@ class FeedItemServiceSample{
         // Set Operand
         $operand = array(
             // Set AdCustomizer
-            array(
-                'accountId' => $accountId,
-                'feedFolderId' => $feedFolderId,
-                'feedItemAttribute' => array(
-                    array(
-                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_INTEGER'],
-                        'feedAttributeValue' => '1234567890'
-                    ),
-                    array(
-                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_PRICE'],
-                        'feedAttributeValue' => '9,999,999.99'
-                    ),
-                    array(
-                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_DATE'],
-                        'feedAttributeValue' => '20151231 235959'
-                    ),
-                    array(
-                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_STRING'],
-                        'feedAttributeValue' => 'sample Value'
-                    )
+            'accountId' => $accountId,
+            'feedFolderId' => $feedFolderId,
+            'feedItemAttribute' => array(
+                array(
+                    'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_INTEGER'],
+                    'feedAttributeValue' => '1234567890'
                 ),
-                'placeholderType' => 'AD_CUSTOMIZER',
-                'startDate' => '20161215',
-                'endDate' => '20181215',
-                'scheduling' => array(
-                    'schedules' => array(
-                        array(
-                            'dayOfWeek' => 'SUNDAY',
-                            'startHour' => 14,
-                            'startMinute' => 'ZERO',
-                            'endHour' => 15,
-                            'endMinute' => 'THIRTY'
-                        ),
-                        array(
-                            'dayOfWeek' => 'MONDAY',
-                            'startHour' => 14,
-                            'startMinute' => 'ZERO',
-                            'endHour' => 15,
-                            'endMinute' => 'THIRTY'
-                        )
-                    )
+                array(
+                    'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_PRICE'],
+                    'feedAttributeValue' => '9,999,999.99'
                 ),
-                'targetingCampaign' => array(
-                    'targetingCampaignId' => $campaignId
+                array(
+                    'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_DATE'],
+                    'feedAttributeValue' => '20151231 235959'
                 ),
-                'targetingAdGroup' => array(
-                    'targetingAdGroupId' => $adGroupId
-                ),
-                'targetingKeyword' => array(
-                    'text' => 'sample keyword',
-                    'matchType' => 'EXACT'
+                array(
+                    'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_STRING'],
+                    'feedAttributeValue' => 'sample Value'
                 )
+            ),
+            'placeholderType' => 'AD_CUSTOMIZER',
+            'startDate' => '20161215',
+            'endDate' => '20181215',
+            'scheduling' => array(
+                'schedules' => array(
+                    array(
+                        'dayOfWeek' => 'SUNDAY',
+                        'startHour' => 14,
+                        'startMinute' => 'ZERO',
+                        'endHour' => 15,
+                        'endMinute' => 'THIRTY'
+                    ),
+                    array(
+                        'dayOfWeek' => 'MONDAY',
+                        'startHour' => 14,
+                        'startMinute' => 'ZERO',
+                        'endHour' => 15,
+                        'endMinute' => 'THIRTY'
+                    )
+                )
+            ),
+            'targetingCampaign' => array(
+                'targetingCampaignId' => $campaignId
+            ),
+            'targetingAdGroup' => array(
+                'targetingAdGroupId' => $adGroupId
+            ),
+            'targetingKeyword' => array(
+                'text' => 'sample keyword',
+                'matchType' => 'EXACT'
             )
         );
 
@@ -87,6 +85,11 @@ class FeedItemServiceSample{
                 'operand' => $operand
             )
         );
+
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        }
 
         // Call API
         $feedItemService = SoapUtils::getService('FeedItemService');
@@ -130,33 +133,31 @@ class FeedItemServiceSample{
         foreach($feedItemValues as $feedItemValue){
 
             $operand = array(
-                // Set Callextension
-                array(
-                    'accountId' => $accountId,
-                    'feedItemId' => $feedItemValue->feedItem->feedItemId,
-                    'feedItemAttribute' => array(
-                        array(
-                            'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_INTEGER'],
-                            'feedAttributeValue' => '2345678901'
-                        ),
-                        array(
-                            'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_PRICE'],
-                            'feedAttributeValue' => '1,111,111.11'
-                        ),
-                        array(
-                            'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_DATE'],
-                            'feedAttributeValue' => '20160101 235959'
-                        ),
-                        array(
-                            'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_STRING'],
-                            'feedAttributeValue' => 'sample edit value'
-                        )
+                // Set AdCustomizer
+                'accountId' => $accountId,
+                'feedItemId' => $feedItemValue->feedItem->feedItemId,
+                'feedItemAttribute' => array(
+                    array(
+                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_INTEGER'],
+                        'feedAttributeValue' => '2345678901'
                     ),
-                    'placeholderType' => 'AD_CUSTOMIZER',
-                    'startDate' => '',
-                    'endDate' => '',
-                    'scheduling' => ''
-                )
+                    array(
+                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_PRICE'],
+                        'feedAttributeValue' => '1,111,111.11'
+                    ),
+                    array(
+                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_DATE'],
+                        'feedAttributeValue' => '20160101 235959'
+                    ),
+                    array(
+                        'feedAttributeId' => $feedAttributeId['AD_CUSTOMIZER_STRING'],
+                        'feedAttributeValue' => 'sample edit value'
+                    )
+                ),
+                'placeholderType' => 'AD_CUSTOMIZER',
+                'startDate' => '',
+                'endDate' => '',
+                'scheduling' => ''
             );
         }
 
@@ -169,6 +170,11 @@ class FeedItemServiceSample{
                 'operand' => $operand
             )
         );
+
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        }
 
         // Call API
         $feedItemService = SoapUtils::getService('FeedItemService');

@@ -107,6 +107,22 @@ class AdDisplayOptionSample{
                         array(
                             'placeholderField' => 'TRACKING_URL',
                             'feedAttributeValue' => 'http://www.quicklink.sample.co.jp?url={lpurl}&amp;pid={_id1}'
+                        ),
+                        array(
+                            'placeholderField' => 'ADDITIONAL_ADVANCED_URLS',
+                            'feedAttributeValues' => array(
+                                array('feedAttributeValue' => 'http://www.quicklink.sample.co.jp/AdditionalAdvanced1/'),
+                                array('feedAttributeValue' => 'http://www.quicklink.sample.co.jp/AdditionalAdvanced2/'),
+                                array('feedAttributeValue' => 'http://www.quicklink.sample.co.jp/AdditionalAdvanced3/')
+                            )
+                        ),
+                        array(
+                            'placeholderField' => 'ADDITIONAL_ADVANCED_MOBILE_URLS',
+                            'feedAttributeValues' => array(
+                                array('feedAttributeValue' => 'http://www.quicklink.sample.co.jp/AdditionalAdvanced1/mobile'),
+                                array('feedAttributeValue' => 'http://www.quicklink.sample.co.jp/AdditionalAdvanced2/mobile'),
+                                array('feedAttributeValue' => 'http://www.quicklink.sample.co.jp/AdditionalAdvanced3/mobile')
+                            )
                         )
                     ),
                     'startDate' => '20161231',
@@ -140,6 +156,19 @@ class AdDisplayOptionSample{
                 )
             )
         );
+
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($addFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            switch ($feedItemAttribute['placeholderField']){
+                default:
+                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+                    break;
+                case 'ADDITIONAL_ADVANCED_URLS':
+                case 'ADDITIONAL_ADVANCED_MOBILE_URLS':
+                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'MultipleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+                    break;
+            }
+        }
 
         return $addFeedItemRequest1;
     }
@@ -193,7 +222,68 @@ class AdDisplayOptionSample{
             )
         );
 
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($addFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        }
+
         return $addFeedItemRequest2;
+    }
+
+    /**
+     * create CalloutExtension FeedItem sample request.
+     *
+     * @param long $accountId AccountID
+     * @return FeedItemOperation entity.
+     */
+    public function createFeedItemCalloutExtensionSampleAddRequest($accountId){
+        // -----------------------------------------------------------------
+        // FeedItemService::mutate(ADD) CALLOUT
+        // -----------------------------------------------------------------
+        // request CALLOUT
+        $addFeedItemRequest3 = array(
+            'operations' => array(
+                'operator' => 'ADD',
+                'accountId' => $accountId,
+                'placeholderType' => 'CALLOUT',
+                'operand' => array(
+                    'accountId' => $accountId,
+                    'feedItemAttribute' => array(
+                        array(
+                            'placeholderField' => 'CALLOUT_TEXT',
+                            'feedAttributeValue' => 'sample callout text'
+                        )
+                    ),
+                    'startDate' => '20161231',
+                    'endDate' => '20171231',
+                    'scheduling' => array(
+                        'schedules' => array(
+                            0 => array(
+                                'dayOfWeek' => 'SUNDAY',
+                                'startHour' => 10,
+                                'startMinute' => 'ZERO',
+                                'endHour' => 12,
+                                'endMinute' => 'THIRTY'
+                            ),
+                            1 => array(
+                                'dayOfWeek' => 'MONDAY',
+                                'startHour' => 10,
+                                'startMinute' => 'ZERO',
+                                'endHour' => 12,
+                                'endMinute' => 'THIRTY'
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($addFeedItemRequest3['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        }
+
+        return $addFeedItemRequest3;
     }
 
     /**
@@ -214,7 +304,8 @@ class AdDisplayOptionSample{
                 'feedItemIds' => $feedItemIds,
                 'placeholderTypes' => array(
                     'QUICKLINK',
-                    'CALLEXTENSION'
+                    'CALLEXTENSION',
+                    'CALLOUT'
                 ),
                 'approvalStatuses' => array(
                     'APPROVED',
@@ -260,24 +351,45 @@ class AdDisplayOptionSample{
                             'feedAttributeValue' => 'editlink'
                         ),
                         array(
-                            'placeholderField' => 'LINK_URL',
-                            'feedAttributeValue' => 'http://www.quicklink.edit.co.jp'
+                            'placeholderField' => 'ADVANCED_URL',
+                            'feedAttributeValue' => 'http://edit.quicklink.sample.co.jp'
+                        ),
+                        array(
+                            'placeholderField' => 'ADVANCED_MOBILE_URL',
+                            'feedAttributeValue' => 'http://edit.quicklink.sample.co.jp/mobile'
+                        ),
+                        array(
+                            'placeholderField' => 'TRACKING_URL',
+                            'feedAttributeValue' => 'http://edit.quicklink.sample.co.jp?url={lpurl}&amp;pid={_id1}'
+                        ),
+                        // unset ADDITIONAL_ADVANCED_URLS
+                        array(
+                            'placeholderField' => 'ADDITIONAL_ADVANCED_URLS',
+                            'isRemove' => 'TRUE'
+                        ),
+                        // unset ADDITIONAL_ADVANCED_MOBILE_URLS
+                        array(
+                            'placeholderField' => 'ADDITIONAL_ADVANCED_MOBILE_URLS',
+                            'isRemove' => 'TRUE'
                         )
                     ),
                     // unset startDate/endDate
                     'startDate' => null,
                     'endDate' => null,
+                    // unset customParameters
                     'customParameters' => array(
-                        'isRemove' => 'FALSE',
-                        'parameters' => array(
-                            'key' => 'id1',
-                            'value' => '5678'
-                        )
+                        'isRemove' => 'TRUE'
                     ),
                     'advanced' => 'TRUE'
                 )
             )
         );
+
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($setFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        }
+
         return $setFeedItemRequest1;
     }
 
@@ -313,6 +425,12 @@ class AdDisplayOptionSample{
                 )
             )
         );
+
+        //xsi:type for SimpleFeedItemAttribute
+        foreach ($setFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        }
+
         return $setFeedItemRequest2;
     }
 
@@ -539,7 +657,6 @@ class AdDisplayOptionSample{
                 'operand' => array(
                     'accountId' => $accountId,
                     'feedItemId' => $feedItemId,
-                    'placeholderType' => $placeholderType
                 )
             )
         );
@@ -596,10 +713,25 @@ try{
         }
     }
 
+    // create CalloutExtension FeedItem
+    $addFeedItemRequest3 = $adDisplayOptionSample->createFeedItemCalloutExtensionSampleAddRequest($accountId);
+    $addFeedItemResponse3 = $adDisplayOptionSample->mutate($addFeedItemRequest3, 'add', 'FeedItemService');
+
+    // Error
+    foreach($addFeedItemResponse3 as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to add FeedItemService');
+        }else{
+            // response
+            $feedItem3 = $returnValue->feedItem;
+        }
+    }
+
     // get FeedItem
     $getFeedItemRequest = $adDisplayOptionSample->createFeedItemSampleGetRequest($accountId, array(
         $feedItem1->feedItemId,
-        $feedItem2->feedItemId
+        $feedItem2->feedItemId,
+        $feedItem3->feedItemId,
     ));
     $getFeedItemResponse = $adDisplayOptionSample->get($getFeedItemRequest, 'FeedItemService');
 
@@ -720,8 +852,19 @@ try{
         }
     }
 
-    // remove Quicklink FeedItem
+    // remove CallExtension FeedItem
     $removeFeedItemRequest = $adDisplayOptionSample->createFeedItemSampleRemoveRequest($accountId, $feedItem2->placeholderType, $feedItem2->feedItemId);
+    $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
+
+    // Error
+    foreach($removeFeedItemResponse as $returnValue){
+        if(!isset($returnValue->feedItem)){
+            throw new Exception('Fail to remove FeedItemService');
+        }
+    }
+
+    // remove CalloutExtension FeedItem
+    $removeFeedItemRequest = $adDisplayOptionSample->createFeedItemSampleRemoveRequest($accountId, $feedItem3->placeholderType, $feedItem3->feedItemId);
     $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
 
     // Error

@@ -114,7 +114,21 @@ class AdGroupCriterionServiceSample{
                     )
                 ),
                 'advancedUrl' => 'http://www.yahoo.co.jp',
+                'additionalAdvancedUrls' => array(
+                    'additionalAdvancedUrl' => array(
+                        array('url' => 'http://www1.yahoo.co.jp'),
+                        array('url' => 'http://www2.yahoo.co.jp'),
+                        array('url' => 'http://www3.yahoo.co.jp')
+                    ),
+                ),
                 'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'additionalAdvancedMobileUrls' => array(
+                    'additionalAdvancedMobileUrl' => array(
+                        array('url' => 'http://www1.yahoo.co.jp/mobile'),
+                        array('url' => 'http://www2.yahoo.co.jp/mobile'),
+                        array('url' => 'http://www3.yahoo.co.jp/mobile')
+                    ),
+                ),
                 'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
                 'customParameters' => array(
                     'parameters' => array(
@@ -178,7 +192,21 @@ class AdGroupCriterionServiceSample{
                 ),
                 'destinationUrl' => 'http://www.yahoo2.co.jp/',
                 'advancedUrl' => 'http://www.yahoo2.co.jp',
+                'additionalAdvancedUrls' => array(
+                    'additionalAdvancedUrl' => array(
+                        array('url' => 'http://www1.yahoo2.co.jp'),
+                        array('url' => 'http://www2.yahoo2.co.jp'),
+                        array('url' => 'http://www3.yahoo2.co.jp')
+                    ),
+                ),
                 'advancedMobileUrl' => 'http://www.yahoo2.co.jp/mobile',
+                'additionalAdvancedMobileUrls' => array(
+                    'additionalAdvancedMobileUrl' => array(
+                        array('url' => 'http://www1.yahoo2.co.jp/mobile'),
+                        array('url' => 'http://www2.yahoo2.co.jp/mobile'),
+                        array('url' => 'http://www3.yahoo2.co.jp/mobile')
+                    ),
+                ),
                 'trackingUrl' => 'http://www.yahoo2.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
                 'customParameters' => array(
                     'parameters' => array(
