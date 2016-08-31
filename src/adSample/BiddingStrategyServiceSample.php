@@ -135,7 +135,8 @@ class BiddingStrategyServiceSample{
                 'biddingStrategyName' => 'SampleTargetSpend_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'biddingScheme' => array(
                     'biddingStrategyType' => 'TARGET_SPEND',
-                    'bidCeiling' => 700
+                    'bidCeiling' => 700,
+                    'spendTarget' => 10
                 )
             ),
 

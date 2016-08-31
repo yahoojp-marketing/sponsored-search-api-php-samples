@@ -39,18 +39,18 @@ function createCampaign($accountId){
             ),
             'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
             'settings' => array(
-                    array(
-                        'type' => 'GEO_TARGET_TYPE_SETTING',
-                        'positiveGeoTargetType' => 'AREA_OF_INTENT',
-                    ),
+                array(
+                    'type' => 'GEO_TARGET_TYPE_SETTING',
+                    'positiveGeoTargetType' => 'AREA_OF_INTENT',
+                ),
             ),
-        	'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-        	'customParameters' => array(
-        			'parameters' => array(
-        				'key' => 'id1',
-        				'value' => '1234',
-        			),
-        	),
+            'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+            'customParameters' => array(
+                'parameters' => array(
+                    'key' => 'id1',
+                    'value' => '1234',
+                ),
+            ),
         ),
     );
 
@@ -116,13 +116,13 @@ function createAdGroup($accountId, $campaignId){
                     'maxCpc' => 120,
                 ),
             ),
-        	'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-        	'customParameters' => array(
-        			'parameters' => array(
-        					'key' => 'id1',
-        					'value' => '1234',
-        			),
-        	),
+            'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+            'customParameters' => array(
+                'parameters' => array(
+                    'key' => 'id1',
+                    'value' => '1234',
+                ),
+            ),
         ),
     );
 
@@ -190,16 +190,16 @@ function createAdGroupCriterion($accountId, $campaignId, $adGroupId){
                     'maxCpc' => 100,
                 ),
             ),
-        	'advancedUrl' => 'http://www.yahoo.co.jp',
-        	'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
-        	'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-        	'customParameters' => array(
-        			'parameters' => array(
-        					'key' => 'id1',
-        					'value' => '1234',
-        			),
-        	),
-        	'advanced' => 'TRUE',
+            'advancedUrl' => 'http://www.yahoo.co.jp',
+            'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+            'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+            'customParameters' => array(
+                'parameters' => array(
+                    'key' => 'id1',
+                    'value' => '1234',
+                ),
+            ),
+            'advanced' => 'TRUE',
         ),
     );
 
@@ -274,16 +274,15 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
                 'description2' => 'sample {KEYWORD:keyword}',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
-            		
-            	'advancedUrl' => 'http://www.yahoo.co.jp',
-            	'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
-            	'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-            	'customParameters' => array(
-            			'parameters' => array(
-            					'key' => 'id1',
-            					'value' => '1234',
-            			),
-            	),            		
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234',
+                    ),
+                ),
             ),
             'userStatus' => 'ACTIVE',
         ),
@@ -300,16 +299,15 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
                 'description2' => 'sample ad desc',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
-            		
-            	'advancedUrl' => 'http://www.yahoo.co.jp',
-            	'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
-            	'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-            	'customParameters' => array(
-            			'parameters' => array(
-            					'key' => 'id1',
-            					'value' => '1234',
-            			),
-            	),
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234',
+                    ),
+                ),
             ),
             'userStatus' => 'ACTIVE',
         ),
@@ -326,16 +324,15 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
                 'description2' => 'sample ad desc',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
-            		
-           		'advancedUrl' => 'http://www.yahoo.co.jp',
-           		'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
-           		'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-           		'customParameters' => array(
-           				'parameters' => array(
-          						'key' => 'id1',
-           						'value' => '1234',
-           				),
-           		),
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234',
+                    ),
+                ),
             ),
             'userStatus' => 'ACTIVE',
         ),

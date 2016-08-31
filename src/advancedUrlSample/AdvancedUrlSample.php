@@ -40,24 +40,20 @@ try{
     $operation = $biddingStrategyServiceSample->createSampleAddRequest($accountId);
     $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'ADD');
 
-    // sleep 20 second.
-    sleep(20);
+    // sleep 30 second.
+    sleep(30);
 
     // GET
     $selector = $biddingStrategyServiceSample->createSampleGetRequest($accountId, $biddingStrategyValues);
     $biddingStrategyValues = $biddingStrategyServiceSample->get($selector);
 
-    // SET
-    $operation = $biddingStrategyServiceSample->createSampleSetRequest($accountId, $biddingStrategyValues);
-    $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'SET');
-
-    // Get BiddingStrategyType for PAGE_ONE_PROMOTED
+    // Get BiddingStrategyType for TARGET_SPEND
     foreach($biddingStrategyValues as $biddingStrategyValue){
         if($biddingStrategyId === 0){
             switch($biddingStrategyValue->biddingStrategy->biddingStrategyType){
                 default :
                     break;
-                case 'PAGE_ONE_PROMOTED' :
+                case 'TARGET_SPEND' :
                     $biddingStrategyId = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
                     break 2;
             }
@@ -78,11 +74,8 @@ try{
     $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
     $campaignValues = $campaignServiceSample->get($selector);
 
-    // SET
-    $operation = $campaignServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues);
-    $campaignValues = $campaignServiceSample->mutate($operation, 'SET');
     foreach($campaignValues as $campaignValue){
-        if(($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'PAGE_ONE_PROMOTED'){
+        if(($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'TARGET_SPEND'){
             switch($campaignValue->campaign->campaignType){
                 default :
                     break;
@@ -107,9 +100,11 @@ try{
     $selector = $campaignTargetServiceSample->createSampleGetRequest($accountId, $campaignTargetValues);
     $campaignTargetValues = $campaignTargetServiceSample->get($selector);
 
-    // SET
-    $operation = $campaignTargetServiceSample->createSampleSetRequest($accountId, $campaignTargetValues);
-    $campaignTargetValues = $campaignTargetServiceSample->mutate($operation, 'SET');
+    foreach($campaignTargetValues as $campaignTargetKey => $campaignTargetValue){
+        if($campaignTargetValue->campaignTarget->target->targetType === 'PLATFORM'){
+            unset($campaignTargetValues[$campaignTargetKey]);
+        }
+    }
 
     // =================================================================
     // CampaignCriterionService
@@ -133,9 +128,6 @@ try{
     $selector = $adGroupServiceSample->createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues);
     $adGroupValues = $adGroupServiceSample->get($selector);
 
-    // SET
-    $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues);
-    $adGroupValues = $adGroupServiceSample->mutate($operation, 'SET');
     foreach($adGroupValues as $adGroupValue){
         if($adGroupId === 0 || $appAdGroupId === 0){
             if($adGroupValue->adGroup->campaignId === $campaignId){
@@ -156,10 +148,6 @@ try{
     // GET
     $selector = $adGroupCriterionServiceSample->createSampleGetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
     $adGroupCriterionValues = $adGroupCriterionServiceSample->get($selector);
-
-    // SET
-    $operation = $adGroupCriterionServiceSample->createSampleSetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
-    $adGroupCriterionValues = $adGroupCriterionServiceSample->mutate($operation, 'SET');
 
     // =================================================================
     // AdGroupBidMultiplierService
@@ -183,10 +171,6 @@ try{
     $selector = $adGroupAdServiceSample->createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId, $adGroupAdValues);
     $adGroupAdValues = $adGroupAdServiceSample->get($selector);
 
-    // SET
-    $operation = $adGroupAdServiceSample->createSampleSetRequest($accountId, $adGroupAdValues);
-    $adGroupAdValues = $adGroupAdServiceSample->mutate($operation, 'SET');
-
     // =================================================================
     // FeedItemService
     // =================================================================
@@ -207,10 +191,6 @@ try{
         $feedItem->feedItemId
     ));
     $feedItemValues = $adDisplayOptionSample->get($selector, "FeedItemService");
-
-    // SET
-    $operation = $adDisplayOptionSample->createFeedItemQuicklinkSampleSetRequest($accountId, $feedItem->feedItemId);
-    $feedItemValues = $adDisplayOptionSample->mutate($operation, 'SET', "FeedItemService");
 
     // =================================================================
     // CampaignFeedService
