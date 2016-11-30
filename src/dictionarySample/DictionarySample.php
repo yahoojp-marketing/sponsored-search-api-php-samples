@@ -1,49 +1,101 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for DictionaryService.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
+class DictionarySample
+{
 
-// =================================================================
-// DictionaryService
-// =================================================================
-$dictionaryService = SoapUtils::getService('DictionaryService');
+    private $serviceName = 'DictionaryService';
 
-// -----------------------------------------------
-// DictionaryService::getDisapprovalReason
-// -----------------------------------------------
-// request
-$getDisapprovalReasonRequest = array(
-    'selector' => array(
-        'lang' => 'EN'
-    )
-);
+    /**
+     * Sample Program for DictionaryService GET.
+     *
+     * @param array $selector DisapprovalReasonSelector entity.
+     * @return array DisapprovalReasonValues entity.
+     * @throws Exception
+     */
+    public function get($selector, $method)
+    {
 
-// call API
-$getDisapprovalReasonResponse = $dictionaryService->invoke('getDisapprovalReason', $getDisapprovalReasonRequest);
+        // Call API
+        $service = SoapUtils::getService($this->serviceName);
+        $response = $service->invoke($method, $selector);
 
-if(!isset($getDisapprovalReasonResponse->rval->values)){
-    echo 'Fail to getDisapprovalReason.';
-    exit();
+        // Response
+        $returnValues = null;
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
+                $returnValues = $response->rval->values;
+            } else {
+                $returnValues = array(
+                    $response->rval->values
+                );
+            }
+        } else {
+            throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
+        }
+
+        // Error
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
+                throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
+            }
+        }
+
+        return $returnValues;
+    }
+
+    /**
+     * create sample request.
+     *
+     * @return DisapprovalReasonSelector entity.
+     */
+    public function createSampleGetRequest()
+    {
+
+        // Create selector
+        $selector = array(
+            'selector' => array(
+                'lang' => 'EN'
+            )
+        );
+
+        return $selector;
+    }
 }
 
-// -----------------------------------------------
-// DictionaryService::getGeographicLocation
-// -----------------------------------------------
-// request
-$getGeographicLocationRequest = array(
-    'selector' => array(
-        'lang' => 'EN'
-    )
-);
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
+    return;
+}
 
-// call API
-$getGeographicLocationResponse = $dictionaryService->invoke('getGeographicLocation', $getGeographicLocationRequest);
+/**
+ * execute DictionarySample.
+ */
+try {
+    $dictionarySample = new DictionarySample();
 
-if(!isset($getGeographicLocationResponse->rval->values)){
-    echo 'Fail to getGeographicLocation.';
-    exit();
+    // =================================================================
+    // DictionaryService getDisapprovalReason
+    // =================================================================
+    // Create selector
+    $selector = $dictionarySample->createSampleGetRequest();
+
+    // Run
+    $dictionarySample->get($selector, 'getDisapprovalReason');
+
+    // =================================================================
+    // DictionaryService getGeographicLocation
+    // =================================================================
+    // Create selector
+    $selector = $dictionarySample->createSampleGetRequest();
+
+    // Run
+    $dictionarySample->get($selector, 'getGeographicLocation');
+
+} catch (Exception $e) {
+    printf($e->getMessage() . "\n");
 }

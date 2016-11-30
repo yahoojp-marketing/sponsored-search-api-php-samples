@@ -108,7 +108,7 @@ class SharedCriterionServiceSample
 
         // Create operand
         $operands = array();
-        foreach ($sharedListIds as $sharedListId){
+        foreach ($sharedListIds as $sharedListId) {
             $operand = array(
                 'sharedListId' => $sharedListId,
                 'text' => 'sample text ' . SoapUtils::getCurrentTimestamp() . ' ' . $sharedListId,

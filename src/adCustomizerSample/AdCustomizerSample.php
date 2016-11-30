@@ -19,7 +19,8 @@ require_once(dirname(__FILE__) . '/FeedItemServiceSample.php');
  * @return array CampaignValues entity
  * @throws Exception
  */
-function createCampaign($accountId){
+function createCampaign($accountId)
+{
     // Set Operand
     $operand = array(
         // Set ManualCpc Campaign
@@ -101,7 +102,8 @@ function createCampaign($accountId){
  * @return array AdGroupValues entity
  * @throws Exception
  */
-function createAdGroup($accountId, $campaignId){
+function createAdGroup($accountId, $campaignId)
+{
     // Set Operand
     $operand = array(
         // Set ManualCpc AdGroup
@@ -170,7 +172,8 @@ function createAdGroup($accountId, $campaignId){
  * @return array AdGroupCriterionValues entity
  * @throws Exception
  */
-function createAdGroupCriterion($accountId, $campaignId, $adGroupId){
+function createAdGroupCriterion($accountId, $campaignId, $adGroupId)
+{
     // Set Operand
     $operand = array(
         array(
@@ -205,10 +208,10 @@ function createAdGroupCriterion($accountId, $campaignId, $adGroupId){
 
     //xsi:type for criterion Keyword
     $operand[0]['criterion'] =
-    new SoapVar($operand[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
+        new SoapVar($operand[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
     //xsi:type for operand BiddableAdGroupCriterion
     $operand[0] =
-    new SoapVar($operand[0], SOAP_ENC_OBJECT, 'BiddableAdGroupCriterion', API_NS, 'operand', XMLSCHEMANS);
+        new SoapVar($operand[0], SOAP_ENC_OBJECT, 'BiddableAdGroupCriterion', API_NS, 'operand', XMLSCHEMANS);
 
     // Set Request
     $adGroupCriterionRequest = array(
@@ -258,7 +261,8 @@ function createAdGroupCriterion($accountId, $campaignId, $adGroupId){
  * @return array AdGroupAdValues entity
  * @throws Exception
  */
-function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $feedAttributeNames){
+function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $feedAttributeNames)
+{
     // Set Operand
     $operand = array(
         // Set TextAd2(Keyword)
@@ -320,7 +324,7 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
             'ad' => array(
                 'type' => 'TEXT_AD2',
                 'headline' => 'sample headline',
-                'description' => '{=COUNTDOWN('.$feedFolderName.'.'.$feedAttributeNames['AD_CUSTOMIZER_DATE'].',"ja")}',
+                'description' => '{=COUNTDOWN(' . $feedFolderName . '.' . $feedAttributeNames['AD_CUSTOMIZER_DATE'] . ',"ja")}',
                 'description2' => 'sample ad desc',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
@@ -339,8 +343,8 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
     );
 
     //xsi:typ for ad of TextAd2
-    foreach ($operand as $adGroupAdKey => $adGroupAdValue){
-        $operand[$adGroupAdKey]['ad'] = new SoapVar($operand[$adGroupAdKey]['ad'],SOAP_ENC_OBJECT, 'TextAd2',API_NS,'ad',XMLSCHEMANS);
+    foreach ($operand as $adGroupAdKey => $adGroupAdValue) {
+        $operand[$adGroupAdKey]['ad'] = new SoapVar($operand[$adGroupAdKey]['ad'], SOAP_ENC_OBJECT, 'TextAd2', API_NS, 'ad', XMLSCHEMANS);
     }
 
     // Set Request
@@ -377,12 +381,11 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
     return $adGroupAdReturnValues;
 }
 
-
 if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
-try{
+try {
     $campaignService = new CampaignServiceSample();
     $adGroupService = new AdGroupServiceSample();
     $adGroupCriterionService = new AdGroupCriterionServiceSample();
@@ -439,14 +442,14 @@ try{
         if ($feedFolderId === 0) {
             $feedFolderId = $feedFolderValue->feedFolder->feedFolderId;
         }
-        if(is_null($feedFolderName)){
+        if (is_null($feedFolderName)) {
             $feedFolderName = $feedFolderValue->feedFolder->feedFolderName;
         }
-        foreach ($feedFolderValue->feedFolder->feedAttribute as $feedAttributeKey => $feedAttributeValue){
-            if(is_null($feedAttributeNames[$feedAttributeValue->placeholderField])){
+        foreach ($feedFolderValue->feedFolder->feedAttribute as $feedAttributeKey => $feedAttributeValue) {
+            if (is_null($feedAttributeNames[$feedAttributeValue->placeholderField])) {
                 $feedAttributeNames[$feedAttributeValue->placeholderField] = $feedAttributeValue->feedAttributeName;
             }
-            if($feedAttributeIds[$feedAttributeValue->placeholderField] === 0){
+            if ($feedAttributeIds[$feedAttributeValue->placeholderField] === 0) {
                 $feedAttributeIds[$feedAttributeValue->placeholderField] = $feedAttributeValue->feedAttributeId;
             }
         }

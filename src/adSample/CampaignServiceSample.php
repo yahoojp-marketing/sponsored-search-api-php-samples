@@ -1,13 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for CampaignServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
+class CampaignServiceSample
+{
 
-class CampaignServiceSample{
     private $serviceName = 'CampaignService';
 
     /**
@@ -18,7 +19,8 @@ class CampaignServiceSample{
      * @return array CampaignReturnValue entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -26,21 +28,21 @@ class CampaignServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->campaign)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -55,7 +57,8 @@ class CampaignServiceSample{
      * @return array CampaignReturnValue entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -63,21 +66,21 @@ class CampaignServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->campaign)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -92,7 +95,8 @@ class CampaignServiceSample{
      * @param long $biddingStrategyId BiddingStrategyID
      * @return CampaignOperation entity.
      */
-    public function createSampleAddRequest($accountId, $biddingStrategyId){
+    public function createSampleAddRequest($accountId, $biddingStrategyId)
+    {
 
         // Create operands
         $operands = array(
@@ -308,11 +312,12 @@ class CampaignServiceSample{
      * @param array $campaignValues CampaignReturnValue entity.
      * @return CampaignOperation entity.
      */
-    public function createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues){
+    public function createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($campaignValues as $campaignValue){
+        foreach ($campaignValues as $campaignValue) {
 
             // Create operand
             $operand = array(
@@ -332,7 +337,7 @@ class CampaignServiceSample{
                     'biddingStrategyId' => $biddingStrategyId
                 )
             );
-            if($campaignValue->campaign->campaignType == 'STANDARD'){
+            if ($campaignValue->campaign->campaignType == 'STANDARD') {
                 $operand['trackingUrl'] = 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id2}';
                 $operand['customParameters'] = array(
                     'parameters' => array(
@@ -364,11 +369,12 @@ class CampaignServiceSample{
      * @param array $campaignValues CampaignReturnValue entity.
      * @return CampaignOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $campaignValues){
+    public function createSampleRemoveRequest($accountId, $campaignValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($campaignValues as $campaignValue){
+        foreach ($campaignValues as $campaignValue) {
 
             // Create operand
             $operand = array(
@@ -398,12 +404,13 @@ class CampaignServiceSample{
      * @param array $campaignValues CampaignReturnValue entity.
      * @return CampaignSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignValues){
+    public function createSampleGetRequest($accountId, $campaignValues)
+    {
 
         // Get campaignIds
         $campaignIds = array();
-        foreach($campaignValues as $campaignValue){
-            if(isset($campaignValue->campaign)){
+        foreach ($campaignValues as $campaignValue) {
+            if (isset($campaignValue->campaign)) {
                 $campaignIds[] = $campaignValue->campaign->campaignId;
             }
         }
@@ -428,14 +435,14 @@ class CampaignServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute CampaignServiceSample.
  */
-try{
+try {
     $campaignServiceSample = new CampaignServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -450,6 +457,40 @@ try{
     // Run
     $campaignValues = $campaignServiceSample->mutate($operation, 'ADD');
 
+    // call 30sec sleep * 30 = 15minute
+    for ($i = 0; $i < 30; $i++) {
+        // sleep 30 second.
+        echo "\n***** sleep 30 seconds for Campaign Review Status Check *****\n";
+        sleep(30);
+
+        // =================================================================
+        // CampaignService GET
+        // =================================================================
+        // Create selector
+        $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
+
+        // Run
+        $campaignValues = $campaignServiceSample->get($selector);
+
+        // status
+        foreach ($campaignValues as $campaignValue) {
+            if (isset($campaignValue->campaign->urlReviewData->urlApprovalStatus)) {
+                $urlApprovalStatus = $campaignValue->campaign->urlReviewData->urlApprovalStatus;
+                if ($urlApprovalStatus != 'APPROVED' || $urlApprovalStatus != 'NONE') {
+                    if ($urlApprovalStatus === 'DISAPPROVED') {
+                        echo 'Campaign Review Status failed.';
+                        exit();
+                    } else {
+                        continue 2;
+                    }
+                }
+            } else {
+                echo 'Fail to add CampaignService.';
+                exit();
+            }
+        }
+    }
+
     // =================================================================
     // CampaignService SET
     // =================================================================
@@ -460,15 +501,6 @@ try{
     $campaignValues = $campaignServiceSample->mutate($operation, 'SET');
 
     // =================================================================
-    // CampaignService GET
-    // =================================================================
-    // Create selector
-    $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
-
-    // Run
-    $campaignValues = $campaignServiceSample->get($selector);
-
-    // =================================================================
     // CampaignService REMOVE
     // =================================================================
     // Create operands
@@ -477,6 +509,6 @@ try{
     // Run
     $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

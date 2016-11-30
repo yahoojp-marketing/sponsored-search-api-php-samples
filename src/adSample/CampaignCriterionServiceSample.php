@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for CampaignCriterionServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class CampaignCriterionServiceSample{
+class CampaignCriterionServiceSample
+{
+
     private $serviceName = 'CampaignCriterionService';
 
     /**
@@ -17,7 +19,8 @@ class CampaignCriterionServiceSample{
      * @return array CampaignCriterionReturnValue entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class CampaignCriterionServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->campaignCriterion)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->campaignCriterion)) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class CampaignCriterionServiceSample{
      * @return array CampaignCriterionReturnValue entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class CampaignCriterionServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->campaignCriterion)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->campaignCriterion)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -91,7 +95,8 @@ class CampaignCriterionServiceSample{
      * @param long $campaignId CampaignID
      * @return CampaignOperation entity.
      */
-    public function createSampleAddRequest($accountId, $campaignId){
+    public function createSampleAddRequest($accountId, $campaignId)
+    {
 
         // Create operands
         $operands = array(
@@ -134,11 +139,12 @@ class CampaignCriterionServiceSample{
      * @param long $campaignCriterionValues CampaignCriterionReturnValue entity.
      * @return CampaignOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $campaignId, $campaignCriterionValues){
+    public function createSampleRemoveRequest($accountId, $campaignId, $campaignCriterionValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($campaignCriterionValues as $campaignCriterionValue){
+        foreach ($campaignCriterionValues as $campaignCriterionValue) {
             $operands[] = array(
                 'accountId' => $campaignCriterionValue->campaignCriterion->accountId,
                 'campaignId' => $campaignCriterionValue->campaignCriterion->campaignId,
@@ -172,11 +178,12 @@ class CampaignCriterionServiceSample{
      * @param array $campaignCriterionValues CampaignCriterionReturnValue entity.
      * @return CampaignCriterionSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $campaignCriterionValues){
+    public function createSampleGetRequest($accountId, $campaignId, $campaignCriterionValues)
+    {
 
         // Get campaignCriterionIds
         $campaignCriterionIds = array();
-        foreach($campaignCriterionValues as $campaignCriterionValue){
+        foreach ($campaignCriterionValues as $campaignCriterionValue) {
             $campaignCriterionIds[] = $campaignCriterionValue->campaignCriterion->criterion->criterionId;
         }
 
@@ -200,14 +207,14 @@ class CampaignCriterionServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute CampaignServiceSample.
  */
-try{
+try {
     $campaignCriterionServiceSample = new CampaignCriterionServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -240,6 +247,6 @@ try{
     // Run
     $campaignCriterionValues = $campaignCriterionServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

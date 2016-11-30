@@ -1,13 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for FeedItemService,CampaignFeedService,AdGroupFeedService,
  * Copyright (C) 2013 Yahoo Japan Corporation.
  * All Rights Reserved.
  */
-class AdDisplayOptionSample{
+class AdDisplayOptionSample
+{
 
     /**
      * Sample Program for Service MUTATE.
@@ -18,7 +19,8 @@ class AdDisplayOptionSample{
      * @return array Exexute service return value entity.
      * @throws Exception
      */
-    public function mutate($operation, $method, $serviceName){
+    public function mutate($operation, $method, $serviceName)
+    {
 
         // Call API
         $service = SoapUtils::getService($serviceName);
@@ -26,15 +28,15 @@ class AdDisplayOptionSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $serviceName . '.');
         }
 
@@ -49,7 +51,8 @@ class AdDisplayOptionSample{
      * @return array AdGroupBidMultiplierValues entity.
      * @throws Exception
      */
-    public function get($selector, $serviceName){
+    public function get($selector, $serviceName)
+    {
 
         // Call API
         $service = SoapUtils::getService($serviceName);
@@ -57,15 +60,15 @@ class AdDisplayOptionSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $serviceName . '.');
         }
 
@@ -78,7 +81,8 @@ class AdDisplayOptionSample{
      * @param long $accountId AccountID
      * @return FeedItemOperation entity.
      */
-    public function createFeedItemQuicklinkSampleAddRequest($accountId){
+    public function createFeedItemQuicklinkSampleAddRequest($accountId)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::mutate(ADD) QUICKLINK
         // -----------------------------------------------------------------
@@ -158,14 +162,14 @@ class AdDisplayOptionSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($addFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            switch ($feedItemAttribute['placeholderField']){
+        foreach ($addFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            switch ($feedItemAttribute['placeholderField']) {
                 default:
-                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
                     break;
                 case 'ADDITIONAL_ADVANCED_URLS':
                 case 'ADDITIONAL_ADVANCED_MOBILE_URLS':
-                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'MultipleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'MultipleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
                     break;
             }
         }
@@ -179,7 +183,8 @@ class AdDisplayOptionSample{
      * @param long $accountId AccountID
      * @return FeedItemOperation entity.
      */
-    public function createFeedItemCallExtensionSampleAddRequest($accountId){
+    public function createFeedItemCallExtensionSampleAddRequest($accountId)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::mutate(ADD) CALLEXTENSION
         // -----------------------------------------------------------------
@@ -223,8 +228,8 @@ class AdDisplayOptionSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($addFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        foreach ($addFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
         }
 
         return $addFeedItemRequest2;
@@ -236,7 +241,8 @@ class AdDisplayOptionSample{
      * @param long $accountId AccountID
      * @return FeedItemOperation entity.
      */
-    public function createFeedItemCalloutExtensionSampleAddRequest($accountId){
+    public function createFeedItemCalloutExtensionSampleAddRequest($accountId)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::mutate(ADD) CALLOUT
         // -----------------------------------------------------------------
@@ -279,8 +285,8 @@ class AdDisplayOptionSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($addFeedItemRequest3['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        foreach ($addFeedItemRequest3['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
         }
 
         return $addFeedItemRequest3;
@@ -293,7 +299,8 @@ class AdDisplayOptionSample{
      * @param array $feedItemIds FeedItemIDs
      * @return AdGroupBidMultiplierSelector entity.
      */
-    public function createFeedItemSampleGetRequest($accountId, array $feedItemIds){
+    public function createFeedItemSampleGetRequest($accountId, array $feedItemIds)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::get
         // -----------------------------------------------------------------
@@ -331,7 +338,8 @@ class AdDisplayOptionSample{
      * @param long $feedItemId FeedItemID
      * @return FeedItemOperation entity.
      */
-    public function createFeedItemQuicklinkSampleSetRequest($accountId, $feedItemId){
+    public function createFeedItemQuicklinkSampleSetRequest($accountId, $feedItemId)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::mutate(SET) QUICKLINK
         // -----------------------------------------------------------------
@@ -386,8 +394,16 @@ class AdDisplayOptionSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($setFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        foreach ($setFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            switch ($feedItemAttribute['placeholderField']) {
+                default:
+                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+                    break;
+                case 'ADDITIONAL_ADVANCED_URLS':
+                case 'ADDITIONAL_ADVANCED_MOBILE_URLS':
+                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'MultipleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+                    break;
+            }
         }
 
         return $setFeedItemRequest1;
@@ -400,7 +416,8 @@ class AdDisplayOptionSample{
      * @param long $feedItemId FeedItemID
      * @return FeedItemOperation entity.
      */
-    public function createFeedItemCallExtensionSampleSetRequest($accountId, $feedItemId){
+    public function createFeedItemCallExtensionSampleSetRequest($accountId, $feedItemId)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::mutate(SET) CALLEXTENSION
         // -----------------------------------------------------------------
@@ -427,8 +444,8 @@ class AdDisplayOptionSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($setFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        foreach ($setFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
         }
 
         return $setFeedItemRequest2;
@@ -443,7 +460,8 @@ class AdDisplayOptionSample{
      * @param String $placeholderType PlaceholderType enum
      * @return CampaignFeedOperation entity.
      */
-    public function createCampaignFeedSampleSetRequest($accountId, $campaignId, $feedItemId, $placeholderType){
+    public function createCampaignFeedSampleSetRequest($accountId, $campaignId, $feedItemId, $placeholderType)
+    {
         // -----------------------------------------------------------------
         // CampaignFeedService::mutate(SET)
         // -----------------------------------------------------------------
@@ -475,7 +493,8 @@ class AdDisplayOptionSample{
      * @param long $feedItemId QuicklinkFeedItemID
      * @return CampaignFeedOperation entity.
      */
-    public function createCampaignFeedSampleGetRequest($accountId, $campaignId, $feedItemId){
+    public function createCampaignFeedSampleGetRequest($accountId, $campaignId, $feedItemId)
+    {
         // -----------------------------------------------------------------
         // CampaignFeedService::get
         // -----------------------------------------------------------------
@@ -513,7 +532,8 @@ class AdDisplayOptionSample{
      *        　* @param String $placeholderType PlaceholderType enum
      * @return AdGroupFeedSOperation entity.
      */
-    public function createAdGroupFeedSampleSetRequest($accountId, $campaignId, $adGroupId, $feedItemId, $placeholderType){
+    public function createAdGroupFeedSampleSetRequest($accountId, $campaignId, $adGroupId, $feedItemId, $placeholderType)
+    {
         // -----------------------------------------------------------------
         // AdGroupFeedService::mutate(SET)
         // -----------------------------------------------------------------
@@ -546,7 +566,8 @@ class AdDisplayOptionSample{
      * @param long $feedItemId CallextensionFeedItemID
      * @return AdGroupFeedSOperation entity.
      */
-    public function createAdGroupFeedSampleGetRequest($accountId, $campaignId, $adGroupId, $feedItemId){
+    public function createAdGroupFeedSampleGetRequest($accountId, $campaignId, $adGroupId, $feedItemId)
+    {
         // -----------------------------------------------------------------
         // AdGroupFeedService::get
         // -----------------------------------------------------------------
@@ -585,7 +606,8 @@ class AdDisplayOptionSample{
      * @param String $placeholderType PlaceholderType enum
      * @return CampaignFeedOperation entity.
      */
-    public function createCampaignFeedSampleRemoveRequest($accountId, $campaignId, $placeholderType){
+    public function createCampaignFeedSampleRemoveRequest($accountId, $campaignId, $placeholderType)
+    {
         // -----------------------------------------------------------------
         // CampaignFeedService::mutate(SET)
         // -----------------------------------------------------------------
@@ -615,7 +637,8 @@ class AdDisplayOptionSample{
      * @param String $placeholderType PlaceholderType enum
      * @return AdGroupFeedOperation entity.
      */
-    public function createAdGroupFeedSampleRemoveRequest($accountId, $campaignId, $adGroupId, $placeholderType){
+    public function createAdGroupFeedSampleRemoveRequest($accountId, $campaignId, $adGroupId, $placeholderType)
+    {
         // -----------------------------------------------------------------
         // AdGroupFeedService::mutate(SET)
         // -----------------------------------------------------------------
@@ -644,7 +667,8 @@ class AdDisplayOptionSample{
      * @param long $feedItemId FeedItemID
      * @return FeedItemOperation entity.
      */
-    public function createFeedItemSampleRemoveRequest($accountId, $placeholderType, $feedItemId){
+    public function createFeedItemSampleRemoveRequest($accountId, $placeholderType, $feedItemId)
+    {
         // -----------------------------------------------------------------
         // FeedItemService::mutate(REMOVE)
         // -----------------------------------------------------------------
@@ -665,14 +689,14 @@ class AdDisplayOptionSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute AdGroupBidMultiplierServiceSample.
  */
-try{
+try {
     // =================================================================
     // FeedItemService
     // =================================================================
@@ -691,10 +715,10 @@ try{
     $addFeedItemResponse1 = $adDisplayOptionSample->mutate($addFeedItemRequest1, 'add', 'FeedItemService');
 
     // Error
-    foreach($addFeedItemResponse1 as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($addFeedItemResponse1 as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to add FeedItemService');
-        }else{
+        } else {
             $feedItem1 = $returnValue->feedItem;
         }
     }
@@ -704,10 +728,10 @@ try{
     $addFeedItemResponse2 = $adDisplayOptionSample->mutate($addFeedItemRequest2, 'add', 'FeedItemService');
 
     // Error
-    foreach($addFeedItemResponse2 as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($addFeedItemResponse2 as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to add FeedItemService');
-        }else{
+        } else {
             // response
             $feedItem2 = $returnValue->feedItem;
         }
@@ -718,10 +742,10 @@ try{
     $addFeedItemResponse3 = $adDisplayOptionSample->mutate($addFeedItemRequest3, 'add', 'FeedItemService');
 
     // Error
-    foreach($addFeedItemResponse3 as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($addFeedItemResponse3 as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to add FeedItemService');
-        }else{
+        } else {
             // response
             $feedItem3 = $returnValue->feedItem;
         }
@@ -736,8 +760,8 @@ try{
     $getFeedItemResponse = $adDisplayOptionSample->get($getFeedItemRequest, 'FeedItemService');
 
     // Error
-    foreach($getFeedItemResponse as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($getFeedItemResponse as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to get FeedItemService');
         }
     }
@@ -750,8 +774,8 @@ try{
     $setFeedItemResponse1 = $adDisplayOptionSample->mutate($setFeedItemRequest1, 'set', 'FeedItemService');
 
     // Error
-    foreach($setFeedItemResponse1 as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($setFeedItemResponse1 as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to set FeedItemService');
         }
     }
@@ -761,8 +785,8 @@ try{
     $setFeedItemResponse2 = $adDisplayOptionSample->mutate($setFeedItemRequest2, 'set', 'FeedItemService');
 
     // Error
-    foreach($setFeedItemResponse2 as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($setFeedItemResponse2 as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to set FeedItemService');
         }
     }
@@ -776,8 +800,8 @@ try{
     $setCampaignFeedResponse = $adDisplayOptionSample->mutate($setCampaignFeedRequest, 'set', "CampaignFeedService");
 
     // Error
-    foreach($setCampaignFeedResponse as $returnValue){
-        if(!isset($returnValue->campaignFeedList)){
+    foreach ($setCampaignFeedResponse as $returnValue) {
+        if (!isset($returnValue->campaignFeedList)) {
             throw new Exception('Fail to set CampaignFeedService');
         }
     }
@@ -787,8 +811,8 @@ try{
     $getCampaignFeedResponse = $adDisplayOptionSample->get($getCampaignFeedRequest, "CampaignFeedService");
 
     // Error
-    foreach($getCampaignFeedResponse as $returnValue){
-        if(!isset($returnValue->campaignFeedList)){
+    foreach ($getCampaignFeedResponse as $returnValue) {
+        if (!isset($returnValue->campaignFeedList)) {
             throw new Exception('Fail to get CampaignFeedService');
         }
     }
@@ -802,8 +826,8 @@ try{
     $setAdGroupFeedResponse = $adDisplayOptionSample->mutate($setAdGroupFeedRequest, 'set', "AdGroupFeedService");
 
     // Error
-    foreach($setAdGroupFeedResponse as $returnValue){
-        if(!isset($returnValue->adGroupFeedList)){
+    foreach ($setAdGroupFeedResponse as $returnValue) {
+        if (!isset($returnValue->adGroupFeedList)) {
             throw new Exception('Fail to set AdGroupFeedService');
         }
     }
@@ -813,8 +837,8 @@ try{
     $getAdGroupFeedResponse = $adDisplayOptionSample->get($getAdGroupFeedRequest, 'AdGroupFeedService');
 
     // Error
-    foreach($getAdGroupFeedResponse as $returnValue){
-        if(!isset($returnValue->adGroupFeedList)){
+    foreach ($getAdGroupFeedResponse as $returnValue) {
+        if (!isset($returnValue->adGroupFeedList)) {
             throw new Exception('Fail to get AdGroupFeedService');
         }
     }
@@ -824,8 +848,8 @@ try{
     $setCampaignFeedResponse = $adDisplayOptionSample->mutate($setCampaignFeedRequest, 'set', "CampaignFeedService");
 
     // Error
-    foreach($setCampaignFeedResponse as $returnValue){
-        if(!isset($returnValue->campaignFeedList)){
+    foreach ($setCampaignFeedResponse as $returnValue) {
+        if (!isset($returnValue->campaignFeedList)) {
             throw new Exception('Fail to set CampaignFeedService');
         }
     }
@@ -835,8 +859,8 @@ try{
     $setAdGroupFeedResponse = $adDisplayOptionSample->mutate($setAdGroupFeedRequest, 'set', 'AdGroupFeedService');
 
     // Error
-    foreach($setAdGroupFeedResponse as $returnValue){
-        if(!isset($returnValue->adGroupFeedList)){
+    foreach ($setAdGroupFeedResponse as $returnValue) {
+        if (!isset($returnValue->adGroupFeedList)) {
             throw new Exception('Fail to set AdGroupFeedService');
         }
     }
@@ -846,8 +870,8 @@ try{
     $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
 
     // Error
-    foreach($removeFeedItemResponse as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($removeFeedItemResponse as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to remove FeedItemService');
         }
     }
@@ -857,8 +881,8 @@ try{
     $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
 
     // Error
-    foreach($removeFeedItemResponse as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($removeFeedItemResponse as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to remove FeedItemService');
         }
     }
@@ -868,11 +892,11 @@ try{
     $removeFeedItemResponse = $adDisplayOptionSample->mutate($removeFeedItemRequest, 'remove', "FeedItemService");
 
     // Error
-    foreach($removeFeedItemResponse as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($removeFeedItemResponse as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to remove FeedItemService');
         }
     }
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

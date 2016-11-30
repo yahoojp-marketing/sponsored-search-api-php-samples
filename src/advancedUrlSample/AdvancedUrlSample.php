@@ -1,21 +1,21 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
-require_once (dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/CampaignTargetServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/CampaignCriterionServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/AdGroupCriterionServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/AdGroupBidMultiplierServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/AdGroupAdServiceSample.php');
-require_once (dirname(__FILE__) . '/../adDisplayOptionSample/AdDisplayOptionSample.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/CampaignTargetServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/CampaignCriterionServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/AdGroupCriterionServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/AdGroupBidMultiplierServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/AdGroupAdServiceSample.php');
+require_once(dirname(__FILE__) . '/../adDisplayOptionSample/AdDisplayOptionSample.php');
 
 /**
  * Sample Program for AdvancedUrlSample.
  * Copyright (C) 2016 Yahoo Japan Corporation. All Rights Reserved.
  */
-try{
+try {
     $biddingStrategyServiceSample = new BiddingStrategyServiceSample();
     $campaignServiceSample = new CampaignServiceSample();
     $campaignTargetServiceSample = new CampaignTargetServiceSample();
@@ -48,9 +48,9 @@ try{
     $biddingStrategyValues = $biddingStrategyServiceSample->get($selector);
 
     // Get BiddingStrategyType for TARGET_SPEND
-    foreach($biddingStrategyValues as $biddingStrategyValue){
-        if($biddingStrategyId === 0){
-            switch($biddingStrategyValue->biddingStrategy->biddingStrategyType){
+    foreach ($biddingStrategyValues as $biddingStrategyValue) {
+        if ($biddingStrategyId === 0) {
+            switch ($biddingStrategyValue->biddingStrategy->biddingStrategyType) {
                 default :
                     break;
                 case 'TARGET_SPEND' :
@@ -74,9 +74,9 @@ try{
     $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
     $campaignValues = $campaignServiceSample->get($selector);
 
-    foreach($campaignValues as $campaignValue){
-        if(($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'TARGET_SPEND'){
-            switch($campaignValue->campaign->campaignType){
+    foreach ($campaignValues as $campaignValue) {
+        if (($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'TARGET_SPEND') {
+            switch ($campaignValue->campaign->campaignType) {
                 default :
                     break;
                 case 'STANDARD' :
@@ -100,8 +100,8 @@ try{
     $selector = $campaignTargetServiceSample->createSampleGetRequest($accountId, $campaignTargetValues);
     $campaignTargetValues = $campaignTargetServiceSample->get($selector);
 
-    foreach($campaignTargetValues as $campaignTargetKey => $campaignTargetValue){
-        if($campaignTargetValue->campaignTarget->target->targetType === 'PLATFORM'){
+    foreach ($campaignTargetValues as $campaignTargetKey => $campaignTargetValue) {
+        if ($campaignTargetValue->campaignTarget->target->targetType === 'PLATFORM') {
             unset($campaignTargetValues[$campaignTargetKey]);
         }
     }
@@ -128,11 +128,11 @@ try{
     $selector = $adGroupServiceSample->createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues);
     $adGroupValues = $adGroupServiceSample->get($selector);
 
-    foreach($adGroupValues as $adGroupValue){
-        if($adGroupId === 0 || $appAdGroupId === 0){
-            if($adGroupValue->adGroup->campaignId === $campaignId){
+    foreach ($adGroupValues as $adGroupValue) {
+        if ($adGroupId === 0 || $appAdGroupId === 0) {
+            if ($adGroupValue->adGroup->campaignId === $campaignId) {
                 $adGroupId = $adGroupValue->adGroup->adGroupId;
-            }elseif($adGroupValue->adGroup->campaignId === $appCampaignId){
+            } elseif ($adGroupValue->adGroup->campaignId === $appCampaignId) {
                 $appAdGroupId = $adGroupValue->adGroup->adGroupId;
             }
         }
@@ -178,10 +178,10 @@ try{
     $operation = $adDisplayOptionSample->createFeedItemQuicklinkSampleAddRequest($accountId);
     $feedItemValues = $adDisplayOptionSample->mutate($operation, 'ADD', "FeedItemService");
     // Error
-    foreach($feedItemValues as $returnValue){
-        if(!isset($returnValue->feedItem)){
+    foreach ($feedItemValues as $returnValue) {
+        if (!isset($returnValue->feedItem)) {
             throw new Exception('Fail to add FeedItemService');
-        }else{
+        } else {
             $feedItem = $returnValue->feedItem;
         }
     }
@@ -261,6 +261,6 @@ try{
     $operation = $biddingStrategyServiceSample->createSampleRemoveRequest($accountId, $biddingStrategyValues);
     $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

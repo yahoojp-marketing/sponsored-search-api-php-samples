@@ -110,7 +110,7 @@ class CampaignSharedSetServiceSample
 
         // Create operand
         $operands = array();
-        foreach ($sharedListIds as $sharedListId){
+        foreach ($sharedListIds as $sharedListId) {
             $operand = array(
                 'sharedListId' => $sharedListId,
                 'campaignId' => $campaignId
@@ -241,9 +241,9 @@ try {
 
     // Get CampaignId
     $campaignId = null;
-    foreach($campaignValues as $campaignValue){
-        if($campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'TARGET_SPEND'){
-            switch($campaignValue->campaign->campaignType){
+    foreach ($campaignValues as $campaignValue) {
+        if ($campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'TARGET_SPEND') {
+            switch ($campaignValue->campaign->campaignType) {
                 default :
                     break;
                 case 'STANDARD' :

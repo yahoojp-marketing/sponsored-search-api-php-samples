@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for AdGroupAdServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class AdGroupAdServiceSample{
+class AdGroupAdServiceSample
+{
+
     private $serviceName = 'AdGroupAdService';
 
     /**
@@ -17,7 +19,8 @@ class AdGroupAdServiceSample{
      * @return array AdGroupAdValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class AdGroupAdServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupAd)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class AdGroupAdServiceSample{
      * @return array AdGroupAdValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class AdGroupAdServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupAd)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -94,7 +98,8 @@ class AdGroupAdServiceSample{
      * @param long $appAdGroupId AppAdGroupID
      * @return AdGroupAdOperation entity.
      */
-    public function createSampleAddRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId){
+    public function createSampleAddRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId)
+    {
 
         // Create operands
         $operands = array(
@@ -114,19 +119,15 @@ class AdGroupAdServiceSample{
                     'devicePreference' => 'SMART_PHONE',
                     'advancedUrl' => 'http://www.yahoo.co.jp',
                     'additionalAdvancedUrls' => array(
-                        'additionalAdvancedUrl' => array(
-                            array('url' => 'http://www1.yahoo.co.jp'),
-                            array('url' => 'http://www2.yahoo.co.jp'),
-                            array('url' => 'http://www3.yahoo.co.jp')
-                        ),
+                        array('advancedUrl' => 'http://www1.yahoo.co.jp'),
+                        array('advancedUrl' => 'http://www2.yahoo.co.jp'),
+                        array('advancedUrl' => 'http://www3.yahoo.co.jp')
                     ),
                     'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
                     'additionalAdvancedMobileUrls' => array(
-                        'additionalAdvancedMobileUrl' => array(
-                            array('url' => 'http://www1.yahoo.co.jp/mobile'),
-                            array('url' => 'http://www2.yahoo.co.jp/mobile'),
-                            array('url' => 'http://www3.yahoo.co.jp/mobile')
-                        ),
+                        array('advancedMobileUrl' => 'http://www1.yahoo.co.jp/mobile'),
+                        array('advancedMobileUrl' => 'http://www2.yahoo.co.jp/mobile'),
+                        array('advancedMobileUrl' => 'http://www3.yahoo.co.jp/mobile')
                     ),
                     'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
                     'customParameters' => array(
@@ -137,8 +138,7 @@ class AdGroupAdServiceSample{
                     )
                 ),
                 'userStatus' => 'ACTIVE'
-            )
-            ,
+            ),
 
             // Set AppAd
             array(
@@ -151,7 +151,6 @@ class AdGroupAdServiceSample{
                     'headline' => 'sample',
                     'description' => 'sample ad desc',
                     'description2' => 'sample ad desc2',
-                    'displayUrl' => 'www.yahoo.co.jp',
                     'devicePreference' => 'SMART_PHONE',
                     'advancedUrl' => 'http://www.yahoo.co.jp',
                     'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
@@ -163,12 +162,49 @@ class AdGroupAdServiceSample{
                     )
                 ),
                 'userStatus' => 'ACTIVE'
+            ),
+
+            // Set ExtendedTextAd
+            array(
+                'accountId' => $accountId,
+                'campaignId' => $campaignId,
+                'adGroupId' => $adGroupId,
+                'adName' => 'SampleExtendedTextAd_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+                'ad' => array(
+                    'type' => 'EXTENDED_TEXT_AD',
+                    'headline' => 'sample headline',
+                    'headline2' => 'sample headline2',
+                    'description' => 'sample ad desc',
+                    'advancedUrl' => 'http://www.yahoo.co.jp',
+                    'additionalAdvancedUrls' => array(
+                        array('advancedUrl' => 'http://www1.yahoo.co.jp'),
+                        array('advancedUrl' => 'http://www2.yahoo.co.jp'),
+                        array('advancedUrl' => 'http://www3.yahoo.co.jp')
+                    ),
+                    'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                    'additionalAdvancedMobileUrls' => array(
+                        array('advancedMobileUrl' => 'http://www1.yahoo.co.jp/mobile'),
+                        array('advancedMobileUrl' => 'http://www2.yahoo.co.jp/mobile'),
+                        array('advancedMobileUrl' => 'http://www3.yahoo.co.jp/mobile')
+                    ),
+                    'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                    'customParameters' => array(
+                        'parameters' => array(
+                            'key' => 'id1',
+                            'value' => '1234'
+                        )
+                    ),
+                    'path1' => 'path1',
+                    'path2' => 'path2'
+                ),
+                'userStatus' => 'ACTIVE'
             )
         );
 
         // Set xsi:typ for ad of TextAd2
         $operands[0]['ad'] = new SoapVar($operands[0]['ad'], SOAP_ENC_OBJECT, 'TextAd2', API_NS, 'ad', XMLSCHEMANS);
         $operands[1]['ad'] = new SoapVar($operands[1]['ad'], SOAP_ENC_OBJECT, 'AppAd', API_NS, 'ad', XMLSCHEMANS);
+        $operands[2]['ad'] = new SoapVar($operands[2]['ad'], SOAP_ENC_OBJECT, 'ExtendedTextAd', API_NS, 'ad', XMLSCHEMANS);
 
         // Create operation
         $operation = array(
@@ -189,39 +225,55 @@ class AdGroupAdServiceSample{
      * @param array $adGroupAdlues AdGroupAdValues entity.
      * @return AdGroupAdOperation entity.
      */
-    public function createSampleSetRequest($accountId, $adGroupAdValues){
+    public function createSampleSetRequest($accountId, $adGroupAdValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupAdValues as $adGroupAdValue){
+        foreach ($adGroupAdValues as $adGroupAdValue) {
 
             // Create operand
             $ad = array();
 
             // Set Ad
-            if($adGroupAdValue->adGroupAd->ad->type === 'TEXT_AD2'){
+            switch ($adGroupAdValue->adGroupAd->ad->type) {
 
                 // Set TextAd2
-                $ad = array(
-                    'accountId' => $adGroupAdValue->adGroupAd->accountId,
-                    'campaignId' => $adGroupAdValue->adGroupAd->campaignId,
-                    'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
-                    'adId' => $adGroupAdValue->adGroupAd->adId,
-                    'adName' => 'SampleTextAd2_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
-                    'userStatus' => 'PAUSED'
-                );
-
-            }else if($adGroupAdValue->adGroupAd->ad->type === 'APP_AD'){
+                default:
+                case 'TEXT_AD2':
+                    $ad = array(
+                        'accountId' => $adGroupAdValue->adGroupAd->accountId,
+                        'campaignId' => $adGroupAdValue->adGroupAd->campaignId,
+                        'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
+                        'adId' => $adGroupAdValue->adGroupAd->adId,
+                        'adName' => 'SampleTextAd2_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+                        'userStatus' => 'PAUSED'
+                    );
+                    break;
 
                 // Set AppAd
-                $ad = array(
-                    'accountId' => $adGroupAdValue->adGroupAd->accountId,
-                    'campaignId' => $adGroupAdValue->adGroupAd->campaignId,
-                    'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
-                    'adId' => $adGroupAdValue->adGroupAd->adId,
-                    'adName' => 'SampleAppAd_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
-                    'userStatus' => 'PAUSED'
-                );
+                case 'APP_AD':
+                    $ad = array(
+                        'accountId' => $adGroupAdValue->adGroupAd->accountId,
+                        'campaignId' => $adGroupAdValue->adGroupAd->campaignId,
+                        'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
+                        'adId' => $adGroupAdValue->adGroupAd->adId,
+                        'adName' => 'SampleAppAd_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+                        'userStatus' => 'PAUSED'
+                    );
+                    break;
+
+                // Set ExtendedTextAd
+                case 'EXTENDED_TEXT_AD':
+                    $ad = array(
+                        'accountId' => $adGroupAdValue->adGroupAd->accountId,
+                        'campaignId' => $adGroupAdValue->adGroupAd->campaignId,
+                        'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
+                        'adId' => $adGroupAdValue->adGroupAd->adId,
+                        'adName' => 'SampleExtendedTextAd_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
+                        'userStatus' => 'PAUSED'
+                    );
+                    break;
             }
 
             $operands[] = $ad;
@@ -246,11 +298,12 @@ class AdGroupAdServiceSample{
      * @param array $adGroupAdValues AdGroupAdValues entity.
      * @return AdGroupAdOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $adGroupAdValues){
+    public function createSampleRemoveRequest($accountId, $adGroupAdValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupAdValues as $adGroupAdValue){
+        foreach ($adGroupAdValues as $adGroupAdValue) {
 
             // Create operand
             $operand = array(
@@ -286,13 +339,14 @@ class AdGroupAdServiceSample{
      * @param array $adGroupAdValues AdGroupAdValues entity.
      * @return AdGroupAdSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId, $adGroupAdValues){
+    public function createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId, $adGroupAdValues)
+    {
 
         // Get adGroupIds
         $adIds = array();
-        foreach($adGroupAdValues as $adGroupAdValue){
-            if(isset($adGroupAdValue->adGroupAd)){
-                $adGroupIds[] = $adGroupAdValue->adGroupAd->adId;
+        foreach ($adGroupAdValues as $adGroupAdValue) {
+            if (isset($adGroupAdValue->adGroupAd)) {
+                $adIds[] = $adGroupAdValue->adGroupAd->adId;
             }
         }
 
@@ -310,11 +364,10 @@ class AdGroupAdServiceSample{
                 ),
                 'adIds' => $adIds,
                 'adTypes' => array(
-                    'TEXT_AD2'
-                )
-// 'MOBILE_AD',
-// 'APP_AD'
-                ,
+                    'TEXT_AD2',
+                    'APP_AD',
+                    'EXTENDED_TEXT_AD',
+                ),
                 'userStatuses' => array(
                     'ACTIVE',
                     'PAUSED'
@@ -339,14 +392,14 @@ class AdGroupAdServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute AdGroupAdServiceSample.
  */
-try{
+try {
     $adGroupAdServiceSample = new AdGroupAdServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -391,6 +444,6 @@ try{
     // Run
     $adGroupAdValues = $adGroupAdServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

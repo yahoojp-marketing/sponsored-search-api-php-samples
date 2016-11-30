@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for NegativeCampaignRetargetingListServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class NegativeCampaignRetargetingListServiceSample{
+class NegativeCampaignRetargetingListServiceSample
+{
+
     private $serviceName = 'NegativeCampaignRetargetingListService';
 
     /**
@@ -17,7 +19,8 @@ class NegativeCampaignRetargetingListServiceSample{
      * @return array NegativeCampaignRetargetingListValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class NegativeCampaignRetargetingListServiceSample{
 
         // Response
         $returnValuesValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValuesValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValuesValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValuesValues as $returnValuesValue){
-            if(!isset($returnValuesValue->negativeCampaignRetargetingList)){
+        foreach ($returnValuesValues as $returnValuesValue) {
+            if (!isset($returnValuesValue->negativeCampaignRetargetingList)) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class NegativeCampaignRetargetingListServiceSample{
      * @return array NegativeCampaignRetargetingListValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class NegativeCampaignRetargetingListServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->negativeCampaignRetargetingList)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->negativeCampaignRetargetingList)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -92,7 +96,8 @@ class NegativeCampaignRetargetingListServiceSample{
      * @param long $targetListId TargetListID
      * @return NegativeCampaignRetargetingListOperation entity.
      */
-    public function createSampleAddRequest($accountId, $campaignId, $targetListId){
+    public function createSampleAddRequest($accountId, $campaignId, $targetListId)
+    {
 
         // Create operands
         $operands = array(
@@ -124,7 +129,8 @@ class NegativeCampaignRetargetingListServiceSample{
      * @param long $targetListId TargetListID
      * @return NegativeCampaignRetargetingListOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $campaignId, $targetListId){
+    public function createSampleRemoveRequest($accountId, $campaignId, $targetListId)
+    {
 
         // Create operands
         $operands = array(
@@ -156,7 +162,8 @@ class NegativeCampaignRetargetingListServiceSample{
      * @param long $targetListId TargetListID
      * @return NegativeCampaignRetargetingListSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $targetListId){
+    public function createSampleGetRequest($accountId, $campaignId, $targetListId)
+    {
 
         // Create selector
         $selector = array(
@@ -175,14 +182,14 @@ class NegativeCampaignRetargetingListServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute NegativeCampaignRetargetingListServiceSample.
  */
-try{
+try {
     $negativeCampaignRetargetingListServiceSample = new NegativeCampaignRetargetingListServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -216,6 +223,6 @@ try{
     // Run
     $negativeCampaignRetargetingListServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

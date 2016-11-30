@@ -1,13 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for ConversionTrackerService.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
+class ConversionTrackerServiceSample
+{
 
-class ConversionTrackerServiceSample{
     private $serviceName = 'ConversionTrackerService';
 
     /**
@@ -18,7 +19,8 @@ class ConversionTrackerServiceSample{
      * @return array ConversionTrackerReturnValue entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -26,21 +28,21 @@ class ConversionTrackerServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->conversionTracker)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -55,7 +57,8 @@ class ConversionTrackerServiceSample{
      * @return array ConversionTrackerReturnValue entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -63,21 +66,21 @@ class ConversionTrackerServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->conversionTracker)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -91,7 +94,8 @@ class ConversionTrackerServiceSample{
      * @param long $accountId AccountID
      * @return ConversionTrackerOperation entity.
      */
-    public function createSampleAddRequest($accountId){
+    public function createSampleAddRequest($accountId)
+    {
 
         $operands = array(
 
@@ -103,6 +107,9 @@ class ConversionTrackerServiceSample{
                 'markupLanguage' => 'HTML',
                 'httpProtocol' => 'HTTP',
                 'userRevenueValue' => '100',
+                'countingType' => 'MANY_PER_CLICK',
+                'excludeFromBidding' => 'TRUE',
+                'measurementPeriod' => '90',
                 'conversionTrackerType' => 'WEB_CONVERSION',
                 'trackingCodeType' => 'CLICK_TO_CALL'
             ),
@@ -113,6 +120,8 @@ class ConversionTrackerServiceSample{
                 'status' => 'ENABLED',
                 'category' => 'DOWNLOAD',
                 'userRevenueValue' => '100',
+                'countingType' => 'ONE_PER_CLICK',
+                'excludeFromBidding' => 'TRUE',
                 'conversionTrackerType' => 'APP_CONVERSION',
                 'appId' => 'sample123_' . SoapUtils::getCurrentTimestamp(),
                 'appPlatform' => 'ANDROID_MARKET',
@@ -125,6 +134,8 @@ class ConversionTrackerServiceSample{
                 'status' => 'ENABLED',
                 'category' => 'DOWNLOAD',
                 'userRevenueValue' => '100',
+                'countingType' => 'ONE_PER_CLICK',
+                'excludeFromBidding' => 'TRUE',
                 'conversionTrackerType' => 'APP_CONVERSION',
                 'appId' => 'sample123_' . SoapUtils::getCurrentTimestamp(),
                 'appPlatform' => 'ANDROID_MARKET',
@@ -140,6 +151,8 @@ class ConversionTrackerServiceSample{
                 'status' => 'ENABLED',
                 'category' => 'DEFAULT',
                 'userRevenueValue' => '100',
+                'countingType' => 'ONE_PER_CLICK',
+                'excludeFromBidding' => 'TRUE',
                 'conversionTrackerType' => 'APP_CONVERSION',
                 'appPlatform' => 'ANDROID_MARKET',
                 'appConversionType' => 'IN_APP_PURCHASE'
@@ -170,12 +183,13 @@ class ConversionTrackerServiceSample{
      * @param array $conversionTrackerValues ConversionTrackerReturnValue entity.
      * @return ConversionTrackerSelector entity.
      */
-    public function createSampleGetRequest($accountId, $conversionTrackerValues){
+    public function createSampleGetRequest($accountId, $conversionTrackerValues)
+    {
 
         // Get conversionTrackerIds
         $conversionTrackerIds = array();
-        foreach($conversionTrackerValues as $conversionTrackerValue){
-            if(isset($conversionTrackerValue->conversionTracker)){
+        foreach ($conversionTrackerValues as $conversionTrackerValue) {
+            if (isset($conversionTrackerValue->conversionTracker)) {
                 $conversionTrackerIds[] = $conversionTrackerValue->conversionTracker->conversionTrackerId;
             }
         }
@@ -188,6 +202,14 @@ class ConversionTrackerServiceSample{
                 'dateRange' => array(
                     'startDate' => date("Ymd"),
                     'endDate' => date("Ymd", strtotime('+10 day'))
+                ),
+                'countingTypes' => array(
+                    'ONE_PER_CLICK',
+                    'MANY_PER_CLICK'
+                ),
+                'excludeFromBiddings' => array(
+                    'TRUE',
+                    'FALSE'
                 ),
                 'conversionTrackerTypes' => array(
                     'WEB_CONVERSION',
@@ -210,11 +232,12 @@ class ConversionTrackerServiceSample{
      * @param array $conversionTrackerValues ConversionTrackerReturnValue entity.
      * @return ConversionTrackerOperation entity.
      */
-    public function createSampleSetRequest($accountId, $conversionTrackerValues){
+    public function createSampleSetRequest($accountId, $conversionTrackerValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($conversionTrackerValues as $conversionTrackerValue){
+        foreach ($conversionTrackerValues as $conversionTrackerValue) {
 
             // Set operand
             $operand = array(
@@ -222,7 +245,7 @@ class ConversionTrackerServiceSample{
                 'conversionTrackerType' => $conversionTrackerValue->conversionTracker->conversionTrackerType
             );
 
-            switch($conversionTrackerValue->conversionTracker->conversionTrackerType){
+            switch ($conversionTrackerValue->conversionTracker->conversionTrackerType) {
 
                 // WebConversionTracker
                 case 'WEB_CONVERSION' :
@@ -234,7 +257,7 @@ class ConversionTrackerServiceSample{
 
                 // AppConversionTracker
                 case 'APP_CONVERSION' :
-                    switch($conversionTrackerValue->conversionTracker->appConversionType){
+                    switch ($conversionTrackerValue->conversionTracker->appConversionType) {
 
                         case 'DOWNLOAD' :
                             $operand['conversionTrackerName'] = 'SampleAppConversionTracker1_UpdateOn_' . SoapUtils::getCurrentTimestamp();
@@ -283,14 +306,14 @@ class ConversionTrackerServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute ConversionTrackerServiceSample.
  */
-try{
+try {
     $conversionTrackerServiceSample = new ConversionTrackerServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -322,6 +345,6 @@ try{
     // Run
     $conversionTrackerValues = $conversionTrackerServiceSample->mutate($operation, 'SET');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

@@ -136,7 +136,7 @@ class AccountSharedServiceSample
             if (isset($accountSharedValue->accountShared)) {
                 $operand = array(
                     'sharedListId' => $accountSharedValue->accountShared->sharedListId,
-                    'name' => 'SampleSharedAccount_UpdateOn_' . SoapUtils::getCurrentTimestamp() . '_' .rand(1,99999)
+                    'name' => 'SampleSharedAccount_UpdateOn_' . SoapUtils::getCurrentTimestamp() . '_' . rand(1, 99999)
                 );
                 array_push($operands, $operand);
             }

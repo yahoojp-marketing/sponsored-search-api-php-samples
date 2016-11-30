@@ -2,7 +2,7 @@
 //-----------------------------------------------------------------
 // common defines
 //-----------------------------------------------------------------
-define('API_VERSION', 'V6.1');
+define('API_VERSION', 'V6.2');
 define('API_NS',      'http://ss.yahooapis.jp/V6');
 define('XMLSCHEMANS', 'http://www.w3.org/2001/XMLSchema-instance');
 
@@ -44,8 +44,8 @@ define('APPCAMPAIGNID',     'xxxxxxxx');
 define('ADGROUPID',         'xxxxxxxx');
 define('APPADGROUPID',      'xxxxxxxx');
 
-// AdGroupCriterions(optional)
-//define('ADGROUPCRITERIONIDS', 'xxxxxxxx,xxxxxxxx');
+// AdGroupCriterions
+define('ADGROUPCRITERIONIDS', 'xxxxxxxx,xxxxxxxx');
 
 //-----------------------------------------------------------------
 // for adCustomizerSample

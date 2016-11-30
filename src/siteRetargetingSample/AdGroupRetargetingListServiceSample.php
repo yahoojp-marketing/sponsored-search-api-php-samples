@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for AdGroupRetargetingListServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class AdGroupRetargetingListServiceSample{
+class AdGroupRetargetingListServiceSample
+{
+
     private $serviceName = 'AdGroupRetargetingListService';
 
     /**
@@ -17,7 +19,8 @@ class AdGroupRetargetingListServiceSample{
      * @return array AdGroupRetargetingListValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class AdGroupRetargetingListServiceSample{
 
         // Response
         $returnValuesValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValuesValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValuesValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValuesValues as $returnValuesValue){
-            if(!isset($returnValuesValue->adGroupRetargetingList)){
+        foreach ($returnValuesValues as $returnValuesValue) {
+            if (!isset($returnValuesValue->adGroupRetargetingList)) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class AdGroupRetargetingListServiceSample{
      * @return array AdGroupRetargetingListValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class AdGroupRetargetingListServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupRetargetingList)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->adGroupRetargetingList)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -93,7 +97,8 @@ class AdGroupRetargetingListServiceSample{
      * @param long $targetListId TargetListID
      * @return NegativeCampaignRetargetingListOperation entity.
      */
-    public function createSampleAddRequest($accountId, $campaignId, $adGroupId, $targetListId){
+    public function createSampleAddRequest($accountId, $campaignId, $adGroupId, $targetListId)
+    {
 
         // Create operands
         $operands = array(
@@ -137,11 +142,12 @@ class AdGroupRetargetingListServiceSample{
      * @param array $adGroupRetargetingListValues AdGroupRetargetingListValues entity.
      * @return NegativeCampaignRetargetingListOperation entity.
      */
-    public function createSampleSetRequest($accountId, $adGroupRetargetingListValues){
+    public function createSampleSetRequest($accountId, $adGroupRetargetingListValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupRetargetingListValues as $adGroupRetargetingListValue){
+        foreach ($adGroupRetargetingListValues as $adGroupRetargetingListValue) {
             $operand = array(
                 'campaignId' => $adGroupRetargetingListValue->adGroupRetargetingList->campaignId,
                 'adGroupId' => $adGroupRetargetingListValue->adGroupRetargetingList->adGroupId,
@@ -151,7 +157,7 @@ class AdGroupRetargetingListServiceSample{
                 'excludedType' => $adGroupRetargetingListValue->adGroupRetargetingList->excludedType
             );
 
-            if($adGroupRetargetingListValue->adGroupRetargetingList->excludedType === 'INCLUDED'){
+            if ($adGroupRetargetingListValue->adGroupRetargetingList->excludedType === 'INCLUDED') {
                 $operand['bidMultiplier'] = '10.00';
             }
 
@@ -177,11 +183,12 @@ class AdGroupRetargetingListServiceSample{
      * @param array $adGroupRetargetingListValues AdGroupRetargetingListValues entity.
      * @return NegativeCampaignRetargetingListOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $adGroupRetargetingListValues){
+    public function createSampleRemoveRequest($accountId, $adGroupRetargetingListValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupRetargetingListValues as $adGroupRetargetingListValue){
+        foreach ($adGroupRetargetingListValues as $adGroupRetargetingListValue) {
             $operand = array(
                 'campaignId' => $adGroupRetargetingListValue->adGroupRetargetingList->campaignId,
                 'adGroupId' => $adGroupRetargetingListValue->adGroupRetargetingList->adGroupId,
@@ -215,7 +222,8 @@ class AdGroupRetargetingListServiceSample{
      * @param long $targetListId TargetListID
      * @return NegativeCampaignRetargetingListSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $adGroupId, $targetListId){
+    public function createSampleGetRequest($accountId, $campaignId, $adGroupId, $targetListId)
+    {
 
         // Create selector
         $selector = array(
@@ -235,14 +243,14 @@ class AdGroupRetargetingListServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute AdGroupRetargetingListServiceSample.
  */
-try{
+try {
     $adGroupRetargetingListServiceSample = new AdGroupRetargetingListServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -286,6 +294,6 @@ try{
     // Run
     $adGroupRetargetingListValues = $adGroupRetargetingListServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }
