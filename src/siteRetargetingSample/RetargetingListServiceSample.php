@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for RetargetingListServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class RetargetingListServiceSample{
+class RetargetingListServiceSample
+{
+
     private $serviceName = 'RetargetingListService';
 
     /**
@@ -17,7 +19,8 @@ class RetargetingListServiceSample{
      * @return array RetargetingListValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,22 +28,22 @@ class RetargetingListServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->targetList)){
-                if($returnValue->error->code != '210804'){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->targetList)) {
+                if ($returnValue->error->code != '210804') {
                     throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
                 }
             }
@@ -56,7 +59,8 @@ class RetargetingListServiceSample{
      * @return array RetargetingListValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -64,21 +68,21 @@ class RetargetingListServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->targetList)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->targetList)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -92,7 +96,8 @@ class RetargetingListServiceSample{
      * @param long $accountId AccountID
      * @return RetargetingListOperation entity.
      */
-    public function createSampleAddDefaultTargetListRequest($accountId){
+    public function createSampleAddDefaultTargetListRequest($accountId)
+    {
 
         // Create operands
         $operands = array(
@@ -127,7 +132,8 @@ class RetargetingListServiceSample{
      * @param long $accountId AccountID
      * @return RetargetingListOperation entity.
      */
-    public function createSampleAddRuleBaseTargetListRequest($accountId){
+    public function createSampleAddRuleBaseTargetListRequest($accountId)
+    {
 
         // Create operands
         $operands = array(
@@ -199,12 +205,13 @@ class RetargetingListServiceSample{
      * @param array $retargetingListValues RetargetingListValues entity.
      * @return RetargetingListOperation entity.
      */
-    public function createSampleAddLogicalTargetListRequest($accountId, $retargetingListValues){
+    public function createSampleAddLogicalTargetListRequest($accountId, $retargetingListValues)
+    {
 
         // Get targetListIds
         $targetListIds = array();
-        foreach($retargetingListValues as $retargetingListKey => $retargetingListValue){
-            if(isset($retargetingListValue->targetList)){
+        foreach ($retargetingListValues as $retargetingListKey => $retargetingListValue) {
+            if (isset($retargetingListValue->targetList)) {
                 $targetListIds[] = $retargetingListValue->targetList->targetListId;
             }
         }
@@ -214,8 +221,8 @@ class RetargetingListServiceSample{
             'condition' => 'AND',
             'logicalOperand' => array()
         );
-        foreach($targetListIds as $key => $targetListId){
-            if($key != 0){
+        foreach ($targetListIds as $key => $targetListId) {
+            if ($key != 0) {
                 $logicalGroup['logicalOperand'][] = array(
                     'targetListId' => $targetListId
                 );
@@ -265,19 +272,20 @@ class RetargetingListServiceSample{
      * @param array $retargetingListValues RetargetingListValues entity.
      * @return RetargetingListOperation entity.
      */
-    public function createSampleSetRequest($accountId, $retargetingListValues){
+    public function createSampleSetRequest($accountId, $retargetingListValues)
+    {
 
         // Get targetListIds
         $targetListIds = array();
-        foreach($retargetingListValues as $retargetingListKey => $retargetingListValue){
-            if(isset($retargetingListValue->targetList) && $retargetingListValue->targetList->targetListType != 'LOGICAL'){
+        foreach ($retargetingListValues as $retargetingListKey => $retargetingListValue) {
+            if (isset($retargetingListValue->targetList) && $retargetingListValue->targetList->targetListType != 'LOGICAL') {
                 $targetListIds[] = $retargetingListValue->targetList->targetListId;
             }
         }
 
         // Create operands
         $operands = array();
-        foreach($retargetingListValues as $retargetingListKey => $retargetingListValue){
+        foreach ($retargetingListValues as $retargetingListKey => $retargetingListValue) {
 
             // Create operand
             $operand = array(
@@ -287,7 +295,7 @@ class RetargetingListServiceSample{
                 'targetListName' => $retargetingListValue->targetList->targetListName
             );
 
-            switch($retargetingListValue->targetList->targetListType){
+            switch ($retargetingListValue->targetList->targetListType) {
 
                 // Create DefaultTargetList
                 case 'DEFAULT' :
@@ -319,7 +327,7 @@ class RetargetingListServiceSample{
                         'condition' => 'OR',
                         'logicalOperand' => array()
                     );
-                    foreach($targetListIds as $key => $targetListId){
+                    foreach ($targetListIds as $key => $targetListId) {
                         $logicalGroup['logicalOperand'][] = array(
                             'targetListId' => $targetListId
                         );
@@ -356,12 +364,13 @@ class RetargetingListServiceSample{
      * @param array $retargetingListValues RetargetingListValues entity.
      * @return RetargetingListSelector entity.
      */
-    public function createSampleGetRequest($accountId, $retargetingListValues){
+    public function createSampleGetRequest($accountId, $retargetingListValues)
+    {
 
         // Get targetListIds
         $targetListIds = array();
-        foreach($retargetingListValues as $retargetingListKey => $retargetingListValue){
-            if(isset($retargetingListValue->targetList)){
+        foreach ($retargetingListValues as $retargetingListKey => $retargetingListValue) {
+            if (isset($retargetingListValue->targetList)) {
                 $targetListIds[] = $retargetingListValue->targetList->targetListId;
             }
         }
@@ -387,14 +396,14 @@ class RetargetingListServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute RetargetingListServiceSample.
  */
-try{
+try {
     $retargetingListServiceSample = new RetargetingListServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -444,6 +453,6 @@ try{
     // Run
     $retargetingListServiceSample->mutate($operation, 'SET');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

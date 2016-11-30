@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for AdGroupServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class AdGroupServiceSample{
+class AdGroupServiceSample
+{
+
     private $serviceName = 'AdGroupService';
 
     /**
@@ -17,7 +19,8 @@ class AdGroupServiceSample{
      * @return array AdGroupValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class AdGroupServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroup)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class AdGroupServiceSample{
      * @return array AdGroupValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class AdGroupServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroup)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -93,7 +97,8 @@ class AdGroupServiceSample{
      * @param long $appCampaignId AppCampaignID
      * @return AdGroupOperation entity.
      */
-    public function createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId){
+    public function createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId)
+    {
 
         // Create operands
         $operands = array(
@@ -189,11 +194,12 @@ class AdGroupServiceSample{
      * @param array $adGroupValues AdGroupValues entity.
      * @return AdGroupOperation entity.
      */
-    public function createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues){
+    public function createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupValues as $adGroupValue){
+        foreach ($adGroupValues as $adGroupValue) {
 
             // Create operand
             $operand = array(
@@ -210,11 +216,11 @@ class AdGroupServiceSample{
             );
 
             // Create BiddingStrategyConfiguration
-            if($adGroupValue->adGroup->biddingStrategyConfiguration->biddingStrategyType === 'MANUAL_CPC'){
+            if ($adGroupValue->adGroup->biddingStrategyConfiguration->biddingStrategyType === 'MANUAL_CPC') {
                 $operand['biddingStrategyConfiguration']['biddingStrategyId'] = $biddingStrategyId;
             }
 
-            if(!empty($adGroupValue->adGroup->trackingUrl)){
+            if (!empty($adGroupValue->adGroup->trackingUrl)) {
                 $operand['trackingUrl'] = 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id2}';
                 $operand['customParameters'] = array(
                     'parameters' => array(
@@ -246,11 +252,12 @@ class AdGroupServiceSample{
      * @param array $adGroupValues AdGroupValues entity.
      * @return AdGroupOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $adGroupValues){
+    public function createSampleRemoveRequest($accountId, $adGroupValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupValues as $adGroupValue){
+        foreach ($adGroupValues as $adGroupValue) {
 
             // Create operand
             $operand = array(
@@ -283,12 +290,13 @@ class AdGroupServiceSample{
      * @param array $adGroupValues AdGroupValues entity.
      * @return AdGroupSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues){
+    public function createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues)
+    {
 
         // Get adGroupIds
         $adGroupIds = array();
-        foreach($adGroupValues as $adGroupValue){
-            if(isset($adGroupValue->adGroup)){
+        foreach ($adGroupValues as $adGroupValue) {
+            if (isset($adGroupValue->adGroup)) {
                 $adGroupIds[] = $adGroupValue->adGroup->adGroupId;
             }
         }
@@ -317,14 +325,14 @@ class AdGroupServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute AdGroupServiceSample.
  */
-try{
+try {
     $adGroupServiceSample = new AdGroupServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -363,11 +371,11 @@ try{
     // AdGroupService REMOVE
     // =================================================================
     // Create operands
-    $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
+//    $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
 
     // Run
-    $adGroupServiceSample->mutate($operation, 'REMOVE');
+//    $adGroupServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

@@ -1,30 +1,26 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
-require_once (dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
-require_once (dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
-require_once (dirname(__FILE__) . '/RetargetingListServiceSample.php');
-
-require_once (dirname(__FILE__) . '/NegativeCampaignRetargetingListServiceSample.php');
-require_once (dirname(__FILE__) . '/AdGroupRetargetingListServiceSample.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
+require_once(dirname(__FILE__) . '/RetargetingListServiceSample.php');
+require_once(dirname(__FILE__) . '/NegativeCampaignRetargetingListServiceSample.php');
+require_once(dirname(__FILE__) . '/AdGroupRetargetingListServiceSample.php');
 
 /**
  * Sample Program for SiteRetargetingSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class SiteRetargetingSample{
 
-}
-
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute SiteRetargetingSample.
  */
-try{
+try {
     $biddingStrategyServiceSample = new BiddingStrategyServiceSample();
     $campaignServiceSample = new CampaignServiceSample();
     $adGroupServiceSample = new AdGroupServiceSample();
@@ -57,9 +53,9 @@ try{
     $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'SET');
 
     // Get BiddingStrategyType for PAGE_ONE_PROMOTED
-    foreach($biddingStrategyValues as $biddingStrategyValue){
-        if($biddingStrategyId === 0){
-            switch($biddingStrategyValue->biddingStrategy->biddingStrategyType){
+    foreach ($biddingStrategyValues as $biddingStrategyValue) {
+        if ($biddingStrategyId === 0) {
+            switch ($biddingStrategyValue->biddingStrategy->biddingStrategyType) {
                 default :
                     break;
                 case 'PAGE_ONE_PROMOTED' :
@@ -80,9 +76,9 @@ try{
     // CampaignService SET
     $operation = $campaignServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $campaignValues);
     $campaignValues = $campaignServiceSample->mutate($operation, 'SET');
-    foreach($campaignValues as $campaignValue){
-        if(($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'PAGE_ONE_PROMOTED'){
-            switch($campaignValue->campaign->campaignType){
+    foreach ($campaignValues as $campaignValue) {
+        if (($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'PAGE_ONE_PROMOTED') {
+            switch ($campaignValue->campaign->campaignType) {
                 default :
                     break;
                 case 'STANDARD' :
@@ -106,11 +102,11 @@ try{
     // AdGroupService SET
     $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues);
     $adGroupValues = $adGroupServiceSample->mutate($operation, 'SET');
-    foreach($adGroupValues as $adGroupValue){
-        if($adGroupId === 0 || $appAdGroupId === 0){
-            if($adGroupValue->adGroup->campaignId === $campaignId){
+    foreach ($adGroupValues as $adGroupValue) {
+        if ($adGroupId === 0 || $appAdGroupId === 0) {
+            if ($adGroupValue->adGroup->campaignId === $campaignId) {
                 $adGroupId = $adGroupValue->adGroup->adGroupId;
-            }elseif($adGroupValue->adGroup->campaignId === $appCampaignId){
+            } elseif ($adGroupValue->adGroup->campaignId === $appCampaignId) {
                 $appAdGroupId = $adGroupValue->adGroup->adGroupId;
             }
         }
@@ -138,8 +134,8 @@ try{
     // SET
     $operation = $retargetingListServiceSample->createSampleSetRequest($accountId, $retargetingListValues);
     $retargetingListValues = $retargetingListServiceSample->mutate($operation, 'SET');
-    foreach($retargetingListValues as $retargetingListKey => $retargetingListValue){
-        if(isset($retargetingListValue->targetList) && $targetListId === 0){
+    foreach ($retargetingListValues as $retargetingListKey => $retargetingListValue) {
+        if (isset($retargetingListValue->targetList) && $targetListId === 0) {
             $targetListId = $retargetingListValue->targetList->targetListId;
             break;
         }
@@ -194,6 +190,6 @@ try{
     $operation = $biddingStrategyServiceSample->createSampleRemoveRequest($accountId, $biddingStrategyValues);
     $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

@@ -1,12 +1,13 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for FeedFolderServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class FeedFolderServiceSample{
+class FeedFolderServiceSample
+{
 
     /**
      * Sample Program for FeedFolderService ADD.
@@ -15,7 +16,8 @@ class FeedFolderServiceSample{
      * @return array FeedFolderValues entity
      * @throws Exception
      */
-    function addFeedFolder($accountId){
+    function addFeedFolder($accountId)
+    {
         // Set Operand
         $operand = array(
             array(
@@ -61,21 +63,21 @@ class FeedFolderServiceSample{
         $feedFolderResponse = $feedFolderService->invoke('mutate', $feedFolderRequest);
 
         // Response
-        if(isset($feedFolderResponse->rval->values)){
-            if(is_array($feedFolderResponse->rval->values)){
+        if (isset($feedFolderResponse->rval->values)) {
+            if (is_array($feedFolderResponse->rval->values)) {
                 $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            }else{
+            } else {
                 $feedFolderReturnValues = array(
                     $feedFolderResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of add FeedFolderService.");
         }
 
         // Error
-        foreach($feedFolderReturnValues as $feedFolderReturnValue){
-            if(!isset($feedFolderReturnValue->feedFolder)){
+        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
+            if (!isset($feedFolderReturnValue->feedFolder)) {
                 throw new Exception("Fail to add FeedFolderService.");
             }
         }
@@ -91,10 +93,11 @@ class FeedFolderServiceSample{
      * @return array FeedFolderValues entity
      * @throws Exception
      */
-    function setFeedFolder($accountId, $feedFolderValues){
+    function setFeedFolder($accountId, $feedFolderValues)
+    {
         // Set Operand
         $operand = array();
-        foreach($feedFolderValues as $feedFolderValue){
+        foreach ($feedFolderValues as $feedFolderValue) {
 
             $operand = array(
                 array(
@@ -141,21 +144,21 @@ class FeedFolderServiceSample{
         $feedFolderResponse = $feedFolderService->invoke('mutate', $feedFolderRequest);
 
         // Response
-        if(isset($feedFolderResponse->rval->values)){
-            if(is_array($feedFolderResponse->rval->values)){
+        if (isset($feedFolderResponse->rval->values)) {
+            if (is_array($feedFolderResponse->rval->values)) {
                 $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            }else{
+            } else {
                 $feedFolderReturnValues = array(
                     $feedFolderResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of set FeedFolderService.");
         }
 
         // Error
-        foreach($feedFolderReturnValues as $feedFolderReturnValue){
-            if(!isset($feedFolderReturnValue->feedFolder)){
+        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
+            if (!isset($feedFolderReturnValue->feedFolder)) {
                 throw new Exception("Fail to set FeedFolderService.");
             }
         }
@@ -171,10 +174,11 @@ class FeedFolderServiceSample{
      * @return array FeedFolderValues entity
      * @throws Exception
      */
-    function removeFeedFolder($accountId, $feedFolderValues){
+    function removeFeedFolder($accountId, $feedFolderValues)
+    {
         // Set Operand
         $operands = array();
-        foreach($feedFolderValues as $feedFolderValue){
+        foreach ($feedFolderValues as $feedFolderValue) {
             $operand = array(
                 'accountId' => $accountId,
                 'feedFolderId' => $feedFolderValue->feedFolder->feedFolderId
@@ -196,21 +200,21 @@ class FeedFolderServiceSample{
         $feedFolderResponse = $feedFolderService->invoke('mutate', $feedFolderRequest);
 
         // Response
-        if(isset($feedFolderResponse->rval->values)){
-            if(is_array($feedFolderResponse->rval->values)){
+        if (isset($feedFolderResponse->rval->values)) {
+            if (is_array($feedFolderResponse->rval->values)) {
                 $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            }else{
+            } else {
                 $feedFolderReturnValues = array(
                     $feedFolderResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of set FeedFolderService.");
         }
 
         // Error
-        foreach($feedFolderReturnValues as $feedFolderReturnValue){
-            if(!isset($feedFolderReturnValue->feedFolder)){
+        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
+            if (!isset($feedFolderReturnValue->feedFolder)) {
                 throw new Exception("Fail to set FeedFolderService.");
             }
         }
@@ -226,10 +230,11 @@ class FeedFolderServiceSample{
      * @return array FeedFolderValues entity
      * @throws Exception
      */
-    function getFeedFolder($accountId, $feedFolderValues){
+    function getFeedFolder($accountId, $feedFolderValues)
+    {
         // Set feedFolderIds
         $feedFolderIds = array();
-        foreach($feedFolderValues as $feedFolderValue){
+        foreach ($feedFolderValues as $feedFolderValue) {
             $feedFolderIds[] = $feedFolderValue->feedFolder->feedFolderId;
         }
 
@@ -250,21 +255,21 @@ class FeedFolderServiceSample{
         $feedFolderResponse = $feedFolderService->invoke('get', $feedFolderRequest);
 
         // Response
-        if(isset($feedFolderResponse->rval->values)){
-            if(is_array($feedFolderResponse->rval->values)){
+        if (isset($feedFolderResponse->rval->values)) {
+            if (is_array($feedFolderResponse->rval->values)) {
                 $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            }else{
+            } else {
                 $feedFolderReturnValues = array(
                     $feedFolderResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of get FeedFolderService.");
         }
 
         // Error
-        foreach($feedFolderReturnValues as $feedFolderReturnValue){
-            if(!isset($feedFolderReturnValue->feedFolder)){
+        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
+            if (!isset($feedFolderReturnValue->feedFolder)) {
                 throw new Exception("Fail to get FeedFolderService.");
             }
         }
@@ -273,14 +278,14 @@ class FeedFolderServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * FeedFolderServiceSample
  */
-try{
+try {
     $feedFolderServiceSample = new FeedFolderServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -298,6 +303,6 @@ try{
     // FeedFolderServiceSample REMOVE
     $feedFolderServiceSample->removeFeedFolder($accountId, $feedFolderValues);
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

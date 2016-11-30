@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for BiddingStrategyService.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class BiddingStrategyServiceSample{
+class BiddingStrategyServiceSample
+{
+
     private $serviceName = 'BiddingStrategyService';
 
     /**
@@ -17,7 +19,8 @@ class BiddingStrategyServiceSample{
      * @return array BiddingStrategyReturnValue entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class BiddingStrategyServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->biddingStrategy)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class BiddingStrategyServiceSample{
      * @return array BiddingStrategyReturnValue entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class BiddingStrategyServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->biddingStrategy)){
+        foreach ($returnValues as $returnValue) {
+            if ($returnValue->operationSucceeded != true) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -90,7 +94,8 @@ class BiddingStrategyServiceSample{
      * @param long $accountId AccountID
      * @return BiddingStrategyOperation entity.
      */
-    public function createSampleAddRequest($accountId){
+    public function createSampleAddRequest($accountId)
+    {
 
         // Create operands
         $operands = array(
@@ -179,11 +184,12 @@ class BiddingStrategyServiceSample{
      * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
      * @return BiddingStrategyOperation entity.
      */
-    public function createSampleSetRequest($accountId, $biddingStrategyValues){
+    public function createSampleSetRequest($accountId, $biddingStrategyValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($biddingStrategyValues as $biddingStrategyValue){
+        foreach ($biddingStrategyValues as $biddingStrategyValue) {
 
             // Set operand
             $operand = array(
@@ -192,7 +198,7 @@ class BiddingStrategyServiceSample{
             );
 
             // Set BiddingScheme
-            switch($biddingStrategyValue->biddingStrategy->biddingStrategyType){
+            switch ($biddingStrategyValue->biddingStrategy->biddingStrategyType) {
 
                 // EnhancedCpcBiddingScheme
                 case 'ENHANCED_CPC' :
@@ -278,11 +284,12 @@ class BiddingStrategyServiceSample{
      * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
      * @return BiddingStrategyOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $biddingStrategyValues){
+    public function createSampleRemoveRequest($accountId, $biddingStrategyValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($biddingStrategyValues as $biddingStrategyValue){
+        foreach ($biddingStrategyValues as $biddingStrategyValue) {
 
             // Create operand
             $operand = array(
@@ -312,12 +319,13 @@ class BiddingStrategyServiceSample{
      * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
      * @return BiddingStrategySelector entity.
      */
-    public function createSampleGetRequest($accountId, $biddingStrategyValues){
+    public function createSampleGetRequest($accountId, $biddingStrategyValues)
+    {
 
         // Get biddingStrategyIds
         $biddingStrategyIds = array();
-        foreach($biddingStrategyValues as $biddingStrategyValue){
-            if(isset($biddingStrategyValue->biddingStrategy)){
+        foreach ($biddingStrategyValues as $biddingStrategyValue) {
+            if (isset($biddingStrategyValue->biddingStrategy)) {
                 $biddingStrategyIds[] = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
             }
         }
@@ -345,14 +353,14 @@ class BiddingStrategyServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute BiddingStrategyServiceSample.
  */
-try{
+try {
     $biddingStrategyServiceSample = new BiddingStrategyServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -393,6 +401,6 @@ try{
     // Run
     $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

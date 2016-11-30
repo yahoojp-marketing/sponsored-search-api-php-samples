@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for AdGroupCriterionServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class AdGroupCriterionServiceSample{
+class AdGroupCriterionServiceSample
+{
+
     private $serviceName = 'AdGroupCriterionService';
 
     /**
@@ -17,7 +19,8 @@ class AdGroupCriterionServiceSample{
      * @return array AdGroupCriterionValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class AdGroupCriterionServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupCriterion)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->adGroupCriterion)) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class AdGroupCriterionServiceSample{
      * @return array AdGroupCriterionValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class AdGroupCriterionServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupCriterion)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->adGroupCriterion)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -92,7 +96,8 @@ class AdGroupCriterionServiceSample{
      * @param long $adGroupId AdGroupID
      * @return AdGroupOperation entity.
      */
-    public function createSampleAddRequest($accountId, $campaignId, $adGroupId){
+    public function createSampleAddRequest($accountId, $campaignId, $adGroupId)
+    {
 
         // Create operands
         $operands = array(
@@ -168,11 +173,12 @@ class AdGroupCriterionServiceSample{
      * @param array $adGroupCriterionValues AdGroupCriterionValues entity.
      * @return AdGroupOperation entity.
      */
-    public function createSampleSetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues){
+    public function createSampleSetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupCriterionValues as $adGroupCriterionValue){
+        foreach ($adGroupCriterionValues as $adGroupCriterionValue) {
 
             // Create operand
             $operand = array(
@@ -247,11 +253,12 @@ class AdGroupCriterionServiceSample{
      * @param array $adGroupCriterionValues AdGroupCriterionValues entity.
      * @return AdGroupOperation entity.
      */
-    public function createSampleRemoveRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues){
+    public function createSampleRemoveRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues)
+    {
 
         // Create operands
         $operands = array();
-        foreach($adGroupCriterionValues as $adGroupCriterionValue){
+        foreach ($adGroupCriterionValues as $adGroupCriterionValue) {
 
             // Create operand
             $operand = array(
@@ -296,12 +303,13 @@ class AdGroupCriterionServiceSample{
      * @param array $adGroupCriterionValues AdGroupCriterionValues entity.
      * @return AdGroupCriterionSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues){
+    public function createSampleGetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues)
+    {
 
         // Get criterionIds
         $criterionIds = array();
-        foreach($adGroupCriterionValues as $adGroupCriterionValue){
-            if(isset($adGroupCriterionValue->adGroupCriterion)){
+        foreach ($adGroupCriterionValues as $adGroupCriterionValue) {
+            if (isset($adGroupCriterionValue->adGroupCriterion)) {
                 $criterionIds[] = $adGroupCriterionValue->adGroupCriterion->criterion->criterionId;
             }
         }
@@ -341,14 +349,14 @@ class AdGroupCriterionServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute AdGroupCriterionServiceSample.
  */
-try{
+try {
     $adGroupCriterionServiceSample = new AdGroupCriterionServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -364,6 +372,41 @@ try{
     // Run
     $adGroupCriterionValues = $adGroupCriterionServiceSample->mutate($operation, 'ADD');
 
+
+    // call 30sec sleep * 30 = 15minute
+    for ($i = 0; $i < 30; $i++) {
+        // sleep 30 second.
+        echo "\n***** sleep 30 seconds for AdGroupCriterion Review Status Check *****\n";
+        sleep(30);
+
+        // =================================================================
+        // AdGroupCriterionService GET
+        // =================================================================
+        // Create selector
+        $selector = $adGroupCriterionServiceSample->createSampleGetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
+
+        // Run
+        $adGroupCriterionValues = $adGroupCriterionServiceSample->get($selector);
+
+        // status
+        foreach ($adGroupCriterionValues as $adGroupCriterionValue) {
+            if (isset($adGroupCriterionValue->adGroupCriterion->approvalStatus)) {
+                $approvalStatus = $adGroupCriterionValue->adGroupCriterion->approvalStatus;
+                if ($approvalStatus != 'APPROVED') {
+                    if ($approvalStatus === 'PRE_DISAPPROVED' || $approvalStatus === 'POST_DISAPPROVED') {
+                        echo 'AdGroupCriterion Review Status failed.';
+                        exit();
+                    } else {
+                        continue 2;
+                    }
+                }
+            } else {
+                echo 'Fail to add AdGroupCriterionService.';
+                exit();
+            }
+        }
+    }
+
     // =================================================================
     // AdGroupCriterionService SET
     // =================================================================
@@ -374,15 +417,6 @@ try{
     $adGroupCriterionValues = $adGroupCriterionServiceSample->mutate($operation, 'SET');
 
     // =================================================================
-    // AdGroupCriterionService GET
-    // =================================================================
-    // Create selector
-    $selector = $adGroupCriterionServiceSample->createSampleGetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
-
-    // Run
-    $adGroupCriterionValues = $adGroupCriterionServiceSample->get($selector);
-
-    // =================================================================
     // AdGroupCriterionService REMOVE
     // =================================================================
     // Create operands
@@ -391,7 +425,7 @@ try{
     // Run
     $adGroupCriterionValues = $adGroupCriterionServiceSample->mutate($operation, 'REMOVE');
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }
 

@@ -1,12 +1,13 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for FeedItemServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class FeedItemServiceSample{
+class FeedItemServiceSample
+{
 
     /**
      * Sample Program for FeedItemService(AD_CUSTOMIZER) ADD.
@@ -19,7 +20,8 @@ class FeedItemServiceSample{
      * @return array FeedItemValues entity
      * @throws Exception
      */
-    public function addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeId){
+    public function addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeId)
+    {
         // Set Operand
         $operand = array(
             // Set AdCustomizer
@@ -87,8 +89,8 @@ class FeedItemServiceSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
         }
 
         // Call API
@@ -96,21 +98,21 @@ class FeedItemServiceSample{
         $feedItemResponse = $feedItemService->invoke('mutate', $feedItemRequest);
 
         // Response
-        if(isset($feedItemResponse->rval->values)){
-            if(is_array($feedItemResponse->rval->values)){
+        if (isset($feedItemResponse->rval->values)) {
+            if (is_array($feedItemResponse->rval->values)) {
                 $feedItemReturnValues = $feedItemResponse->rval->values;
-            }else{
+            } else {
                 $feedItemReturnValues = array(
                     $feedItemResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of add FeedItemService(AD_CUSTOMIZER).");
         }
 
         // Error
-        foreach($feedItemReturnValues as $feedItemReturnValue){
-            if(!isset($feedItemReturnValue->feedItem)){
+        foreach ($feedItemReturnValues as $feedItemReturnValue) {
+            if (!isset($feedItemReturnValue->feedItem)) {
                 throw new Exception("Fail to add FeedItemService(AD_CUSTOMIZER).");
             }
         }
@@ -127,10 +129,11 @@ class FeedItemServiceSample{
      * @return array FeedItemValues entity
      * @throws Exception
      */
-    public function setFeedItem($accountId, $feedAttributeId, $feedItemValues){
+    public function setFeedItem($accountId, $feedAttributeId, $feedItemValues)
+    {
         // Set Operand
         $operand = array();
-        foreach($feedItemValues as $feedItemValue){
+        foreach ($feedItemValues as $feedItemValue) {
 
             $operand = array(
                 // Set AdCustomizer
@@ -172,8 +175,8 @@ class FeedItemServiceSample{
         );
 
         //xsi:type for SimpleFeedItemAttribute
-        foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute){
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS,'feedItemAttribute',XMLSCHEMANS);
+        foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
+            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
         }
 
         // Call API
@@ -181,21 +184,21 @@ class FeedItemServiceSample{
         $feedItemResponse = $feedItemService->invoke('mutate', $feedItemRequest);
 
         // Response
-        if(isset($feedItemResponse->rval->values)){
-            if(is_array($feedItemResponse->rval->values)){
+        if (isset($feedItemResponse->rval->values)) {
+            if (is_array($feedItemResponse->rval->values)) {
                 $feedItemReturnValues = $feedItemResponse->rval->values;
-            }else{
+            } else {
                 $feedItemReturnValues = array(
                     $feedItemResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of set FeedItemService(AD_CUSTOMIZER).");
         }
 
         // Error
-        foreach($feedItemReturnValues as $feedItemReturnValue){
-            if(!isset($feedItemReturnValue->feedItem)){
+        foreach ($feedItemReturnValues as $feedItemReturnValue) {
+            if (!isset($feedItemReturnValue->feedItem)) {
                 throw new Exception("Fail to set FeedItemService(AD_CUSTOMIZER).");
             }
         }
@@ -211,10 +214,11 @@ class FeedItemServiceSample{
      * @return array FeedFolderValues entity
      * @throws Exception
      */
-    public function removeFeedItem($accountId, $feedItemValues){
+    public function removeFeedItem($accountId, $feedItemValues)
+    {
         // Set Operand
         $operand = array();
-        foreach($feedItemValues as $feedItemValue){
+        foreach ($feedItemValues as $feedItemValue) {
             $operand = array(
                 array(
                     'accountId' => $accountId,
@@ -240,21 +244,21 @@ class FeedItemServiceSample{
         $feedItemResponse = $feedItemService->invoke('mutate', $feedItemRequest);
 
         // Response
-        if(isset($feedItemResponse->rval->values)){
-            if(is_array($feedItemResponse->rval->values)){
+        if (isset($feedItemResponse->rval->values)) {
+            if (is_array($feedItemResponse->rval->values)) {
                 $feedItemReturnValues = $feedItemResponse->rval->values;
-            }else{
+            } else {
                 $feedItemReturnValues = array(
                     $feedItemResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of set FeedItemService.");
         }
 
         // Error
-        foreach($feedItemReturnValues as $feedItemReturnValue){
-            if(!isset($feedItemReturnValue->feedItem)){
+        foreach ($feedItemReturnValues as $feedItemReturnValue) {
+            if (!isset($feedItemReturnValue->feedItem)) {
                 throw new Exception("Fail to set FeedItemService.");
             }
         }
@@ -270,10 +274,11 @@ class FeedItemServiceSample{
      * @return array FeedItemValues entity
      * @throws Exception
      */
-    public function getFeedItem($accountId, $feedItemValues){
+    public function getFeedItem($accountId, $feedItemValues)
+    {
         // Set feedItemIds
         $feedItemIds = array();
-        foreach($feedItemValues as $feedItemValue){
+        foreach ($feedItemValues as $feedItemValue) {
             $feedItemIds[] = $feedItemValue->feedItem->feedItemId;
         }
 
@@ -307,37 +312,37 @@ class FeedItemServiceSample{
         $feedItemResponse = $feedItemService->invoke('get', $feedItemRequest);
 
         // Response
-        if(isset($feedItemResponse->rval->values)){
-            if(is_array($feedItemResponse->rval->values)){
+        if (isset($feedItemResponse->rval->values)) {
+            if (is_array($feedItemResponse->rval->values)) {
                 $feedItemReturnValues = $feedItemResponse->rval->values;
-            }else{
+            } else {
                 $feedItemReturnValues = array(
                     $feedItemResponse->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception("No response of get FeedItemService.");
         }
 
         // Error
-        foreach($feedItemReturnValues as $feedItemReturnValue){
-            if(!isset($feedItemReturnValue->feedItem)){
+        foreach ($feedItemReturnValues as $feedItemReturnValue) {
+            if (!isset($feedItemReturnValue->feedItem)) {
                 throw new Exception("Fail to get FeedItemService.");
             }
         }
 
-        return $feedItemResponse;
+        return $feedItemReturnValues;
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * FeedItemServiceSample
  */
-try{
+try {
     $feedItemServiceSample = new FeedItemServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -354,11 +359,33 @@ try{
     // FeedItemServiceSample(AD_CUSTOMIZER) ADD
     $feedItemValues = $feedItemServiceSample->addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeIds);
 
-    // FeedItemServiceSample GET
-    $feedItemServiceSample->getFeedItem($accountId, $feedItemValues);
+    // call 30sec sleep * 30 = 15minute
+    for ($i = 0; $i < 30; $i++) {
+        // sleep 30 second.
+        echo "\n***** sleep 30 seconds for Feed Item Review Status Check *****\n";
+        sleep(30);
 
-    // waiting for sandbox review process
-    sleep(20);
+        // FeedItemServiceSample GET
+        $feedItemValues = $feedItemServiceSample->getFeedItem($accountId, $feedItemValues);
+
+        // status
+        foreach ($feedItemValues as $feedItemValue) {
+            if (isset($feedItemValue->feedItem->approvalStatus)) {
+                $approvalStatus = $feedItemValue->feedItem->approvalStatus;
+                if ($approvalStatus != 'APPROVED') {
+                    if ($approvalStatus === 'PRE_DISAPPROVED' || $approvalStatus === 'POST_DISAPPROVED') {
+                        echo 'Feed Item Review Status failed.';
+                        exit();
+                    } else {
+                        continue 2;
+                    }
+                }
+            } else {
+                echo 'Fail to add FeedItemService.';
+                exit();
+            }
+        }
+    }
 
     // FeedItemServiceSample(AD_CUSTOMIZER) SET
     $feedItemServiceSample->setFeedItem($accountId, $feedAttributeIds, $feedItemValues);
@@ -366,6 +393,6 @@ try{
     // FeedItemServiceSample REMOVE
     $feedItemServiceSample->removeFeedItem($accountId, $feedItemValues);
 
-}catch(Exception $e){
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

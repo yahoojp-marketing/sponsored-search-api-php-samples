@@ -1,12 +1,14 @@
 <?php
-require_once (dirname(__FILE__) . '/../../conf/api_config.php');
-require_once (dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../../conf/api_config.php');
+require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
  * Sample Program for AdGroupBidMultiplierServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class AdGroupBidMultiplierServiceSample{
+class AdGroupBidMultiplierServiceSample
+{
+
     private $serviceName = 'AdGroupBidMultiplierService';
 
     /**
@@ -17,7 +19,8 @@ class AdGroupBidMultiplierServiceSample{
      * @return array AdGroupBidMultiplierValues entity.
      * @throws Exception
      */
-    public function mutate($operation, $method){
+    public function mutate($operation, $method)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -25,21 +28,21 @@ class AdGroupBidMultiplierServiceSample{
 
         // Response
         $returnValues = array();
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of ' . $method . ' ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupBidMultiplier)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->adGroupBidMultiplier)) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -54,7 +57,8 @@ class AdGroupBidMultiplierServiceSample{
      * @return array AdGroupBidMultiplierValues entity.
      * @throws Exception
      */
-    public function get($selector){
+    public function get($selector)
+    {
 
         // Call API
         $service = SoapUtils::getService($this->serviceName);
@@ -62,21 +66,21 @@ class AdGroupBidMultiplierServiceSample{
 
         // Response
         $returnValues = null;
-        if(isset($response->rval->values)){
-            if(is_array($response->rval->values)){
+        if (isset($response->rval->values)) {
+            if (is_array($response->rval->values)) {
                 $returnValues = $response->rval->values;
-            }else{
+            } else {
                 $returnValues = array(
                     $response->rval->values
                 );
             }
-        }else{
+        } else {
             throw new Exception('No response of get ' . $this->serviceName . '.');
         }
 
         // Error
-        foreach($returnValues as $returnValue){
-            if(!isset($returnValue->adGroupBidMultiplier)){
+        foreach ($returnValues as $returnValue) {
+            if (!isset($returnValue->adGroupBidMultiplier)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -92,32 +96,78 @@ class AdGroupBidMultiplierServiceSample{
      * @param long $adGroupId AdGroupID
      * @return AdGroupBidMultiplierOperation entity.
      */
-    public function createSampleSetRequest($accountId, $campaignId, $adGroupId){
+    public function createSampleSetRequest($accountId, $campaignId, $adGroupId)
+    {
 
         // Create operands
         $operands = array(
             array(
+                'campaignId' => $campaignId,
                 'adGroupId' => $adGroupId,
-                'bidMultipliers' => array(
-                    'type' => 'PLATFORM',
-                    'bidMultipliers' => array(
-                        'type' => 'PLATFORM',
-                        'platformName' => 'SMART_PHONE',
-                        'bidMultiplier' => '3.2'
-                    )
-                )
+                'platformType' => 'SMART_PHONE',
+                'bidMultiplier' => '3.2'
+            ),
+            array(
+                'campaignId' => $campaignId,
+                'adGroupId' => $adGroupId,
+                'platformType' => 'TABLET',
+                'bidMultiplier' => '5.2'
+            ),
+            array(
+                'campaignId' => $campaignId,
+                'adGroupId' => $adGroupId,
+                'platformType' => 'DESKTOP',
+                'bidMultiplier' => '9.2'
             )
         );
-
-        // Set xsi:type
-        $operands[0]['bidMultipliers'] = new SoapVar($operands[0]['bidMultipliers'], SOAP_ENC_OBJECT, 'PlatformBidMultiplierList', API_NS, 'bidMultipliers', XMLSCHEMANS);
 
         // Create operation
         $operation = array(
             'operations' => array(
                 'operator' => 'SET',
                 'accountId' => $accountId,
+                'operand' => $operands
+            )
+        );
+
+        return $operation;
+    }
+
+    /**
+     * create sample request.
+     *
+     * @param long $accountId AccountID
+     * @param long $campaignId CampaignID
+     * @param long $adGroupId AdGroupID
+     * @return AdGroupBidMultiplierOperation entity.
+     */
+    public function createSampleRemoveRequest($accountId, $campaignId, $adGroupId)
+    {
+
+        // Create operands
+        $operands = array(
+            array(
                 'campaignId' => $campaignId,
+                'adGroupId' => $adGroupId,
+                'platformType' => 'SMART_PHONE',
+            ),
+            array(
+                'campaignId' => $campaignId,
+                'adGroupId' => $adGroupId,
+                'platformType' => 'TABLET',
+            ),
+            array(
+                'campaignId' => $campaignId,
+                'adGroupId' => $adGroupId,
+                'platformType' => 'DESKTOP',
+            )
+        );
+
+        // Create operation
+        $operation = array(
+            'operations' => array(
+                'operator' => 'REMOVE',
+                'accountId' => $accountId,
                 'operand' => $operands
             )
         );
@@ -133,7 +183,8 @@ class AdGroupBidMultiplierServiceSample{
      * @param long $adGroupId AdGroupID
      * @return AdGroupBidMultiplierSelector entity.
      */
-    public function createSampleGetRequest($accountId, $campaignId, $adGroupId){
+    public function createSampleGetRequest($accountId, $campaignId, $adGroupId)
+    {
 
         // Create selector
         $selector = array(
@@ -144,6 +195,11 @@ class AdGroupBidMultiplierServiceSample{
                 ),
                 'adGroupIds' => array(
                     $adGroupId
+                ),
+                'platformTypes' => array(
+                    'SMART_PHONE',
+                    'TABLET',
+                    'DESKTOP',
                 ),
                 'paging' => array(
                     'startIndex' => 1,
@@ -156,14 +212,14 @@ class AdGroupBidMultiplierServiceSample{
     }
 }
 
-if(__FILE__ != realpath($_SERVER['PHP_SELF'])){
+if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
     return;
 }
 
 /**
  * execute AdGroupBidMultiplierServiceSample.
  */
-try{
+try {
     $adGroupBidMultiplierServiceSample = new AdGroupBidMultiplierServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -188,6 +244,15 @@ try{
     // Run
     $adGroupBidMultiplierValues = $adGroupBidMultiplierServiceSample->get($selector);
 
-}catch(Exception $e){
+    // =================================================================
+    // AdGroupBidMultiplierService REMOVE
+    // =================================================================
+    // Create operands
+    $operation = $adGroupBidMultiplierServiceSample->createSampleRemoveRequest($accountId, $campaignId, $adGroupId);
+
+    // Run
+    $adGroupBidMultiplierValues = $adGroupBidMultiplierServiceSample->mutate($operation, 'REMOVE');
+
+} catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }
