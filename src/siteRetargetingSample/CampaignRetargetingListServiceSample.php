@@ -3,20 +3,20 @@ require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
- * Sample Program for NegativeCampaignRetargetingListServiceSample.
+ * Sample Program for CampaignRetargetingListServiceSample.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class NegativeCampaignRetargetingListServiceSample
+class CampaignRetargetingListServiceSample
 {
 
-    private $serviceName = 'NegativeCampaignRetargetingListService';
+    private $serviceName = 'CampaignRetargetingListService';
 
     /**
-     * Sample Program for NegativeCampaignRetargetingListService MUTATE.
+     * Sample Program for CampaignRetargetingListService MUTATE.
      *
-     * @param array $operation NegativeCampaignRetargetingListOperation entity.
+     * @param array $operation CampaignRetargetingListOperation entity.
      * @param string $method Operator enum.
-     * @return array NegativeCampaignRetargetingListValues entity.
+     * @return array CampaignRetargetingListValues entity.
      * @throws Exception
      */
     public function mutate($operation, $method)
@@ -42,7 +42,7 @@ class NegativeCampaignRetargetingListServiceSample
 
         // Error
         foreach ($returnValuesValues as $returnValuesValue) {
-            if (!isset($returnValuesValue->negativeCampaignRetargetingList)) {
+            if (!isset($returnValuesValue->campaignRetargetingList)) {
                 throw new Exception('Fail to ' . $method . ' ' . $this->serviceName . '.');
             }
         }
@@ -51,10 +51,10 @@ class NegativeCampaignRetargetingListServiceSample
     }
 
     /**
-     * Sample Program for NegativeCampaignRetargetingListService GET.
+     * Sample Program for CampaignRetargetingListService GET.
      *
-     * @param array $selector NegativeCampaignRetargetingListSelector entity.
-     * @return array NegativeCampaignRetargetingListValues entity.
+     * @param array $selector CampaignRetargetingListSelector entity.
+     * @return array CampaignRetargetingListValues entity.
      * @throws Exception
      */
     public function get($selector)
@@ -80,7 +80,7 @@ class NegativeCampaignRetargetingListServiceSample
 
         // Error
         foreach ($returnValues as $returnValue) {
-            if (!isset($returnValue->negativeCampaignRetargetingList)) {
+            if (!isset($returnValue->campaignRetargetingList)) {
                 throw new Exception('Fail to get ' . $this->serviceName . '.');
             }
         }
@@ -94,7 +94,7 @@ class NegativeCampaignRetargetingListServiceSample
      * @param long $accountId AccountID
      * @param long $campaignId CampaignID
      * @param long $targetListId TargetListID
-     * @return NegativeCampaignRetargetingListOperation entity.
+     * @return CampaignRetargetingListOperation entity.
      */
     public function createSampleAddRequest($accountId, $campaignId, $targetListId)
     {
@@ -105,7 +105,16 @@ class NegativeCampaignRetargetingListServiceSample
                 'campaignId' => $campaignId,
                 'criterionTargetList' => array(
                     'targetListId' => $targetListId
-                )
+                ),
+                'excludedType' => 'INCLUDED',
+                'bidMultiplier' => '1.00'
+            ),
+            array(
+                'campaignId' => $campaignId,
+                'criterionTargetList' => array(
+                    'targetListId' => $targetListId
+                ),
+                'excludedType' => 'EXCLUDED'
             )
         );
 
@@ -127,7 +136,7 @@ class NegativeCampaignRetargetingListServiceSample
      * @param long $accountId AccountID
      * @param long $campaignId CampaignID
      * @param long $targetListId TargetListID
-     * @return NegativeCampaignRetargetingListOperation entity.
+     * @return CampaignRetargetingListOperation entity.
      */
     public function createSampleRemoveRequest($accountId, $campaignId, $targetListId)
     {
@@ -138,7 +147,8 @@ class NegativeCampaignRetargetingListServiceSample
                 'campaignId' => $campaignId,
                 'criterionTargetList' => array(
                     'targetListId' => $targetListId
-                )
+                ),
+                'excludedType' => 'INCLUDED'
             )
         );
 
@@ -160,7 +170,7 @@ class NegativeCampaignRetargetingListServiceSample
      * @param long $accountId AccountID
      * @param long $campaignId CampaignID
      * @param long $targetListId TargetListID
-     * @return NegativeCampaignRetargetingListSelector entity.
+     * @return CampaignRetargetingListSelector entity.
      */
     public function createSampleGetRequest($accountId, $campaignId, $targetListId)
     {
@@ -187,41 +197,41 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
 }
 
 /**
- * execute NegativeCampaignRetargetingListServiceSample.
+ * execute CampaignRetargetingListServiceSample.
  */
 try {
-    $negativeCampaignRetargetingListServiceSample = new NegativeCampaignRetargetingListServiceSample();
+    $campaignRetargetingListServiceSample = new CampaignRetargetingListServiceSample();
 
     $accountId = SoapUtils::getAccountId();
     $campaignId = SoapUtils::getCampaignId();
     $targetListId = SoapUtils::getTargetListId();
 
     // =================================================================
-    // NegativeCampaignRetargetingListService ADD
+    // CampaignRetargetingListService ADD
     // =================================================================
     // Create operands
-    $operation = $negativeCampaignRetargetingListServiceSample->createSampleAddRequest($accountId, $campaignId, $targetListId);
+    $operation = $campaignRetargetingListServiceSample->createSampleAddRequest($accountId, $campaignId, $targetListId);
 
     // Run
-    $negativeCampaignRetargetingListServiceSample->mutate($operation, 'ADD');
+    $campaignRetargetingListServiceSample->mutate($operation, 'ADD');
 
     // =================================================================
-    // NegativeCampaignRetargetingListService GET
+    // CampaignRetargetingListService GET
     // =================================================================
     // Create selector
-    $selector = $negativeCampaignRetargetingListServiceSample->createSampleGetRequest($accountId, $campaignId, $targetListId);
+    $selector = $campaignRetargetingListServiceSample->createSampleGetRequest($accountId, $campaignId, $targetListId);
 
     // Run
-    $negativeCampaignRetargetingListValues = $negativeCampaignRetargetingListServiceSample->get($selector);
+    $campaignRetargetingListValues = $campaignRetargetingListServiceSample->get($selector);
 
     // =================================================================
-    // NegativeCampaignRetargetingListService REMOVE
+    // CampaignRetargetingListService REMOVE
     // =================================================================
     // Create operands
-    $operation = $negativeCampaignRetargetingListServiceSample->createSampleRemoveRequest($accountId, $campaignId, $targetListId);
+    $operation = $campaignRetargetingListServiceSample->createSampleRemoveRequest($accountId, $campaignId, $targetListId);
 
     // Run
-    $negativeCampaignRetargetingListServiceSample->mutate($operation, 'REMOVE');
+    $campaignRetargetingListServiceSample->mutate($operation, 'REMOVE');
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

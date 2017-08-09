@@ -119,6 +119,7 @@ class RetargetingListServiceSample
             'operations' => array(
                 'operator' => 'ADD',
                 'accountId' => $accountId,
+                'owner' => 'OWNER',
                 'operand' => $operands
             )
         );
@@ -191,6 +192,7 @@ class RetargetingListServiceSample
             'operations' => array(
                 'operator' => 'ADD',
                 'accountId' => $accountId,
+                'owner' => 'OWNER',
                 'operand' => $operands
             )
         );
@@ -258,6 +260,7 @@ class RetargetingListServiceSample
             'operations' => array(
                 'operator' => 'ADD',
                 'accountId' => $accountId,
+                'owner' => 'OWNER',
                 'operand' => $operands
             )
         );
@@ -350,6 +353,7 @@ class RetargetingListServiceSample
             'operations' => array(
                 'operator' => 'SET',
                 'accountId' => $accountId,
+                'owner' => 'OWNER',
                 'operand' => $operands
             )
         );

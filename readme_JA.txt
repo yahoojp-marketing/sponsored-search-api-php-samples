@@ -1,10 +1,13 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Version 6.2.0
+Version 6.3.0
 
 ■変更履歴
 -----------
+2017/07/20:
+- Version 6.3に対応しました。
+
 2016/11/24:
 - Version 6.2に対応しました。
 
@@ -82,9 +85,9 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - sharedCriterionSample/CampaignSharedSetServiceSample.php               : AccountSharedService/CampaignService/CampaignSharedSetServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、削除処理のサンプルです。
 - sharedCriterionSample/SharedCriterionServiceSample.php                 : AccountSharedService/SharedCriterionServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、削除処理のサンプルです。
 - siteRetargetingSample/AdGroupRetargetingListServiceSample.php          : AdGroupRetargetingListServiceによる広告グループ用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
-- siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php : NegativeCampaignRetargetingListServiceによるキャンペーン用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
+- siteRetargetingSample/CampaignRetargetingListServiceSample.php         : CampaignRetargetingListServiceによるキャンペーン用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
 - siteRetargetingSample/RetargetingListServiceSample.php                 : RetargetingListServiceによるリターゲティングリストの登録、参照、更新処理のサンプルです。
-- siteRetargetingSample/SiteRetargetingSample.php                        : RetargetingListService/BiddingStrategyService/CampaignService/NegativeCampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
+- siteRetargetingSample/SiteRetargetingSample.php                        : RetargetingListService/BiddingStrategyService/CampaignService/CampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
 - targetingIdeaSample/TargetingIdeaSample.php                            : TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
 - campaignExportSample/CampaignExportSample.php                          : CampaignExportServiceによるExportジョブ登録、CSVダウンロードのサンプルです。
 
@@ -173,7 +176,7 @@ php src/sharedCriterionSample/AccountSharedServiceSample.php
 php src/sharedCriterionSample/CampaignSharedSetServiceSample.php
 php src/sharedCriterionSample/SharedCriterionServiceSample.php
 php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
-php src/siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php
+php src/siteRetargetingSample/CampaignRetargetingListServiceSample.php
 php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php
