@@ -1,10 +1,13 @@
 --------------------------------
 <<Version>>
 --------------------------------
-Version 6.2.0
+Version 6.3.0
 
 [Change history]
 -----------
+2017/07/20:
+- Correspond to Version 6.3.
+
 2016/11/24:
 - Correspond to Version 6.2.
 
@@ -78,13 +81,13 @@ The following programs are stored.
 - dictionarySample/DictionarySample.php                                     : Sample of Get the list of EditorialReason snd Geo code via DictionaryService.
 - keywordEstimatorSample/KeywordEstimatorSample.php                         : Sample of Get the estimate keyword Data from the existing campaign via KeywordEstimatorService.
 - reportDownloadSample/ReportDownloadSample.php                             : Sample of Get report via ReportDefinitionService/ReportService
-- sharedCriterionSample/AccountSharedServiceSample.php                   : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService.
-- sharedCriterionSample/CampaignSharedSetServiceSample.php               : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService/CampaignService/CampaignSharedSetService.
-- sharedCriterionSample/SharedCriterionServiceSample.php                 : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService/SharedCriterionService.
+- sharedCriterionSample/AccountSharedServiceSample.php                      : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService.
+- sharedCriterionSample/CampaignSharedSetServiceSample.php                  : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService/CampaignService/CampaignSharedSetService.
+- sharedCriterionSample/SharedCriterionServiceSample.php                    : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService/SharedCriterionService.
 - siteRetargetingSample/AdGroupRetargetingListServiceSample.php             : Sample of Get and Mutate operation for Ad group retargeting list via AdGroupRetargetingListService.
-- siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php    : Sample of Get and Mutate operation for campaign retargeting list via NegativeCampaignRetargetingListService.
+- siteRetargetingSample/CampaignRetargetingListServiceSample.php            : Sample of Get and Mutate operation for campaign retargeting list via CampaignRetargetingListService.
 - siteRetargetingSample/RetargetingListServiceSample.php                    : Sample of Get and Mutate operation for retargeting list via RetargetingListService.
-- siteRetargetingSample/SiteRetargetingSample.php                           : Sample of Get and Mutate operation for site retargeting function via RetargetingListService/BiddingStrategyService/CampaignService/NegativeCampaignRetargetingListService/AdGroupService/AdGroupRetargetingListService.
+- siteRetargetingSample/SiteRetargetingSample.php                           : Sample of Get and Mutate operation for site retargeting function via RetargetingListService/BiddingStrategyService/CampaignService/CampaignRetargetingListService/AdGroupService/AdGroupRetargetingListService.
 - targetingIdeaSample/TargetingIdeaSample.php                               : Sample of Get the related keywords based on the specified value via TargetingIdeaService.
 - CampaignExportSample/CampaignExportSample.java                            : Sample of Add the export job and Download via CampaignExportService.
 
@@ -173,7 +176,7 @@ php src/sharedCriterionSample/AccountSharedServiceSample.php
 php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
 php src/sharedCriterionSample/SharedCriterionServiceSample.php
 php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
-php src/siteRetargetingSample/NegativeCampaignRetargetingListServiceSample.php
+php src/siteRetargetingSample/CampaignRetargetingListServiceSample.php
 php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php

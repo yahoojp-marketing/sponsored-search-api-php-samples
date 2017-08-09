@@ -121,6 +121,10 @@ class CampaignServiceSample
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    ),
+                    array(
+                        'type' => 'TARGET_LIST_SETTING',
+                        'targetAll' => 'ACTIVE'
                     )
                 ),
                 'campaignType' => 'STANDARD',
@@ -153,6 +157,10 @@ class CampaignServiceSample
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    ),
+                    array(
+                        'type' => 'TARGET_LIST_SETTING',
+                        'targetAll' => 'ACTIVE'
                     )
                 ),
                 'campaignType' => 'STANDARD',
@@ -185,6 +193,10 @@ class CampaignServiceSample
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    ),
+                    array(
+                        'type' => 'TARGET_LIST_SETTING',
+                        'targetAll' => 'ACTIVE'
                     )
                 ),
                 'campaignType' => 'MOBILE_APP',
@@ -219,6 +231,10 @@ class CampaignServiceSample
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    ),
+                    array(
+                        'type' => 'TARGET_LIST_SETTING',
+                        'targetAll' => 'ACTIVE'
                     )
                 ),
                 'campaignType' => 'MOBILE_APP',
@@ -253,6 +269,10 @@ class CampaignServiceSample
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    ),
+                    array(
+                        'type' => 'TARGET_LIST_SETTING',
+                        'targetAll' => 'ACTIVE'
                     )
                 ),
                 'campaignType' => 'MOBILE_APP',
@@ -280,6 +300,10 @@ class CampaignServiceSample
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
                         'positiveGeoTargetType' => 'AREA_OF_INTENT'
+                    ),
+                    array(
+                        'type' => 'TARGET_LIST_SETTING',
+                        'targetAll' => 'ACTIVE'
                     )
                 ),
                 'campaignType' => 'MOBILE_APP',
@@ -289,8 +313,15 @@ class CampaignServiceSample
         );
 
         // Set xsi:type
-        $operands[0]['settings'][0] = new SoapVar($operands[0]['settings'][0], SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
-        $operands[1]['settings'][0] = new SoapVar($operands[1]['settings'][0], SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
+        foreach ($operands as &$operand){
+            foreach ($operand['settings'] as &$setting){
+                if($setting['type'] == 'GEO_TARGET_TYPE_SETTING'){
+                    $setting = new SoapVar($setting, SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
+                }else if($setting['type'] == 'TARGET_LIST_SETTING'){
+                    $setting = new SoapVar($setting, SOAP_ENC_OBJECT, 'TargetingSetting', API_NS, 'settings', XMLSCHEMANS);
+                }
+            }
+        }
 
         // Create operation
         $operation = array(

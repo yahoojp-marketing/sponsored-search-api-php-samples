@@ -95,7 +95,7 @@ class AdGroupRetargetingListServiceSample
      * @param long $campaignId CampaignID
      * @param long $adGroupId AdGroupID
      * @param long $targetListId TargetListID
-     * @return NegativeCampaignRetargetingListOperation entity.
+     * @return CampaignRetargetingListOperation entity.
      */
     public function createSampleAddRequest($accountId, $campaignId, $adGroupId, $targetListId)
     {
@@ -140,7 +140,7 @@ class AdGroupRetargetingListServiceSample
      *
      * @param long $accountId AccountID
      * @param array $adGroupRetargetingListValues AdGroupRetargetingListValues entity.
-     * @return NegativeCampaignRetargetingListOperation entity.
+     * @return CampaignRetargetingListOperation entity.
      */
     public function createSampleSetRequest($accountId, $adGroupRetargetingListValues)
     {
@@ -181,7 +181,7 @@ class AdGroupRetargetingListServiceSample
      *
      * @param long $accountId AccountID
      * @param array $adGroupRetargetingListValues AdGroupRetargetingListValues entity.
-     * @return NegativeCampaignRetargetingListOperation entity.
+     * @return CampaignRetargetingListOperation entity.
      */
     public function createSampleRemoveRequest($accountId, $adGroupRetargetingListValues)
     {
@@ -220,7 +220,7 @@ class AdGroupRetargetingListServiceSample
      * @param long $campaignId CampaignID
      * @param long $adGroupId AdGroupID
      * @param long $targetListId TargetListID
-     * @return NegativeCampaignRetargetingListSelector entity.
+     * @return CampaignRetargetingListSelector entity.
      */
     public function createSampleGetRequest($accountId, $campaignId, $adGroupId, $targetListId)
     {

@@ -5,7 +5,7 @@ require_once(dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php'
 require_once(dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
 require_once(dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
 require_once(dirname(__FILE__) . '/RetargetingListServiceSample.php');
-require_once(dirname(__FILE__) . '/NegativeCampaignRetargetingListServiceSample.php');
+require_once(dirname(__FILE__) . '/CampaignRetargetingListServiceSample.php');
 require_once(dirname(__FILE__) . '/AdGroupRetargetingListServiceSample.php');
 
 /**
@@ -26,7 +26,7 @@ try {
     $adGroupServiceSample = new AdGroupServiceSample();
     $retargetingListServiceSample = new RetargetingListServiceSample();
 
-    $negativeCampaignRetargetingListServiceSample = new NegativeCampaignRetargetingListServiceSample();
+    $campaignRetargetingListServiceSample = new CampaignRetargetingListServiceSample();
     $adGroupRetargetingListServiceSample = new AdGroupRetargetingListServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -142,15 +142,15 @@ try {
     }
 
     // =================================================================
-    // NegativeCampaignRetargetingListService
+    // CampaignRetargetingListService
     // =================================================================
     // ADD
-    $operation = $negativeCampaignRetargetingListServiceSample->createSampleAddRequest($accountId, $campaignId, $targetListId);
-    $negativeCampaignRetargetingListServiceSample->mutate($operation, 'ADD');
+    $operation = $campaignRetargetingListServiceSample->createSampleAddRequest($accountId, $campaignId, $targetListId);
+    $campaignRetargetingListServiceSample->mutate($operation, 'ADD');
 
     // GET
-    $selector = $negativeCampaignRetargetingListServiceSample->createSampleGetRequest($accountId, $campaignId, $targetListId);
-    $negativeCampaignRetargetingListValues = $negativeCampaignRetargetingListServiceSample->get($selector);
+    $selector = $campaignRetargetingListServiceSample->createSampleGetRequest($accountId, $campaignId, $targetListId);
+    $campaignRetargetingListValues = $campaignRetargetingListServiceSample->get($selector);
 
     // =================================================================
     // AdGroupRetargetingListService
@@ -168,15 +168,15 @@ try {
     $adGroupRetargetingListValues = $adGroupRetargetingListServiceSample->get($selector);
 
     // =================================================================
-    // remove AdGroupService, CampaignService, BiddingStrategyService, NegativeCampaignRetargetingListService
+    // remove AdGroupService, CampaignService, BiddingStrategyService, CampaignRetargetingListService
     // =================================================================
     // AdGroupRetargetingListService
     $operation = $adGroupRetargetingListServiceSample->createSampleRemoveRequest($accountId, $adGroupRetargetingListValues);
     $adGroupRetargetingListValues = $adGroupRetargetingListServiceSample->mutate($operation, 'REMOVE');
 
-    // NegativeCampaignRetargetingListService
-    $operation = $negativeCampaignRetargetingListServiceSample->createSampleRemoveRequest($accountId, $campaignId, $targetListId);
-    $negativeCampaignRetargetingListServiceSample->mutate($operation, 'REMOVE');
+    // CampaignRetargetingListService
+    $operation = $campaignRetargetingListServiceSample->createSampleRemoveRequest($accountId, $campaignId, $targetListId);
+    $campaignRetargetingListServiceSample->mutate($operation, 'REMOVE');
 
     // AdGroup
     $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
