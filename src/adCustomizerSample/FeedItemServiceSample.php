@@ -46,8 +46,8 @@ class FeedItemServiceSample
                 )
             ),
             'placeholderType' => 'AD_CUSTOMIZER',
-            'startDate' => '20161215',
-            'endDate' => '20181215',
+            'startDate' => date('Ymd'),
+            'endDate' => date("Ymd", strtotime("+1 month")),
             'scheduling' => array(
                 'schedules' => array(
                     array(
@@ -75,6 +75,11 @@ class FeedItemServiceSample
             'targetingKeyword' => array(
                 'text' => 'sample keyword',
                 'matchType' => 'EXACT'
+            ),
+            'geoTargeting' => array(
+                'type' => 'LOCATION',
+                'geoTargetingRestriction' => 'LOCATION_OF_PRESENCE',
+                'targetId' => 'JP-01-0010'
             )
         );
 
@@ -160,7 +165,11 @@ class FeedItemServiceSample
                 'placeholderType' => 'AD_CUSTOMIZER',
                 'startDate' => '',
                 'endDate' => '',
-                'scheduling' => ''
+                'scheduling' => '',
+                // delete GeoTargeting
+                'geoTargeting' => array(
+                    'isRemove' => 'TRUE'
+                )
             );
         }
 

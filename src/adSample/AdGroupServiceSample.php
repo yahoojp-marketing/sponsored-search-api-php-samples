@@ -92,12 +92,11 @@ class AdGroupServiceSample
      * create sample request.
      *
      * @param long $accountId AccountID
-     * @param long $biddingStrategyId BiddingStrategyID
      * @param long $campaignId CampaignID
      * @param long $appCampaignId AppCampaignID
      * @return AdGroupOperation entity.
      */
-    public function createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId)
+    public function createSampleAddRequest($accountId, $campaignId, $appCampaignId)
     {
 
         // Create operands
@@ -109,12 +108,6 @@ class AdGroupServiceSample
                 'campaignId' => $campaignId,
                 'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'userStatus' => 'ACTIVE',
-                'biddingStrategyConfiguration' => array(
-                    'biddingStrategyId' => $biddingStrategyId,
-                    'initialBid' => array(
-                        'maxCpc' => 120
-                    )
-                ),
                 'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
                 'customParameters' => array(
                     'parameters' => array(
@@ -130,12 +123,6 @@ class AdGroupServiceSample
                 'campaignId' => $campaignId,
                 'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
                 'userStatus' => 'ACTIVE',
-                'biddingStrategyConfiguration' => array(
-                    'biddingStrategyType' => 'MANUAL_CPC',
-                    'initialBid' => array(
-                        'maxCpc' => 120
-                    )
-                ),
                 'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
                 'customParameters' => array(
                     'parameters' => array(
@@ -145,18 +132,12 @@ class AdGroupServiceSample
                 )
             ),
 
-            // Create AutoBidding AdGroup for MobileApp Campaign
+            // Create AdGroup for MobileApp Campaign
             array(
                 'accountId' => $accountId,
                 'campaignId' => $appCampaignId,
                 'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE',
-                'biddingStrategyConfiguration' => array(
-                    'biddingStrategyId' => $biddingStrategyId,
-                    'initialBid' => array(
-                        'maxCpc' => 120
-                    )
-                )
+                'userStatus' => 'ACTIVE'
             ),
 
             // Create ManualCpc AdGroup for MobileApp Campaign
@@ -164,13 +145,7 @@ class AdGroupServiceSample
                 'accountId' => $accountId,
                 'campaignId' => $appCampaignId,
                 'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE',
-                'biddingStrategyConfiguration' => array(
-                    'biddingStrategyType' => 'MANUAL_CPC',
-                    'initialBid' => array(
-                        'maxCpc' => 120
-                    )
-                )
+                'userStatus' => 'ACTIVE'
             )
         );
 
@@ -190,11 +165,10 @@ class AdGroupServiceSample
      * create sample request.
      *
      * @param long $accountId AccountID
-     * @param long $biddingStrategyId BiddingStrategyID
      * @param array $adGroupValues AdGroupValues entity.
      * @return AdGroupOperation entity.
      */
-    public function createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues)
+    public function createSampleSetRequest($accountId, $adGroupValues)
     {
 
         // Create operands
@@ -207,18 +181,8 @@ class AdGroupServiceSample
                 'campaignId' => $adGroupValue->adGroup->campaignId,
                 'adGroupId' => $adGroupValue->adGroup->adGroupId,
                 'adGroupName' => 'Sample_UpdateOn_' . $adGroupValue->adGroup->adGroupId . '_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'PAUSED',
-                'biddingStrategyConfiguration' => array(
-                    'initialBid' => array(
-                        'maxCpc' => 200
-                    )
-                )
+                'userStatus' => 'PAUSED'
             );
-
-            // Create BiddingStrategyConfiguration
-            if ($adGroupValue->adGroup->biddingStrategyConfiguration->biddingStrategyType === 'MANUAL_CPC') {
-                $operand['biddingStrategyConfiguration']['biddingStrategyId'] = $biddingStrategyId;
-            }
 
             if (!empty($adGroupValue->adGroup->trackingUrl)) {
                 $operand['trackingUrl'] = 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id2}';
@@ -336,7 +300,6 @@ try {
     $adGroupServiceSample = new AdGroupServiceSample();
 
     $accountId = SoapUtils::getAccountId();
-    $biddingStrategyId = SoapUtils::getBiddingStrategyId();
     $campaignId = SoapUtils::getCampaignId();
     $appCampaignId = SoapUtils::getAppCampaignId();
 
@@ -344,7 +307,7 @@ try {
     // AdGroupService ADD
     // =================================================================
     // Create operands
-    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId);
+    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $campaignId, $appCampaignId);
 
     // Run
     $adGroupValues = $adGroupServiceSample->mutate($operation, 'ADD');
@@ -353,7 +316,7 @@ try {
     // AdGroupService SET
     // =================================================================
     // Create operands
-    $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues);
+    $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $adGroupValues);
 
     // Run
     $adGroupValues = $adGroupServiceSample->mutate($operation, 'SET');
@@ -371,10 +334,10 @@ try {
     // AdGroupService REMOVE
     // =================================================================
     // Create operands
-//    $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
+    $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
 
     // Run
-//    $adGroupServiceSample->mutate($operation, 'REMOVE');
+    $adGroupServiceSample->mutate($operation, 'REMOVE');
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

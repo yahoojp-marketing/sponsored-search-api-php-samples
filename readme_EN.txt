@@ -1,10 +1,14 @@
 --------------------------------
 <<Version>>
 --------------------------------
-Version 6.3.0
+Version 6.4.0
 
 [Change history]
 -----------
+2017/11/01:
+- Correspond to Version 6.4.
+- Added AuditLogSample.
+
 2017/07/20:
 - Correspond to Version 6.3.
 
@@ -89,7 +93,8 @@ The following programs are stored.
 - siteRetargetingSample/RetargetingListServiceSample.php                    : Sample of Get and Mutate operation for retargeting list via RetargetingListService.
 - siteRetargetingSample/SiteRetargetingSample.php                           : Sample of Get and Mutate operation for site retargeting function via RetargetingListService/BiddingStrategyService/CampaignService/CampaignRetargetingListService/AdGroupService/AdGroupRetargetingListService.
 - targetingIdeaSample/TargetingIdeaSample.php                               : Sample of Get the related keywords based on the specified value via TargetingIdeaService.
-- CampaignExportSample/CampaignExportSample.java                            : Sample of Add the export job and Download via CampaignExportService.
+- campaignExportSample/CampaignExportSample.php                             : Sample of Add the export job and Download via CampaignExportService.
+- auditLogSample/AuditLogSample.php                                         : Sample of download operation history log via AuditLogService.
 
 * Class is used from sample programs below.
 
@@ -181,6 +186,8 @@ php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php
 php src/campaignExportSample/CampaignExportSample.php
+php src/auditLogSample/AuditLogSample.php 
+
 ---------------------------------------
 
 When the operation for data download is executed, the file will be stored in the directory of download.
