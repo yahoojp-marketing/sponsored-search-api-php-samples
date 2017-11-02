@@ -112,12 +112,6 @@ function createAdGroup($accountId, $campaignId)
             'campaignId' => $campaignId,
             'adGroupName' => 'SampleAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
             'userStatus' => 'ACTIVE',
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyType' => 'MANUAL_CPC',
-                'initialBid' => array(
-                    'maxCpc' => 120,
-                ),
-            ),
             'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
             'customParameters' => array(
                 'parameters' => array(
@@ -265,17 +259,17 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
 {
     // Set Operand
     $operand = array(
-        // Set TextAd2(Keyword)
+        // Set ExtendedTextAd(Keyword)
         array(
             'accountId' => $accountId,
             'campaignId' => $campaignId,
             'adGroupId' => $adGroupId,
-            'adName' => 'SampleTextAd2_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'adName' => 'SampleExtendedTextAd_CreateOn_' . SoapUtils::getCurrentTimestamp(),
             'ad' => array(
-                'type' => 'TEXT_AD2',
+                'type' => 'EXTENDED_TEXT_AD',
                 'headline' => 'sample headline',
+                'headline2' => 'sample headline2',
                 'description' => 'sample {KEYWORD:keyword}',
-                'description2' => 'sample {KEYWORD:keyword}',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
                 'advancedUrl' => 'http://www.yahoo.co.jp',
@@ -290,17 +284,17 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
             ),
             'userStatus' => 'ACTIVE',
         ),
-        // Set TextAd2(CountdownOption)
+        // Set ExtendedTextAd(CountdownOption)
         array(
             'accountId' => $accountId,
             'campaignId' => $campaignId,
             'adGroupId' => $adGroupId,
             'adName' => 'SampleCountdownOptionAd_' . SoapUtils::getCurrentTimestamp(),
             'ad' => array(
-                'type' => 'TEXT_AD2',
+                'type' => 'EXTENDED_TEXT_AD',
                 'headline' => 'sample headline',
-                'description' => '{=COUNTDOWN("2016/12/15 18:00:00","ja")}',
-                'description2' => 'sample ad desc',
+                'headline2' => 'sample headline2',
+                'description' => '{=COUNTDOWN("2018/12/15 18:00:00","ja")}',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
                 'advancedUrl' => 'http://www.yahoo.co.jp',
@@ -315,17 +309,92 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
             ),
             'userStatus' => 'ACTIVE',
         ),
-        // Set TextAd2(CountdownOption&AD_CUSTOMIZER_DATE)
+        // Set ExtendedTextAd(CountdownOption&AD_CUSTOMIZER_DATE)
         array(
             'accountId' => $accountId,
             'campaignId' => $campaignId,
             'adGroupId' => $adGroupId,
             'adName' => 'SampleCountdownOfAdCustomizer_' . SoapUtils::getCurrentTimestamp(),
             'ad' => array(
-                'type' => 'TEXT_AD2',
+                'type' => 'EXTENDED_TEXT_AD',
                 'headline' => 'sample headline',
+                'headline2' => 'sample headline2',
                 'description' => '{=COUNTDOWN(' . $feedFolderName . '.' . $feedAttributeNames['AD_CUSTOMIZER_DATE'] . ',"ja")}',
-                'description2' => 'sample ad desc',
+                'displayUrl' => 'www.yahoo.co.jp',
+                'devicePreference' => 'SMART_PHONE',
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234',
+                    ),
+                ),
+            ),
+            'userStatus' => 'ACTIVE',
+        ),
+        // Set ExtendedTextAd(adCustomizer defaultText)
+        array(
+            'accountId' => $accountId,
+            'campaignId' => $campaignId,
+            'adGroupId' => $adGroupId,
+            'adName' => 'SampleAdCustomizer_DefaultText_' . SoapUtils::getCurrentTimestamp(),
+            'ad' => array(
+                'type' => 'EXTENDED_TEXT_AD',
+                'headline' => '{=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline',
+                'headline2' => '{=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline2',
+                'description' => '{=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}Description',
+                'displayUrl' => 'www.yahoo.co.jp',
+                'devicePreference' => 'SMART_PHONE',
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234',
+                    ),
+                ),
+            ),
+            'userStatus' => 'ACTIVE',
+        ),
+        // ExtendedTextAd(adCustomizer Mobile specification with IF function)
+        array(
+            'accountId' => $accountId,
+            'campaignId' => $campaignId,
+            'adGroupId' => $adGroupId,
+            'adName' => 'SampleAdCustomizer_IF_function_' . SoapUtils::getCurrentTimestamp(),
+            'ad' => array(
+                'type' => 'EXTENDED_TEXT_AD',
+                'headline' => '{=IF(device=mobile, MOBILE):PC}Headline',
+                'headline2' => '{=IF(device=mobile, MOBILE):PC}Headline2',
+                'description' => '{=IF(device=mobile, MOBILE):PC}Description',
+                'displayUrl' => 'www.yahoo.co.jp',
+                'devicePreference' => 'SMART_PHONE',
+                'advancedUrl' => 'http://www.yahoo.co.jp',
+                'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
+                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+                'customParameters' => array(
+                    'parameters' => array(
+                        'key' => 'id1',
+                        'value' => '1234',
+                    ),
+                ),
+            ),
+            'userStatus' => 'ACTIVE',
+        ),
+        // ExtendedTextAd(adCustomizer Mobile specification with IF function and DefaultText)
+        array(
+            'accountId' => $accountId,
+            'campaignId' => $campaignId,
+            'adGroupId' => $adGroupId,
+            'adName' => 'SampleAdCustomizer_IF_And_Default' . SoapUtils::getCurrentTimestamp(),
+            'ad' => array(
+                'type' => 'EXTENDED_TEXT_AD',
+                'headline' => '{=IF(device=mobile, MOBILE):PC}test + {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline' ,
+                'headline2' => '{=IF(device=mobile, MOBILE):PC}test + {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline2' ,
+                'description' => '{=IF(device=mobile, MOBILE):PC}test + {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}description' ,
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
                 'advancedUrl' => 'http://www.yahoo.co.jp',
@@ -342,9 +411,9 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
         ),
     );
 
-    //xsi:typ for ad of TextAd2
+    //xsi:typ for ad of ExtendedTextAd
     foreach ($operand as $adGroupAdKey => $adGroupAdValue) {
-        $operand[$adGroupAdKey]['ad'] = new SoapVar($operand[$adGroupAdKey]['ad'], SOAP_ENC_OBJECT, 'TextAd2', API_NS, 'ad', XMLSCHEMANS);
+        $operand[$adGroupAdKey]['ad'] = new SoapVar($operand[$adGroupAdKey]['ad'], SOAP_ENC_OBJECT, 'ExtendedTextAd', API_NS, 'ad', XMLSCHEMANS);
     }
 
     // Set Request

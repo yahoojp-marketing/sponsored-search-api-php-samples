@@ -3,13 +3,13 @@ require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 
 /**
- * Sample Program for CampaingExportService.
- * Copyright (C) 2016 Yahoo Japan Corporation. All Rights Reserved.
+ * Sample Program for AuditLogService.
+ * Copyright (C) 2017 Yahoo Japan Corporation. All Rights Reserved.
  */
-class CampaignExportSample
+class AuditLogSample
 {
 
-    private $serviceName = 'CampaignExportService';
+    private $serviceName = 'AuditLogService';
 
     private $service;
 
@@ -26,13 +26,13 @@ class CampaignExportSample
     }
 
     /**
-     * execute CampaignExportService::addJob
-     * @param array $exportSetting
+     * execute AuditLogService::addJob
+     * @param array $addJobRequest
      * @throws Exception
      */
-    public function addJob($exportSetting)
+    public function addJob($addJobRequest)
     {
-        $response = $this->service->invoke('addJob', $exportSetting);
+        $response = $this->service->invoke('addJob', $addJobRequest);
 
         if (isset($response->rval->values)) {
             if (isset($response->rval->values->job) && !isset($response->rval->values->error)) {
@@ -47,7 +47,7 @@ class CampaignExportSample
     }
 
     /**
-     * execute CampaignExportService::get
+     * execute AuditLogService::get
      * @param array $selector
      * @throws Exception
      */
@@ -58,7 +58,7 @@ class CampaignExportSample
             $response = $this->service->invoke('get', $selector);
             if (isset($response->rval->values)) {
                 if (isset($response->rval->values->job) && !isset($response->rval->values->error)) {
-                    $status = $response->rval->values->job->status;
+                    $status = $response->rval->values->job->jobStatus;
                     if ($status === 'COMPLETED') {
                         $this->jodId = $response->rval->values->job->jobId;
                         $this->jobName = $response->rval->values->job->jobName;
@@ -88,33 +88,11 @@ class CampaignExportSample
     }
 
     /**
-     * execute CampaignExportService::getExportFields
-     * @throws Exception
-     */
-    public function getExportFields()
-    {
-        $response = $this->service->invoke('getExportFields', null);
-        if (isset($response->rval->fields)) {
-            if (isset($response->rval->fields)) {
-                $exportFields = array();
-                foreach ($response->rval->fields as $id => $rec) {
-                    array_push($exportFields,$rec->fieldName);
-                }
-                return $exportFields;
-            } else {
-                throw new Exception('getExportFields Error. ' . $this->serviceName);
-            }
-        } else {
-            throw new Exception('No response of getExportFields ' . $this->serviceName . '.');
-        }
-    }
-
-    /**
-     * execute CampaignExportService::download
+     * execute AuditLogService::download
      */
     public function download()
     {
-        $fileName = 'CampaignExport_' . $this->jobName . '_' . $this->jodId . '.csv';
+        $fileName = 'AuditLog_' . $this->jobName . '_' . $this->jodId . '.csv';
         SoapUtils::download($this->downloadUrl, $fileName);
     }
 
@@ -140,44 +118,58 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
 }
 
 /**
- * execute CampaignExportServiceSample.
+ * execute AuditLogServiceSample.
  */
 try {
-    $campaignExportSample = new CampaignExportSample();
+    $auditLogSample = new AuditLogSample();
 
     // =================================================================
-    // CampaignExportService addJob
+    // AuditLogService addJob
     // =================================================================
-    $exportSetting = array(
-        'setting' => array(
+    // Set Operand
+    $addOperand = array(
+        'dateRange' => array(
+            'startDate' => '20171001000000',
+            'endDate' => '20171001000000'
+        ),
+        'eventSelector' => array(
+            array(
+                'entityType' => 'ALL',
+                'eventTypes' => array('ALL')
+            )
+        ),
+        'jobName' => 'sampleAuditLog',
+        'lang' => 'EN',
+        'output' => 'CSV',
+        'encoding' => 'UTF_8',
+    );
+
+    // Set Request
+    $addRequest = array(
+        'operations' => array(
             'accountId' => SoapUtils::getAccountId(),
-            'jobName' => 'sampleExport',
-            'entityTypes' => array('CAMPAIGN', 'BIDDABLE_AD_GROUP_CRITERION'),
-            'lang' => 'EN',
-            'output' => 'CSV',
-            'encoding' => 'UTF-8',
-            'exportFields' => $campaignExportSample->getExportFields()
+            'operand' => $addOperand
         )
     );
 
-    $campaignExportSample->addJob($exportSetting);
+    $auditLogSample->addJob($addRequest);
 
     // =================================================================
-    // CampaignExportService get
+    // AuditLogService get
     // =================================================================
     $selector = array(
         'selector' => array(
             'accountId' => SoapUtils::getAccountId(),
-            'jobIds' => array($campaignExportSample->getJobId())
+            'jobIds' => array($auditLogSample->getJobId())
         )
     );
 
-    $campaignExportSample->get($selector);
+    $auditLogSample->get($selector);
 
     // =================================================================
-    // CampaignExportService download
+    // AuditLogService download
     // =================================================================
-    $campaignExportSample->download();
+    $auditLogSample->download();
 
 
 } catch (Exception $e) {

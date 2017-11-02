@@ -104,42 +104,6 @@ class AdGroupAdServiceSample
         // Create operands
         $operands = array(
 
-            // Set TextAd2
-            array(
-                'accountId' => $accountId,
-                'campaignId' => $campaignId,
-                'adGroupId' => $adGroupId,
-                'adName' => 'SampleTextAd2_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'ad' => array(
-                    'type' => 'TEXT_AD2',
-                    'headline' => 'sample headline',
-                    'description' => 'sample ad desc',
-                    'description2' => 'sample ad desc2',
-                    'displayUrl' => 'www.yahoo.co.jp',
-                    'devicePreference' => 'SMART_PHONE',
-                    'advancedUrl' => 'http://www.yahoo.co.jp',
-                    'additionalAdvancedUrls' => array(
-                        array('advancedUrl' => 'http://www1.yahoo.co.jp'),
-                        array('advancedUrl' => 'http://www2.yahoo.co.jp'),
-                        array('advancedUrl' => 'http://www3.yahoo.co.jp')
-                    ),
-                    'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
-                    'additionalAdvancedMobileUrls' => array(
-                        array('advancedMobileUrl' => 'http://www1.yahoo.co.jp/mobile'),
-                        array('advancedMobileUrl' => 'http://www2.yahoo.co.jp/mobile'),
-                        array('advancedMobileUrl' => 'http://www3.yahoo.co.jp/mobile')
-                    ),
-                    'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-                    'customParameters' => array(
-                        'parameters' => array(
-                            'key' => 'id1',
-                            'value' => '1234'
-                        )
-                    )
-                ),
-                'userStatus' => 'ACTIVE'
-            ),
-
             // Set AppAd
             array(
                 'accountId' => $accountId,
@@ -201,10 +165,8 @@ class AdGroupAdServiceSample
             )
         );
 
-        // Set xsi:typ for ad of TextAd2
-        $operands[0]['ad'] = new SoapVar($operands[0]['ad'], SOAP_ENC_OBJECT, 'TextAd2', API_NS, 'ad', XMLSCHEMANS);
-        $operands[1]['ad'] = new SoapVar($operands[1]['ad'], SOAP_ENC_OBJECT, 'AppAd', API_NS, 'ad', XMLSCHEMANS);
-        $operands[2]['ad'] = new SoapVar($operands[2]['ad'], SOAP_ENC_OBJECT, 'ExtendedTextAd', API_NS, 'ad', XMLSCHEMANS);
+        $operands[0]['ad'] = new SoapVar($operands[0]['ad'], SOAP_ENC_OBJECT, 'AppAd', API_NS, 'ad', XMLSCHEMANS);
+        $operands[1]['ad'] = new SoapVar($operands[1]['ad'], SOAP_ENC_OBJECT, 'ExtendedTextAd', API_NS, 'ad', XMLSCHEMANS);
 
         // Create operation
         $operation = array(
@@ -238,19 +200,7 @@ class AdGroupAdServiceSample
             // Set Ad
             switch ($adGroupAdValue->adGroupAd->ad->type) {
 
-                // Set TextAd2
                 default:
-                case 'TEXT_AD2':
-                    $ad = array(
-                        'accountId' => $adGroupAdValue->adGroupAd->accountId,
-                        'campaignId' => $adGroupAdValue->adGroupAd->campaignId,
-                        'adGroupId' => $adGroupAdValue->adGroupAd->adGroupId,
-                        'adId' => $adGroupAdValue->adGroupAd->adId,
-                        'adName' => 'SampleTextAd2_UpdateOn_' . SoapUtils::getCurrentTimestamp(),
-                        'userStatus' => 'PAUSED'
-                    );
-                    break;
-
                 // Set AppAd
                 case 'APP_AD':
                     $ad = array(

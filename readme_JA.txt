@@ -1,10 +1,13 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Version 6.3.0
+Version 6.4.0
 
 ■変更履歴
 -----------
+2017/11/01:
+- Version 6.4に対応しました。
+
 2017/07/20:
 - Version 6.3に対応しました。
 
@@ -90,6 +93,7 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - siteRetargetingSample/SiteRetargetingSample.php                        : RetargetingListService/BiddingStrategyService/CampaignService/CampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
 - targetingIdeaSample/TargetingIdeaSample.php                            : TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
 - campaignExportSample/CampaignExportSample.php                          : CampaignExportServiceによるExportジョブ登録、CSVダウンロードのサンプルです。
+- auditLogSample/AuditLogSample.php                                      : AuditLogServiceによるジョブ登録、CSVダウンロードのサンプルです。
 
 ・以下は各サンプルプログラムから利用されるクラスです。
 
@@ -97,7 +101,7 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - SoapUtils.class.php ：LocationServiceを使用したリクエスト先の取得処理のサンプル及びその他共通処理です。
 
 ■downloadディレクトリ
-ReportDownloadSample,CampaignExportSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
+ReportDownloadSample,CampaignExportSample,AuditLogSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
 
 ■uploadディレクトリ
 現在は利用しません。
@@ -181,6 +185,7 @@ php src/siteRetargetingSample/RetargetingListServiceSample.php
 php src/siteRetargetingSample/SiteRetargetingSample.php
 php src/targetingIdeaSample/TargetingIdeaSample.php
 php src/campaignExportSample/CampaignExportSample.php
+php src/auditLogSample/AuditLogSample.php
 ---------------------------------------
 
 データをダウンロードする処理を実行した場合には、downloadディレクトリにファイルが格納されます。

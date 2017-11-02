@@ -92,7 +92,7 @@ try {
     }
 
     // AdGroupService ADD
-    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId);
+    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $campaignId, $appCampaignId);
     $adGroupValues = $adGroupServiceSample->mutate($operation, 'ADD');
 
     // AdGroupService GET
@@ -100,7 +100,7 @@ try {
     $adGroupValues = $adGroupServiceSample->get($selector);
 
     // AdGroupService SET
-    $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $biddingStrategyId, $adGroupValues);
+    $operation = $adGroupServiceSample->createSampleSetRequest($accountId, $adGroupValues);
     $adGroupValues = $adGroupServiceSample->mutate($operation, 'SET');
     foreach ($adGroupValues as $adGroupValue) {
         if ($adGroupId === 0 || $appAdGroupId === 0) {

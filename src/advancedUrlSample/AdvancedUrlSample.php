@@ -121,7 +121,7 @@ try {
     // AdGroupService
     // =================================================================
     // ADD
-    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $biddingStrategyId, $campaignId, $appCampaignId);
+    $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $campaignId, $appCampaignId);
     $adGroupValues = $adGroupServiceSample->mutate($operation, 'ADD');
 
     // GET
