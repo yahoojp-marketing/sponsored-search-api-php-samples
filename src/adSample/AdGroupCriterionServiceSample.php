@@ -393,7 +393,7 @@ try {
             if (isset($adGroupCriterionValue->adGroupCriterion->approvalStatus)) {
                 $approvalStatus = $adGroupCriterionValue->adGroupCriterion->approvalStatus;
                 if ($approvalStatus != 'APPROVED') {
-                    if ($approvalStatus === 'PRE_DISAPPROVED' || $approvalStatus === 'POST_DISAPPROVED') {
+                    if ($approvalStatus === 'PRE_DISAPPROVED' && $approvalStatus === 'POST_DISAPPROVED') {
                         echo 'AdGroupCriterion Review Status failed.';
                         exit();
                     } else {
@@ -405,6 +405,7 @@ try {
                 exit();
             }
         }
+        break;
     }
 
     // =================================================================

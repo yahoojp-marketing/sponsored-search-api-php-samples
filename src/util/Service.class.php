@@ -17,7 +17,7 @@ class Service extends SoapClient {
      */
     public function __construct($wsdl, $endpoint){
         ini_set("soap.wsdl_cache_enabled", "0");
-        parent::__construct($wsdl, array("location"=>$endpoint,"uri"=>API_NS,"trace"=>true));
+        parent::__construct($wsdl, array("location" => $endpoint, "uri" => API_NS, "trace" => true));
         $this->service_wsdl = $wsdl;
         $this->service_endpoint = $endpoint;
     }

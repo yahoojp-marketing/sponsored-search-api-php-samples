@@ -225,7 +225,7 @@ class BiddingStrategyServiceSample
                     $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
                     break;
 
-                // PageOnePromotedBiddingScheme
+                // TargetCpaBiddingScheme
                 case 'TARGET_CPA' :
                     $operand['biddingStrategyName'] = 'SampleTargetCpa_UpdateOn_' . SoapUtils::getCurrentTimestamp();
                     $operand['biddingScheme'] = array(

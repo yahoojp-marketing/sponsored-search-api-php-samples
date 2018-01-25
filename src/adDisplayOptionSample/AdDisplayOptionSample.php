@@ -129,8 +129,8 @@ class AdDisplayOptionSample
                             )
                         )
                     ),
-                    'startDate' => '20161231',
-                    'endDate' => '20181231',
+                    'startDate' => '20171231',
+                    'endDate' => '20201231',
                     'scheduling' => array(
                         'schedules' => array(
                             0 => array(
@@ -203,8 +203,8 @@ class AdDisplayOptionSample
                             'feedAttributeValue' => '0120-123-456'
                         )
                     ),
-                    'startDate' => '20161231',
-                    'endDate' => '20171231',
+                    'startDate' => '20171231',
+                    'endDate' => '20251231',
                     'scheduling' => array(
                         'schedules' => array(
                             0 => array(
@@ -260,8 +260,8 @@ class AdDisplayOptionSample
                             'feedAttributeValue' => 'sample callout text'
                         )
                     ),
-                    'startDate' => '20161231',
-                    'endDate' => '20171231',
+                    'startDate' => '20171231',
+                    'endDate' => '20251231',
                     'scheduling' => array(
                         'schedules' => array(
                             0 => array(
