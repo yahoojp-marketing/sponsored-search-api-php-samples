@@ -314,4 +314,20 @@ class SoapUtils{
         }
         return $list;
     }
+    /**
+     * encoding from Array to SoapVar.
+     *
+     * @param array $data
+     * @param $type_name
+     * @param $service_name
+     * @param $node_name
+     * @return array
+     */
+    public static function encodingSoapVar(array $data, $type_name, $service_name, $node_name){
+        $result = array();
+        if (isset($type_name) && isset($service_name)) {
+            $result = new SoapVar($data, SOAP_ENC_OBJECT, $type_name, API_NS . '/' . $service_name, $node_name, XMLSCHEMANS);
+        }
+        return $result;
+    }
 }

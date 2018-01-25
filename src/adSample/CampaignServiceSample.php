@@ -116,7 +116,6 @@ class CampaignServiceSample
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyId' => $biddingStrategyId
                 ),
-                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -152,7 +151,6 @@ class CampaignServiceSample
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyType' => 'MANUAL_CPC'
                 ),
-                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -188,7 +186,6 @@ class CampaignServiceSample
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyId' => $biddingStrategyId
                 ),
-                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -226,7 +223,6 @@ class CampaignServiceSample
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyType' => 'MANUAL_CPC'
                 ),
-                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -264,7 +260,6 @@ class CampaignServiceSample
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyId' => $biddingStrategyId
                 ),
-                'adServingOptimizationStatus' => 'CONVERSION_OPTIMIZE',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -295,7 +290,6 @@ class CampaignServiceSample
                 'biddingStrategyConfiguration' => array(
                     'biddingStrategyType' => 'MANUAL_CPC'
                 ),
-                'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
                 'settings' => array(
                     array(
                         'type' => 'GEO_TARGET_TYPE_SETTING',
@@ -507,7 +501,7 @@ try {
         foreach ($campaignValues as $campaignValue) {
             if (isset($campaignValue->campaign->urlReviewData->urlApprovalStatus)) {
                 $urlApprovalStatus = $campaignValue->campaign->urlReviewData->urlApprovalStatus;
-                if ($urlApprovalStatus != 'APPROVED' || $urlApprovalStatus != 'NONE') {
+                if ($urlApprovalStatus != 'APPROVED' && $urlApprovalStatus != 'NONE') {
                     if ($urlApprovalStatus === 'DISAPPROVED') {
                         echo 'Campaign Review Status failed.';
                         exit();
@@ -520,6 +514,7 @@ try {
                 exit();
             }
         }
+        break;
     }
 
     // =================================================================

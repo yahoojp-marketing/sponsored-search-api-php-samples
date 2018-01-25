@@ -114,6 +114,9 @@ class AdGroupServiceSample
                         'key' => 'id1',
                         'value' => '1234'
                     )
+                ),
+                'adGroupAdRotationMode' => array(
+                    'adRotationMode' => 'ROTATE_FOREVER'
                 )
             ),
 
@@ -129,6 +132,9 @@ class AdGroupServiceSample
                         'key' => 'id1',
                         'value' => '1234'
                     )
+                ),
+                'adGroupAdRotationMode' => array(
+                    'adRotationMode' => 'ROTATE_FOREVER'
                 )
             ),
 
@@ -137,7 +143,10 @@ class AdGroupServiceSample
                 'accountId' => $accountId,
                 'campaignId' => $appCampaignId,
                 'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE'
+                'userStatus' => 'ACTIVE',
+                'adGroupAdRotationMode' => array(
+                    'adRotationMode' => 'ROTATE_FOREVER'
+                )
             ),
 
             // Create ManualCpc AdGroup for MobileApp Campaign
@@ -145,7 +154,10 @@ class AdGroupServiceSample
                 'accountId' => $accountId,
                 'campaignId' => $appCampaignId,
                 'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE'
+                'userStatus' => 'ACTIVE',
+                'adGroupAdRotationMode' => array(
+                    'adRotationMode' => 'ROTATE_FOREVER'
+                )
             )
         );
 
@@ -181,7 +193,10 @@ class AdGroupServiceSample
                 'campaignId' => $adGroupValue->adGroup->campaignId,
                 'adGroupId' => $adGroupValue->adGroup->adGroupId,
                 'adGroupName' => 'Sample_UpdateOn_' . $adGroupValue->adGroup->adGroupId . '_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'PAUSED'
+                'userStatus' => 'PAUSED',
+                'adGroupAdRotationMode' => array(
+                    'adRotationMode' => 'OPTIMIZE'
+                )
             );
 
             if (!empty($adGroupValue->adGroup->trackingUrl)) {

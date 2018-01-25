@@ -111,7 +111,8 @@ class ConversionTrackerServiceSample
                 'excludeFromBidding' => 'TRUE',
                 'measurementPeriod' => '90',
                 'conversionTrackerType' => 'WEB_CONVERSION',
-                'trackingCodeType' => 'CLICK_TO_CALL'
+                'trackingCodeType' => 'CLICK_TO_CALL',
+                'crossDeviceConversionFlag' => 'TRUE'
             ),
 
             // AppConversionTracker(DOWNLOAD)
@@ -252,6 +253,7 @@ class ConversionTrackerServiceSample
                     $operand['conversionTrackerName'] = 'SampleWebConversionTracker_UpdateOn_' . SoapUtils::getCurrentTimestamp();
                     $operand['status'] = 'DISABLED';
                     $operand['category'] = 'DEFAULT';
+                    $operand['crossDeviceConversionFlag'] = 'FALSE';
                     $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'WebConversion', API_NS, 'operand', XMLSCHEMANS);
                     break;
 
