@@ -1,11 +1,14 @@
 --------------------------------
 <<Version>>
 --------------------------------
-Version 6.5.0
+Version 201805
 
 [Change history]
 -----------
-2017/01/24:
+2018/05/23:
+- Correspond to Version 201805.
+
+2018/01/24:
 - Correspond to Version 6.5.
 
 2017/11/01:
@@ -84,7 +87,6 @@ The following programs are stored.
 - balanceSample/BalanceSample.php                                           : Sample of Get account balance via BalanceService.
 - bidLandscapeSample/BidLandscapeSample.php                                 : Sample of Get bid landscape via BidLandscapeService.
 - conversionTrackerSample/ConversionTrackerSample.php                       : Sample of Get and Mutate operation for conversion via ConversionTrackerService.
-- customerSyncSample/CustomerSyncSample.php                                 : Sample of Get Data of the operation history of account or campaign via CustomerSyncService.
 - dictionarySample/DictionarySample.php                                     : Sample of Get the list of EditorialReason snd Geo code via DictionaryService.
 - keywordEstimatorSample/KeywordEstimatorSample.php                         : Sample of Get the estimate keyword Data from the existing campaign via KeywordEstimatorService.
 - reportDownloadSample/ReportDownloadSample.php                             : Sample of Get report via ReportDefinitionService/ReportService
@@ -176,7 +178,6 @@ php src/advancedURLSample/advancedURLSample.php
 php src/balanceSample/BalanceSample.php
 php src/bidLandscapeSample/BidLandscapeSample.php
 php src/conversionTrackerSample/ConversionTrackerSample.php
-php src/customerSyncSample/CustomerSyncSample.php
 php src/dictionarySample/DictionarySample.php
 php src/keywordEstimatorSample/KeywordEstimatorSample.php
 php src/reportDownloadSample/ReportDownloadSample.php

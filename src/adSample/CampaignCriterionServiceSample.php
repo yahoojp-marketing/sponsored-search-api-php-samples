@@ -115,8 +115,8 @@ class CampaignCriterionServiceSample
         );
 
         // Set xsi:type
-        $operands[0]['criterion'] = new SoapVar($operands[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'NegativeCampaignCriterion', API_NS, 'operand', XMLSCHEMANS);
+        $operands[0]['criterion'] = SoapUtils::encodingSoapVar($operands[0]['criterion'], 'Keyword','CampaignCriterion' , 'criterion');
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'NegativeCampaignCriterion','CampaignCriterion' , 'operand');
 
         // Set Request
         $operation = array(

@@ -310,9 +310,9 @@ class CampaignServiceSample
         foreach ($operands as &$operand){
             foreach ($operand['settings'] as &$setting){
                 if($setting['type'] == 'GEO_TARGET_TYPE_SETTING'){
-                    $setting = new SoapVar($setting, SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
+                    $setting = SoapUtils::encodingSoapVar($setting, 'GeoTargetTypeSetting','Campaign' , 'settings');
                 }else if($setting['type'] == 'TARGET_LIST_SETTING'){
-                    $setting = new SoapVar($setting, SOAP_ENC_OBJECT, 'TargetingSetting', API_NS, 'settings', XMLSCHEMANS);
+                    $setting = SoapUtils::encodingSoapVar($setting, 'TargetingSetting','Campaign' , 'settings');
                 }
             }
         }

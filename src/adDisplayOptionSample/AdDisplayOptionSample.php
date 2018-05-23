@@ -156,7 +156,6 @@ class AdDisplayOptionSample
                             'value' => '1234'
                         )
                     ),
-                    'advanced' => 'TRUE'
                 )
             )
         );
@@ -165,11 +164,11 @@ class AdDisplayOptionSample
         foreach ($addFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
             switch ($feedItemAttribute['placeholderField']) {
                 default:
-                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
                     break;
                 case 'ADDITIONAL_ADVANCED_URLS':
                 case 'ADDITIONAL_ADVANCED_MOBILE_URLS':
-                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'MultipleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'MultipleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
                     break;
             }
         }
@@ -229,7 +228,7 @@ class AdDisplayOptionSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($addFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
         }
 
         return $addFeedItemRequest2;
@@ -286,7 +285,7 @@ class AdDisplayOptionSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($addFeedItemRequest3['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
         }
 
         return $addFeedItemRequest3;
@@ -388,7 +387,6 @@ class AdDisplayOptionSample
                     'customParameters' => array(
                         'isRemove' => 'TRUE'
                     ),
-                    'advanced' => 'TRUE'
                 )
             )
         );
@@ -397,11 +395,11 @@ class AdDisplayOptionSample
         foreach ($setFeedItemRequest1['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
             switch ($feedItemAttribute['placeholderField']) {
                 default:
-                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
                     break;
                 case 'ADDITIONAL_ADVANCED_URLS':
                 case 'ADDITIONAL_ADVANCED_MOBILE_URLS':
-                    $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'MultipleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'MultipleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
                     break;
             }
         }
@@ -445,7 +443,7 @@ class AdDisplayOptionSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($setFeedItemRequest2['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
         }
 
         return $setFeedItemRequest2;
@@ -510,7 +508,9 @@ class AdDisplayOptionSample
                 ),
                 'placeholderTypes' => array(
                     'QUICKLINK',
-                    'CALLEXTENSION'
+                    'CALLEXTENSION',
+                    'CALLOUT',
+                    'STRUCTURED_SNIPPET'
                 ),
                 'paging' => array(
                     'startIndex' => '1',
@@ -586,7 +586,9 @@ class AdDisplayOptionSample
                 ),
                 'placeholderTypes' => array(
                     'QUICKLINK',
-                    'CALLEXTENSION'
+                    'CALLEXTENSION',
+                    'CALLOUT',
+                    'STRUCTURED_SNIPPET'
                 ),
                 'paging' => array(
                     'startIndex' => '1',

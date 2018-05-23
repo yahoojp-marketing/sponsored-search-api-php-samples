@@ -159,11 +159,11 @@ class BiddingStrategyServiceSample
         );
 
         // Set xsi:type
-        $operands[0]['biddingScheme'] = new SoapVar($operands[0]['biddingScheme'], SOAP_ENC_OBJECT, 'EnhancedCpcBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-        $operands[1]['biddingScheme'] = new SoapVar($operands[1]['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-        $operands[2]['biddingScheme'] = new SoapVar($operands[2]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetCpaBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-        $operands[3]['biddingScheme'] = new SoapVar($operands[3]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetSpendBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
-        $operands[4]['biddingScheme'] = new SoapVar($operands[4]['biddingScheme'], SOAP_ENC_OBJECT, 'TargetRoasBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+        $operands[0]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[0]['biddingScheme'], 'EnhancedCpcBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        $operands[1]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[1]['biddingScheme'], 'PageOnePromotedBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        $operands[2]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[2]['biddingScheme'], 'TargetCpaBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        $operands[3]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[3]['biddingScheme'], 'TargetSpendBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        $operands[4]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[4]['biddingScheme'], 'TargetRoasBiddingScheme','BiddingStrategy' , 'biddingScheme');
 
         // Create operation
         $operation = array(
@@ -207,7 +207,7 @@ class BiddingStrategyServiceSample
                         'biddingStrategyType' => 'ENHANCED_CPC'
                     );
 
-                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'EnhancedCpcBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    $operand['biddingScheme'] = SoapUtils::encodingSoapVar($operand['biddingScheme'], 'EnhancedCpcBiddingScheme','BiddingStrategy' , 'biddingScheme');
                     break;
 
                 // PageOnePromotedBiddingScheme
@@ -222,7 +222,7 @@ class BiddingStrategyServiceSample
                         'raiseBidWhenLowQualityScore' => 'DEACTIVE'
                     );
 
-                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    $operand['biddingScheme'] = SoapUtils::encodingSoapVar($operand['biddingScheme'], 'PageOnePromotedBiddingScheme','BiddingStrategy' , 'biddingScheme');
                     break;
 
                 // TargetCpaBiddingScheme
@@ -234,7 +234,7 @@ class BiddingStrategyServiceSample
                         'bidCeiling' => 750
                     );
 
-                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'PageOnePromotedBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    $operand['biddingScheme'] = SoapUtils::encodingSoapVar($operand['biddingScheme'], 'TargetCpaBiddingScheme','BiddingStrategy' , 'biddingScheme');
                     break;
 
                 // TargetSpendBiddingScheme
@@ -245,7 +245,7 @@ class BiddingStrategyServiceSample
                         'bidCeiling' => 750
                     );
 
-                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'TargetSpendBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    $operand['biddingScheme'] = SoapUtils::encodingSoapVar($operand['biddingScheme'], 'TargetSpendBiddingScheme','BiddingStrategy' , 'biddingScheme');
                     break;
 
                 // TargetRoasBiddingScheme
@@ -258,7 +258,7 @@ class BiddingStrategyServiceSample
                         'bidFloor' => 650
                     );
 
-                    $operand['biddingScheme'] = new SoapVar($operand['biddingScheme'], SOAP_ENC_OBJECT, 'TargetRoasBiddingScheme', API_NS, 'biddingScheme', XMLSCHEMANS);
+                    $operand['biddingScheme'] = SoapUtils::encodingSoapVar($operand['biddingScheme'], 'TargetRoasBiddingScheme','BiddingStrategy' , 'biddingScheme');
                     break;
             }
 

@@ -1,11 +1,14 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Version 6.5.0
+Version 201805
 
 ■変更履歴
 -----------
-2017/01/24:
+2018/05/23:
+- Version 201805に対応しました。
+
+2018/01/24:
 - Version 6.5に対応しました。
 
 2017/11/01:
@@ -83,7 +86,6 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - balanceSample/BalanceSample.php                                        : BalanceServiceによるアカウント残高を参照する処理のサンプルです。
 - bidLandscapeSample/BidLandscapeSample.php                              : BidLandscapeServiceによるビットのシュミレート情報を参照する処理のサンプルです。
 - conversionTrackerSample/ConversionTrackerSample.php                    : ConversionTrackerServiceによるコンバージョントラック情報の登録、参照、更新処理のサンプルです。
-- customerSyncSample/CustomerSyncSample.php                              : CustomerSyncServiceによるアカウント、キャンペーン情報の更新履歴参照処理のサンプルです。
 - dictionarySample/DictionarySample.php                                  : DictionaryServiceによる審査否認理由の参照、地域コード参照処理のサンプルです。
 - keywordEstimatorSample/KeywordEstimatorSample.php                      : KeywordEstimatorServiceによるキャンペーン及び広告グループのキーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
 - reportDownloadSample/ReportDownloadSample.php                          : ReportDefinitionService, ReportServiceを使用したレポートダウンロード処理のサンプルです。
@@ -175,7 +177,6 @@ php src/advancedURLSample/advancedURLSample.php
 php src/balanceSample/BalanceSample.php
 php src/bidLandscapeSample/BidLandscapeSample.php
 php src/conversionTrackerSample/ConversionTrackerSample.php
-php src/customerSyncSample/CustomerSyncSample.php
 php src/dictionarySample/DictionarySample.php
 php src/keywordEstimatorSample/KeywordEstimatorSample.php
 php src/reportDownloadSample/ReportDownloadSample.php

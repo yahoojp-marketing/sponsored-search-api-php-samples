@@ -165,8 +165,8 @@ class AdGroupAdServiceSample
             )
         );
 
-        $operands[0]['ad'] = new SoapVar($operands[0]['ad'], SOAP_ENC_OBJECT, 'AppAd', API_NS, 'ad', XMLSCHEMANS);
-        $operands[1]['ad'] = new SoapVar($operands[1]['ad'], SOAP_ENC_OBJECT, 'ExtendedTextAd', API_NS, 'ad', XMLSCHEMANS);
+        $operands[0]['ad'] = SoapUtils::encodingSoapVar($operands[0]['ad'], 'AppAd','AdGroupAd' , 'ad');
+        $operands[1]['ad'] = SoapUtils::encodingSoapVar($operands[1]['ad'], 'ExtendedTextAd','AdGroupAd' , 'ad');
 
         // Create operation
         $operation = array(
@@ -330,7 +330,6 @@ class AdGroupAdServiceSample
                     'PRE_DISAPPROVED',
                     'POST_DISAPPROVED'
                 ),
-                'advanced' => 'TRUE',
                 'paging' => array(
                     'startIndex' => 1,
                     'numberResults' => 20
