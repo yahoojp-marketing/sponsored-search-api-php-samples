@@ -141,13 +141,12 @@ class AdGroupCriterionServiceSample
                         'value' => '1234'
                     )
                 ),
-                'advanced' => 'TRUE'
             )
         );
 
         // Set xsi:type
-        $operands[0]['criterion'] = new SoapVar($operands[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'BiddableAdGroupCriterion', API_NS, 'operand', XMLSCHEMANS);
+        $operands[0]['criterion'] = SoapUtils::encodingSoapVar($operands[0]['criterion'], 'Keyword','AdGroupCriterion' , 'criterion');
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'BiddableAdGroupCriterion','AdGroupCriterion' , 'operand');
 
         // Create operation
         $operation = array(
@@ -223,8 +222,8 @@ class AdGroupCriterionServiceSample
             );
 
             // Set xsi:type
-            $operand['criterion'] = new SoapVar($operand['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
-            $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'BiddableAdGroupCriterion', API_NS, 'operand', XMLSCHEMANS);
+            $operand['criterion'] = SoapUtils::encodingSoapVar($operand['criterion'], 'Keyword','AdGroupCriterion' , 'criterion');
+            $operand = SoapUtils::encodingSoapVar($operand['criterion'], 'BiddableAdGroupCriterion','AdGroupCriterion' , 'operand');
 
             array_push($operands, $operand);
         }
@@ -276,8 +275,8 @@ class AdGroupCriterionServiceSample
         }
 
         // Set xsi:type
-        $operands[0]['criterion'] = new SoapVar($operands[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'BiddableAdGroupCriterion', API_NS, 'operand', XMLSCHEMANS);
+        $operands[0]['criterion'] = SoapUtils::encodingSoapVar($operands[0]['criterion'], 'Keyword','AdGroupCriterion' , 'criterion');
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'BiddableAdGroupCriterion','AdGroupCriterion' , 'operand');
 
         // Create operation
         $operation = array(
@@ -337,7 +336,6 @@ class AdGroupCriterionServiceSample
                     'PRE_DISAPPROVED',
                     'POST_DISAPPROVED'
                 ),
-                'advanced' => 'TRUE',
                 'paging' => array(
                     'startIndex' => 1,
                     'numberResults' => 20
@@ -393,7 +391,7 @@ try {
             if (isset($adGroupCriterionValue->adGroupCriterion->approvalStatus)) {
                 $approvalStatus = $adGroupCriterionValue->adGroupCriterion->approvalStatus;
                 if ($approvalStatus != 'APPROVED') {
-                    if ($approvalStatus === 'PRE_DISAPPROVED' && $approvalStatus === 'POST_DISAPPROVED') {
+                    if ($approvalStatus === 'PRE_DISAPPROVED' || $approvalStatus === 'POST_DISAPPROVED') {
                         echo 'AdGroupCriterion Review Status failed.';
                         exit();
                     } else {
@@ -405,7 +403,6 @@ try {
                 exit();
             }
         }
-        break;
     }
 
     // =================================================================

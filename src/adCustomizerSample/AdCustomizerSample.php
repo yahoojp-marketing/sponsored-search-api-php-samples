@@ -56,9 +56,7 @@ function createCampaign($accountId)
     );
 
     //xsi:type for settings
-    $operand[0]['settings'][0] =
-        new SoapVar($operand[0]['settings'][0],
-            SOAP_ENC_OBJECT, 'GeoTargetTypeSetting', API_NS, 'settings', XMLSCHEMANS);
+    $operand[0]['settings'][0] = SoapUtils::encodingSoapVar($operand[0]['settings'][0], 'GeoTargetTypeSetting','Campaign' , 'settings');
 
     // Set Request
     $campaignRequest = array(
@@ -196,16 +194,13 @@ function createAdGroupCriterion($accountId, $campaignId, $adGroupId)
                     'value' => '1234',
                 ),
             ),
-            'advanced' => 'TRUE',
         ),
     );
 
     //xsi:type for criterion Keyword
-    $operand[0]['criterion'] =
-        new SoapVar($operand[0]['criterion'], SOAP_ENC_OBJECT, 'Keyword', API_NS, 'criterion', XMLSCHEMANS);
+    $operand[0]['criterion'] = SoapUtils::encodingSoapVar($operand[0]['criterion'], 'Keyword','AdGroupCriterion' , 'criterion');
     //xsi:type for operand BiddableAdGroupCriterion
-    $operand[0] =
-        new SoapVar($operand[0], SOAP_ENC_OBJECT, 'BiddableAdGroupCriterion', API_NS, 'operand', XMLSCHEMANS);
+    $operand[0] = SoapUtils::encodingSoapVar($operand[0], 'BiddableAdGroupCriterion','AdGroupCriterion' , 'operand');
 
     // Set Request
     $adGroupCriterionRequest = array(
@@ -413,7 +408,7 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
 
     //xsi:typ for ad of ExtendedTextAd
     foreach ($operand as $adGroupAdKey => $adGroupAdValue) {
-        $operand[$adGroupAdKey]['ad'] = new SoapVar($operand[$adGroupAdKey]['ad'], SOAP_ENC_OBJECT, 'ExtendedTextAd', API_NS, 'ad', XMLSCHEMANS);
+        $operand[$adGroupAdKey]['ad'] = SoapUtils::encodingSoapVar($operand[$adGroupAdKey]['ad'], 'ExtendedTextAd','AdGroupAd' , 'ad');
     }
 
     // Set Request

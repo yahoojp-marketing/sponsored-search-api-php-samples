@@ -84,10 +84,10 @@ class TargetIdeaSample
         );
 
         // xsi:type for searchParameter[0] of RelatedToKeywordSearchParameter
-        $selector['selector']['searchParameter'][0] = new SoapVar($selector['selector']['searchParameter'][0], SOAP_ENC_OBJECT, 'RelatedToKeywordSearchParameter', API_NS, 'searchParameter', XMLSCHEMANS);
+        $selector['selector']['searchParameter'][0] = SoapUtils::encodingSoapVar($selector['selector']['searchParameter'][0], 'RelatedToKeywordSearchParameter','TargetingIdea' , 'searchParameter');
 
         // xsi:type for searchParameter[1] of RelatedToUrlSearchParameter
-        $selector['selector']['searchParameter'][1] = new SoapVar($selector['selector']['searchParameter'][1], SOAP_ENC_OBJECT, 'RelatedToUrlSearchParameter', API_NS, 'searchParameter', XMLSCHEMANS);
+        $selector['selector']['searchParameter'][1] = SoapUtils::encodingSoapVar($selector['selector']['searchParameter'][1], 'RelatedToUrlSearchParameter','TargetingIdea' , 'searchParameter');
 
         return $selector;
     }

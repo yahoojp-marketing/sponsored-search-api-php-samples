@@ -9,6 +9,82 @@ require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 class FeedItemServiceSample
 {
 
+    private $serviceName = 'FeedItemService';
+
+    /**
+     * Sample Program for FeedItemService MUTATE.
+     *
+     * @param array $operation FeedItemOperation entity.
+     * @param string $method Operator enum.
+     * @return array FeedItemReturnValue entity.
+     * @throws Exception
+     */
+    public function mutate($operation, $method)
+    {
+        // Call API
+        $feedItemService = SoapUtils::getService($this->serviceName);
+        $feedItemResponse = $feedItemService->invoke('mutate', $operation);
+
+        // Response
+        if (isset($feedItemResponse->rval->values)) {
+            if (is_array($feedItemResponse->rval->values)) {
+                $feedItemReturnValues = $feedItemResponse->rval->values;
+            } else {
+                $feedItemReturnValues = array(
+                    $feedItemResponse->rval->values
+                );
+            }
+        } else {
+            throw new Exception("No response of ".$method." FeedItemService.");
+        }
+
+        // Error
+        foreach ($feedItemReturnValues as $feedItemReturnValue) {
+            if (!isset($feedItemReturnValue->feedItem)) {
+                throw new Exception("Fail to ".$method." FeedItemService.");
+            }
+        }
+
+        return $feedItemReturnValues;
+    }
+
+    /**
+     * Sample Program for FeedItemService GET.
+     *
+     * @param array $selector FeedItemSelector entity.
+     * @return array FeedItemReturnValue entity.
+     * @throws Exception
+     */
+    public function get($selector)
+    {
+
+        // Call API
+        $feedItemService = SoapUtils::getService($this->serviceName);
+        $feedItemResponse = $feedItemService->invoke('get', $selector);
+
+        // Response
+        if (isset($feedItemResponse->rval->values)) {
+            if (is_array($feedItemResponse->rval->values)) {
+                $feedItemReturnValues = $feedItemResponse->rval->values;
+            } else {
+                $feedItemReturnValues = array(
+                    $feedItemResponse->rval->values
+                );
+            }
+        } else {
+            throw new Exception("No response of get FeedItemService.");
+        }
+
+        // Error
+        foreach ($feedItemReturnValues as $feedItemReturnValue) {
+            if (!isset($feedItemReturnValue->feedItem)) {
+                throw new Exception("Fail to get FeedItemService.");
+            }
+        }
+
+        return $feedItemReturnValues;
+    }
+
     /**
      * Sample Program for FeedItemService(AD_CUSTOMIZER) ADD.
      *
@@ -95,34 +171,10 @@ class FeedItemServiceSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
         }
 
-        // Call API
-        $feedItemService = SoapUtils::getService('FeedItemService');
-        $feedItemResponse = $feedItemService->invoke('mutate', $feedItemRequest);
-
-        // Response
-        if (isset($feedItemResponse->rval->values)) {
-            if (is_array($feedItemResponse->rval->values)) {
-                $feedItemReturnValues = $feedItemResponse->rval->values;
-            } else {
-                $feedItemReturnValues = array(
-                    $feedItemResponse->rval->values
-                );
-            }
-        } else {
-            throw new Exception("No response of add FeedItemService(AD_CUSTOMIZER).");
-        }
-
-        // Error
-        foreach ($feedItemReturnValues as $feedItemReturnValue) {
-            if (!isset($feedItemReturnValue->feedItem)) {
-                throw new Exception("Fail to add FeedItemService(AD_CUSTOMIZER).");
-            }
-        }
-
-        return $feedItemReturnValues;
+        return $this->mutate($feedItemRequest, 'ADD');
     }
 
     /**
@@ -185,34 +237,10 @@ class FeedItemServiceSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = new SoapVar($feedItemAttribute, SOAP_ENC_OBJECT, 'SimpleFeedItemAttribute', API_NS, 'feedItemAttribute', XMLSCHEMANS);
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
         }
 
-        // Call API
-        $feedItemService = SoapUtils::getService('FeedItemService');
-        $feedItemResponse = $feedItemService->invoke('mutate', $feedItemRequest);
-
-        // Response
-        if (isset($feedItemResponse->rval->values)) {
-            if (is_array($feedItemResponse->rval->values)) {
-                $feedItemReturnValues = $feedItemResponse->rval->values;
-            } else {
-                $feedItemReturnValues = array(
-                    $feedItemResponse->rval->values
-                );
-            }
-        } else {
-            throw new Exception("No response of set FeedItemService(AD_CUSTOMIZER).");
-        }
-
-        // Error
-        foreach ($feedItemReturnValues as $feedItemReturnValue) {
-            if (!isset($feedItemReturnValue->feedItem)) {
-                throw new Exception("Fail to set FeedItemService(AD_CUSTOMIZER).");
-            }
-        }
-
-        return $feedItemReturnValues;
+        return $this->mutate($feedItemRequest, 'SET');
     }
 
     /**
@@ -248,31 +276,7 @@ class FeedItemServiceSample
             )
         );
 
-        // Call API
-        $feedItemService = SoapUtils::getService('FeedItemService');
-        $feedItemResponse = $feedItemService->invoke('mutate', $feedItemRequest);
-
-        // Response
-        if (isset($feedItemResponse->rval->values)) {
-            if (is_array($feedItemResponse->rval->values)) {
-                $feedItemReturnValues = $feedItemResponse->rval->values;
-            } else {
-                $feedItemReturnValues = array(
-                    $feedItemResponse->rval->values
-                );
-            }
-        } else {
-            throw new Exception("No response of set FeedItemService.");
-        }
-
-        // Error
-        foreach ($feedItemReturnValues as $feedItemReturnValue) {
-            if (!isset($feedItemReturnValue->feedItem)) {
-                throw new Exception("Fail to set FeedItemService.");
-            }
-        }
-
-        return $feedItemReturnValues;
+        return $this->mutate($feedItemRequest, 'REMOVE');
     }
 
     /**
@@ -299,7 +303,9 @@ class FeedItemServiceSample
                 'placeholderTypes' => array(
                     'QUICKLINK',
                     'CALLEXTENSION',
-                    'AD_CUSTOMIZER'
+                    'AD_CUSTOMIZER',
+                    'CALLOUT',
+                    'STRUCTURED_SNIPPET',
                 ),
                 'approvalStatuses' => array(
                     'APPROVED',
@@ -308,7 +314,6 @@ class FeedItemServiceSample
                     'APPROVED_WITH_REVIEW',
                     'POST_DISAPPROVED'
                 ),
-                'advanced' => 'FALSE',
                 'paging' => array(
                     'startIndex' => 1,
                     'numberResults' => 20
@@ -316,31 +321,7 @@ class FeedItemServiceSample
             )
         );
 
-        // Call API
-        $feedItemService = SoapUtils::getService('FeedItemService');
-        $feedItemResponse = $feedItemService->invoke('get', $feedItemRequest);
-
-        // Response
-        if (isset($feedItemResponse->rval->values)) {
-            if (is_array($feedItemResponse->rval->values)) {
-                $feedItemReturnValues = $feedItemResponse->rval->values;
-            } else {
-                $feedItemReturnValues = array(
-                    $feedItemResponse->rval->values
-                );
-            }
-        } else {
-            throw new Exception("No response of get FeedItemService.");
-        }
-
-        // Error
-        foreach ($feedItemReturnValues as $feedItemReturnValue) {
-            if (!isset($feedItemReturnValue->feedItem)) {
-                throw new Exception("Fail to get FeedItemService.");
-            }
-        }
-
-        return $feedItemReturnValues;
+        return $this->get($feedItemRequest);
     }
 }
 

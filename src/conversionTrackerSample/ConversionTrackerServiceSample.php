@@ -160,10 +160,10 @@ class ConversionTrackerServiceSample
             )
         );
 
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'WebConversion', API_NS, 'operand', XMLSCHEMANS);
-        $operands[1] = new SoapVar($operands[1], SOAP_ENC_OBJECT, 'AppConversion', API_NS, 'operand', XMLSCHEMANS);
-        $operands[2] = new SoapVar($operands[2], SOAP_ENC_OBJECT, 'AppConversion', API_NS, 'operand', XMLSCHEMANS);
-        $operands[3] = new SoapVar($operands[3], SOAP_ENC_OBJECT, 'AppConversion', API_NS, 'operand', XMLSCHEMANS);
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'WebConversion','ConversionTracker' , 'operand');
+        $operands[1] = SoapUtils::encodingSoapVar($operands[1], 'AppConversion','ConversionTracker' , 'operand');
+        $operands[2] = SoapUtils::encodingSoapVar($operands[2], 'AppConversion','ConversionTracker' , 'operand');
+        $operands[3] = SoapUtils::encodingSoapVar($operands[3], 'AppConversion','ConversionTracker' , 'operand');
 
         // Create operation
         $operation = array(
@@ -254,7 +254,7 @@ class ConversionTrackerServiceSample
                     $operand['status'] = 'DISABLED';
                     $operand['category'] = 'DEFAULT';
                     $operand['crossDeviceConversionFlag'] = 'FALSE';
-                    $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'WebConversion', API_NS, 'operand', XMLSCHEMANS);
+                    $operand = SoapUtils::encodingSoapVar($operand, 'WebConversion','ConversionTracker' , 'operand');
                     break;
 
                 // AppConversionTracker
@@ -285,7 +285,7 @@ class ConversionTrackerServiceSample
                             break;
                     }
 
-                    $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'AppConversion', API_NS, 'operand', XMLSCHEMANS);
+                    $operand = SoapUtils::encodingSoapVar($operand, 'AppConversion','ConversionTracker' , 'operand');
                     break;
 
                 default :

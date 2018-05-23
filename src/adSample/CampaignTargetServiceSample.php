@@ -140,9 +140,9 @@ class CampaignTargetServiceSample
         );
 
         // xsi:type for target
-        $operands[0]['target'] = new SoapVar($operands[0]['target'], SOAP_ENC_OBJECT, 'ScheduleTarget', API_NS, 'target', XMLSCHEMANS);
-        $operands[1]['target'] = new SoapVar($operands[1]['target'], SOAP_ENC_OBJECT, 'LocationTarget', API_NS, 'target', XMLSCHEMANS);
-        $operands[2]['target'] = new SoapVar($operands[2]['target'], SOAP_ENC_OBJECT, 'NetworkTarget', API_NS, 'target', XMLSCHEMANS);
+        $operands[0]['target'] = SoapUtils::encodingSoapVar($operands[0]['target'], 'ScheduleTarget','CampaignTarget' , 'target');
+        $operands[1]['target'] = SoapUtils::encodingSoapVar($operands[1]['target'], 'LocationTarget','CampaignTarget' , 'target');
+        $operands[2]['target'] = SoapUtils::encodingSoapVar($operands[2]['target'], 'NetworkTarget','CampaignTarget' , 'target');
 
         // Create Request
         $operation = array(
@@ -189,7 +189,7 @@ class CampaignTargetServiceSample
                         'bidMultiplier' => 0.5
                     );
                     // xsi:type for targets of ScheduleTarget
-                    $target['target'] = new SoapVar($target['target'], SOAP_ENC_OBJECT, 'ScheduleTarget', API_NS, 'target', XMLSCHEMANS);
+                    $target['target'] = SoapUtils::encodingSoapVar($target['target'], 'ScheduleTarget','CampaignTarget' , 'target');
                     break;
 
                 case 'LOCATION':
@@ -204,7 +204,7 @@ class CampaignTargetServiceSample
                         'bidMultiplier' => 0.5
                     );
                     // xsi:type for targets of LocationTarget
-                    $target['target'] = new SoapVar($target['target'], SOAP_ENC_OBJECT, 'LocationTarget', API_NS, 'target', XMLSCHEMANS);
+                    $target['target'] = SoapUtils::encodingSoapVar($target['target'], 'LocationTarget','CampaignTarget' , 'target');
                     break;
             }
 
@@ -222,7 +222,7 @@ class CampaignTargetServiceSample
             'bidMultiplier' => 0.1
         );
         // xsi:type for targets of PlatformTarget
-        $platformTarget['target'] = new SoapVar($platformTarget['target'], SOAP_ENC_OBJECT, 'PlatformTarget', API_NS, 'target', XMLSCHEMANS);
+        $platformTarget['target'] = SoapUtils::encodingSoapVar($platformTarget['target'], 'PlatformTarget','CampaignTarget' , 'target');
         array_push($operands, $platformTarget);
 
         // Set PlatformTarget for TABLET
@@ -236,7 +236,7 @@ class CampaignTargetServiceSample
             'bidMultiplier' => 0.1
         );
         // xsi:type for targets of PlatformTarget
-        $platformTarget['target'] = new SoapVar($platformTarget['target'], SOAP_ENC_OBJECT, 'PlatformTarget', API_NS, 'target', XMLSCHEMANS);
+        $platformTarget['target'] = SoapUtils::encodingSoapVar($platformTarget['target'], 'PlatformTarget','CampaignTarget' , 'target');
         array_push($operands, $platformTarget);
 
         // Set PlatformTarget for DESKTOP
@@ -250,7 +250,7 @@ class CampaignTargetServiceSample
             'bidMultiplier' => 0.1
         );
         // xsi:type for targets of PlatformTarget
-        $platformTarget['target'] = new SoapVar($platformTarget['target'], SOAP_ENC_OBJECT, 'PlatformTarget', API_NS, 'target', XMLSCHEMANS);
+        $platformTarget['target'] = SoapUtils::encodingSoapVar($platformTarget['target'], 'PlatformTarget','CampaignTarget' , 'target');
         array_push($operands, $platformTarget);
 
         // Create Request

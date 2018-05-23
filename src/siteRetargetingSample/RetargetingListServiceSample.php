@@ -112,7 +112,7 @@ class RetargetingListServiceSample
         );
 
         // Set xsi:type
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'DefaultTargetList', API_NS, null, XMLSCHEMANS);
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'DefaultTargetList','RetargetingList' , null);
 
         // Create operation
         $operation = array(
@@ -177,15 +177,15 @@ class RetargetingListServiceSample
         $operands[2]['targetListName'] = 'SampleRuleBaseTargetList3_CreateOn_' . SoapUtils::getCurrentTimestamp();
 
         // Set xsi:type
-        $operands[0]['rules'][0]['ruleItems'][0] = new SoapVar($operands[0]['rules'][0]['ruleItems'][0], SOAP_ENC_OBJECT, 'UrlRuleItem', API_NS, null, XMLSCHEMANS);
-        $operands[0]['rules'][0]['ruleItems'][1] = new SoapVar($operands[0]['rules'][0]['ruleItems'][1], SOAP_ENC_OBJECT, 'UrlRuleItem', API_NS, null, XMLSCHEMANS);
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'RuleBaseTargetList', API_NS, null, XMLSCHEMANS);
-        $operands[1]['rules'][0]['ruleItems'][0] = new SoapVar($operands[1]['rules'][0]['ruleItems'][0], SOAP_ENC_OBJECT, 'UrlRuleItem', API_NS, null, XMLSCHEMANS);
-        $operands[1]['rules'][0]['ruleItems'][1] = new SoapVar($operands[1]['rules'][0]['ruleItems'][1], SOAP_ENC_OBJECT, 'UrlRuleItem', API_NS, null, XMLSCHEMANS);
-        $operands[1] = new SoapVar($operands[1], SOAP_ENC_OBJECT, 'RuleBaseTargetList', API_NS, null, XMLSCHEMANS);
-        $operands[2]['rules'][0]['ruleItems'][0] = new SoapVar($operands[2]['rules'][0]['ruleItems'][0], SOAP_ENC_OBJECT, 'UrlRuleItem', API_NS, null, XMLSCHEMANS);
-        $operands[2]['rules'][0]['ruleItems'][1] = new SoapVar($operands[2]['rules'][0]['ruleItems'][1], SOAP_ENC_OBJECT, 'UrlRuleItem', API_NS, null, XMLSCHEMANS);
-        $operands[2] = new SoapVar($operands[2], SOAP_ENC_OBJECT, 'RuleBaseTargetList', API_NS, null, XMLSCHEMANS);
+        $operands[0]['rules'][0]['ruleItems'][0] = SoapUtils::encodingSoapVar($operands[0]['rules'][0]['ruleItems'][0], 'UrlRuleItem','RetargetingList' , null);
+        $operands[0]['rules'][0]['ruleItems'][1] = SoapUtils::encodingSoapVar($operands[0]['rules'][0]['ruleItems'][1], 'UrlRuleItem','RetargetingList' , null);
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'RuleBaseTargetList','RetargetingList' , null);
+        $operands[1]['rules'][0]['ruleItems'][0] = SoapUtils::encodingSoapVar($operands[1]['rules'][0]['ruleItems'][0], 'UrlRuleItem','RetargetingList' , null);
+        $operands[1]['rules'][0]['ruleItems'][1] = SoapUtils::encodingSoapVar($operands[1]['rules'][0]['ruleItems'][1], 'UrlRuleItem','RetargetingList' , null);
+        $operands[1] = SoapUtils::encodingSoapVar($operands[1], 'RuleBaseTargetList','RetargetingList' , null);
+        $operands[2]['rules'][0]['ruleItems'][0] = SoapUtils::encodingSoapVar($operands[2]['rules'][0]['ruleItems'][0], 'UrlRuleItem','RetargetingList' , null);
+        $operands[2]['rules'][0]['ruleItems'][1] = SoapUtils::encodingSoapVar($operands[2]['rules'][0]['ruleItems'][1], 'UrlRuleItem','RetargetingList' , null);
+        $operands[2] = SoapUtils::encodingSoapVar($operands[2], 'RuleBaseTargetList','RetargetingList' , null);
 
         // Create operation
         $operation = array(
@@ -253,7 +253,7 @@ class RetargetingListServiceSample
         );
 
         // Set xsi:type
-        $operands[0] = new SoapVar($operands[0], SOAP_ENC_OBJECT, 'LogicalTargetList', API_NS, null, XMLSCHEMANS);
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'LogicalTargetList','RetargetingList' , null);
 
         // Create operation
         $operation = array(
@@ -306,7 +306,7 @@ class RetargetingListServiceSample
                     $operand['targetListDescription'] = 'SampleDefaultTargetList_Update';
 
                     // Set xsi:type
-                    $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'DefaultTargetList', API_NS, null, XMLSCHEMANS);
+                    $operand = SoapUtils::encodingSoapVar($operand, 'DefaultTargetList','RetargetingList' , null);
                     break;
 
                 // Create RuleBaseTargetList
@@ -319,7 +319,7 @@ class RetargetingListServiceSample
                     $operand['isDateSpecific'] = 'FALSE';
 
                     // Set xsi:type
-                    $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'RuleBaseTargetList', API_NS, null, XMLSCHEMANS);
+                    $operand = SoapUtils::encodingSoapVar($operand, 'RuleBaseTargetList','RetargetingList' , null);
                     break;
 
                 // Create LogicalTargetList
@@ -341,7 +341,7 @@ class RetargetingListServiceSample
                     $operand['logicalGroup'] = $logicalGroup;
 
                     // Set xsi:type
-                    $operand = new SoapVar($operand, SOAP_ENC_OBJECT, 'LogicalTargetList', API_NS, null, XMLSCHEMANS);
+                    $operand = SoapUtils::encodingSoapVar($operand, 'LogicalTargetList','RetargetingList' , null);
                     break;
             }
 
