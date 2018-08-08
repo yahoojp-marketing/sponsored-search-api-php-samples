@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/CampaignServiceSample.php');
+require_once(dirname(__FILE__) . '/AdGroupServiceSample.php');
 
 /**
  * Sample Program for AdGroupBidMultiplierServiceSample.
@@ -220,11 +222,39 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
  * execute AdGroupBidMultiplierServiceSample.
  */
 try {
+    $campaignServiceSample = new CampaignServiceSample();
+    $adGroupServiceSample = new AdGroupServiceSample();
     $adGroupBidMultiplierServiceSample = new AdGroupBidMultiplierServiceSample();
 
     $accountId = SoapUtils::getAccountId();
     $campaignId = SoapUtils::getCampaignId();
     $adGroupId = SoapUtils::getAdGroupId();
+
+    // =================================================================
+    // CampaignService::mutate(ADD)
+    // =================================================================
+    $campaignValues = array();
+    if ($campaignId === 'xxxxxxxx') {
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcStandardCampaign($accountId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
+        foreach ($campaignValues as $campaignValue) {
+            $campaignId = $campaignValue->campaign->campaignId;
+        }
+    }
+
+    // =================================================================
+    // AdGroupService::mutate(ADD)
+    // =================================================================
+    $adGroupValues = array();
+    if ($adGroupId === 'xxxxxxxx') {
+        $addAdGroupRequest = $adGroupServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addAdGroupRequest['operations']['operand'], $adGroupServiceSample->createAddStandardAdGroup($accountId, $campaignId));
+        $adGroupValues = $adGroupServiceSample->mutate($addAdGroupRequest, 'ADD');
+        foreach ($adGroupValues as $adGroupValue) {
+            $adGroupId = $adGroupValue->adGroup->adGroupId;
+        }
+    }
 
     // =================================================================
     // AdGroupBidMultiplierService SET
@@ -252,6 +282,21 @@ try {
 
     // Run
     $adGroupBidMultiplierValues = $adGroupBidMultiplierServiceSample->mutate($operation, 'REMOVE');
+
+    // =================================================================
+    // remove AdGroupService, Campaign
+    // =================================================================
+    // AdGroup
+    if (count($adGroupValues) > 0) {
+        $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
+        $adGroupServiceSample->mutate($operation, 'REMOVE');
+    }
+
+    // Campaign
+    if (count($campaignValues) > 0) {
+        $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+        $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    }
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

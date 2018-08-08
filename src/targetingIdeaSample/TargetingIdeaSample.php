@@ -54,12 +54,13 @@ class TargetIdeaSample
      *
      * @return TargetingIdeaSelector entity.
      */
-    public function createSampleGetRequest()
+    public function createSampleGetRequest($accountId)
     {
 
         // Create selector
         $selector = array(
             'selector' => array(
+                'accountId' => $accountId,
                 'searchParameter' => array(
                     0 => array(
                         'searchParameterUse' => 'RELATED_TO_KEYWORD',
@@ -102,12 +103,13 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
  */
 try {
     $targetIdeaSample = new TargetIdeaSample();
+    $accountId = SoapUtils::getAccountId();
 
     // =================================================================
     // TargetingIdeaService GET
     // =================================================================
     // Create selector
-    $selector = $targetIdeaSample->createSampleGetRequest();
+    $selector = $targetIdeaSample->createSampleGetRequest($accountId);
 
     // Run
     $targetIdeaSample->get($selector);

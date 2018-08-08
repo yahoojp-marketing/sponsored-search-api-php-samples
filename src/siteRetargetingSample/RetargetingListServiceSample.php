@@ -93,8 +93,8 @@ class RetargetingListServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
-     * @return RetargetingListOperation entity.
+     * @param string $accountId AccountID
+     * @return array RetargetingListOperation entity.
      */
     public function createSampleAddDefaultTargetListRequest($accountId)
     {
@@ -130,8 +130,8 @@ class RetargetingListServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
-     * @return RetargetingListOperation entity.
+     * @param string $accountId AccountID
+     * @return array RetargetingListOperation entity.
      */
     public function createSampleAddRuleBaseTargetListRequest($accountId)
     {
@@ -165,8 +165,8 @@ class RetargetingListServiceSample
                 ),
                 'isAllVisitor' => 'FALSE',
                 'isDateSpecific' => 'TRUE',
-                'startDate' => '20161231',
-                'endDate' => '20181231'
+                'startDate' => date('Ymd'),
+                'endDate' => date("Ymd", strtotime("+1 month"))
             )
         );
 
@@ -203,9 +203,9 @@ class RetargetingListServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
+     * @param string $accountId AccountID
      * @param array $retargetingListValues RetargetingListValues entity.
-     * @return RetargetingListOperation entity.
+     * @return array RetargetingListOperation entity.
      */
     public function createSampleAddLogicalTargetListRequest($accountId, $retargetingListValues)
     {
@@ -271,9 +271,9 @@ class RetargetingListServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
+     * @param string $accountId AccountID
      * @param array $retargetingListValues RetargetingListValues entity.
-     * @return RetargetingListOperation entity.
+     * @return array RetargetingListOperation entity.
      */
     public function createSampleSetRequest($accountId, $retargetingListValues)
     {
@@ -364,9 +364,9 @@ class RetargetingListServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
+     * @param string $accountId AccountID
      * @param array $retargetingListValues RetargetingListValues entity.
-     * @return RetargetingListSelector entity.
+     * @return array RetargetingListSelector entity.
      */
     public function createSampleGetRequest($accountId, $retargetingListValues)
     {

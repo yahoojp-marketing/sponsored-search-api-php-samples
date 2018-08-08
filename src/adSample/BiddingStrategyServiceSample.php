@@ -89,100 +89,149 @@ class BiddingStrategyServiceSample
     }
 
     /**
+     * Example Mutate Request Base.
+     *
+     * @param string $operator Operator
+     * @param string $accountId Account ID
+     * @return array Mutate entity.
+     */
+    public function createMutateRequest($operator, $accountId)
+    {
+        return array(
+            'operations' => array(
+                'operator' => $operator,
+                'accountId' => $accountId,
+                'operand' => array()
+            )
+        );
+    }
+
+    /**
+     * Example EnhancedCpcBiddingScheme entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array BiddingScheme entity.
+     */
+    public function createEnhancedCpcBidding($accountId) {
+        $biddingStrategy = array(
+            'accountId' => $accountId,
+            'biddingStrategyName' => 'SampleEnhancedCpc_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'biddingScheme' => array(
+                'biddingStrategyType' => 'ENHANCED_CPC'
+            )
+        );
+        $biddingStrategy['biddingScheme'] = SoapUtils::encodingSoapVar($biddingStrategy['biddingScheme'], 'EnhancedCpcBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        return $biddingStrategy;
+    }
+
+    /**
+     * Example PageOnePromotedBiddingScheme entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array BiddingScheme entity.
+     */
+    public function createPageOnePromotedBidding($accountId) {
+        $biddingStrategy = array(
+            'accountId' => $accountId,
+            'biddingStrategyName' => 'SamplePageOnePromoted_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'biddingScheme' => array(
+                'biddingStrategyType' => 'PAGE_ONE_PROMOTED',
+                'bidCeiling' => 500,
+                'bidMultiplier' => 1.00,
+                'bidChangesForRaisesOnly' => 'ACTIVE',
+                'raiseBidWhenBudgetConstrained' => 'ACTIVE',
+                'raiseBidWhenLowQualityScore' => 'ACTIVE'
+            )
+        );
+        $biddingStrategy['biddingScheme'] = SoapUtils::encodingSoapVar($biddingStrategy['biddingScheme'], 'PageOnePromotedBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        return $biddingStrategy;
+    }
+
+    /**
+     * Example TargetCpaBiddingScheme entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array BiddingScheme entity.
+     */
+    public function createTargetCpaBidding($accountId) {
+        $biddingStrategy = array(
+            'accountId' => $accountId,
+            'biddingStrategyName' => 'SampleTargetCpa_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'biddingScheme' => array(
+                'biddingStrategyType' => 'TARGET_CPA',
+                'targetCpa' => 500,
+                'bidCeiling' => 700
+            )
+        );
+        $biddingStrategy['biddingScheme'] = SoapUtils::encodingSoapVar($biddingStrategy['biddingScheme'], 'TargetCpaBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        return $biddingStrategy;
+    }
+
+    /**
+     * Example TargetSpendBiddingScheme entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array BiddingScheme entity.
+     */
+    public function createTargetSpendBidding($accountId) {
+        $biddingStrategy = array(
+            'accountId' => $accountId,
+            'biddingStrategyName' => 'SampleTargetSpend_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'biddingScheme' => array(
+                'biddingStrategyType' => 'TARGET_SPEND',
+                'bidCeiling' => 700,
+                'spendTarget' => 10
+            )
+        );
+        $biddingStrategy['biddingScheme'] = SoapUtils::encodingSoapVar($biddingStrategy['biddingScheme'], 'TargetSpendBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        return $biddingStrategy;
+    }
+
+    /**
+     * Example TargetRoasBiddingScheme entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array BiddingScheme entity.
+     */
+    public function createTargetRoasBidding($accountId) {
+        $biddingStrategy = array(
+            'accountId' => $accountId,
+            'biddingStrategyName' => 'SampleTargetRoas_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'biddingScheme' => array(
+                'biddingStrategyType' => 'TARGET_ROAS',
+                'targetRoas' => 10.00,
+                'bidCeiling' => 700,
+                'bidFloor' => 600
+            )
+        );
+        $biddingStrategy['biddingScheme'] = SoapUtils::encodingSoapVar($biddingStrategy['biddingScheme'], 'TargetRoasBiddingScheme','BiddingStrategy' , 'biddingScheme');
+        return $biddingStrategy;
+    }
+
+    /**
      * create sample request.
      *
-     * @param long $accountId AccountID
-     * @return BiddingStrategyOperation entity.
+     * @param string $accountId AccountID
+     * @return array BiddingStrategyOperation entity.
      */
     public function createSampleAddRequest($accountId)
     {
-
-        // Create operands
-        $operands = array(
-
-            // Create EnhancedCpcBidding
-            array(
-                'accountId' => $accountId,
-                'biddingStrategyName' => 'SampleEnhancedCpc_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'biddingScheme' => array(
-                    'biddingStrategyType' => 'ENHANCED_CPC'
-                )
-            ),
-
-            // Create PageOnePromotedBidding
-            array(
-                'accountId' => $accountId,
-                'biddingStrategyName' => 'SamplePageOnePromoted_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'biddingScheme' => array(
-                    'biddingStrategyType' => 'PAGE_ONE_PROMOTED',
-                    'bidCeiling' => 500,
-                    'bidMultiplier' => 1.00,
-                    'bidChangesForRaisesOnly' => 'ACTIVE',
-                    'raiseBidWhenBudgetConstrained' => 'ACTIVE',
-                    'raiseBidWhenLowQualityScore' => 'ACTIVE'
-                )
-            ),
-
-            // Create TargetCpaBidding
-            array(
-                'accountId' => $accountId,
-                'biddingStrategyName' => 'SampleTargetCpa_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'biddingScheme' => array(
-                    'biddingStrategyType' => 'TARGET_CPA',
-                    'targetCpa' => 500,
-                    'bidCeiling' => 700
-                )
-            ),
-
-            // Create TargetSpendBidding
-            array(
-                'accountId' => $accountId,
-                'biddingStrategyName' => 'SampleTargetSpend_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'biddingScheme' => array(
-                    'biddingStrategyType' => 'TARGET_SPEND',
-                    'bidCeiling' => 700,
-                    'spendTarget' => 10
-                )
-            ),
-
-            // Create TargetRoasBidding
-            array(
-                'accountId' => $accountId,
-                'biddingStrategyName' => 'SampleTargetRoas_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'biddingScheme' => array(
-                    'biddingStrategyType' => 'TARGET_ROAS',
-                    'targetRoas' => 10.00,
-                    'bidCeiling' => 700,
-                    'bidFloor' => 600
-                )
-            )
-        );
-
-        // Set xsi:type
-        $operands[0]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[0]['biddingScheme'], 'EnhancedCpcBiddingScheme','BiddingStrategy' , 'biddingScheme');
-        $operands[1]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[1]['biddingScheme'], 'PageOnePromotedBiddingScheme','BiddingStrategy' , 'biddingScheme');
-        $operands[2]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[2]['biddingScheme'], 'TargetCpaBiddingScheme','BiddingStrategy' , 'biddingScheme');
-        $operands[3]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[3]['biddingScheme'], 'TargetSpendBiddingScheme','BiddingStrategy' , 'biddingScheme');
-        $operands[4]['biddingScheme'] = SoapUtils::encodingSoapVar($operands[4]['biddingScheme'], 'TargetRoasBiddingScheme','BiddingStrategy' , 'biddingScheme');
-
         // Create operation
-        $operation = array(
-            'operations' => array(
-                'operator' => 'ADD',
-                'accountId' => $accountId,
-                'operand' => $operands
-            )
-        );
-
+        $operation = $this->createMutateRequest('ADD', $accountId);
+        array_push($operation['operations']['operand'], $this->createEnhancedCpcBidding($accountId));
+        array_push($operation['operations']['operand'], $this->createPageOnePromotedBidding($accountId));
+        array_push($operation['operations']['operand'], $this->createTargetCpaBidding($accountId));
+        array_push($operation['operations']['operand'], $this->createTargetSpendBidding($accountId));
+        array_push($operation['operations']['operand'], $this->createTargetRoasBidding($accountId));
         return $operation;
     }
 
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
+     * @param string $accountId AccountID
      * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
-     * @return BiddingStrategyOperation entity.
+     * @return array BiddingStrategyOperation entity.
      */
     public function createSampleSetRequest($accountId, $biddingStrategyValues)
     {
@@ -280,9 +329,9 @@ class BiddingStrategyServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
+     * @param string $accountId AccountID
      * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
-     * @return BiddingStrategyOperation entity.
+     * @return array BiddingStrategyOperation entity.
      */
     public function createSampleRemoveRequest($accountId, $biddingStrategyValues)
     {
@@ -315,9 +364,9 @@ class BiddingStrategyServiceSample
     /**
      * create sample request.
      *
-     * @param long $accountId AccountID
+     * @param string $accountId AccountID
      * @param array $biddingStrategyValues BiddingStrategyReturnValue entity.
-     * @return BiddingStrategySelector entity.
+     * @return array BiddingStrategySelector entity.
      */
     public function createSampleGetRequest($accountId, $biddingStrategyValues)
     {

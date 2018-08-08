@@ -1,10 +1,13 @@
 --------------------------------
 <<Version>>
 --------------------------------
-Version 201805
+Version 201808
 
 [Change history]
 -----------
+2018/08/08:
+- Correspond to Version 201808.
+
 2018/05/23:
 - Correspond to Version 201805.
 
@@ -88,6 +91,10 @@ The following programs are stored.
 - bidLandscapeSample/BidLandscapeSample.php                                 : Sample of Get bid landscape via BidLandscapeService.
 - conversionTrackerSample/ConversionTrackerSample.php                       : Sample of Get and Mutate operation for conversion via ConversionTrackerService.
 - dictionarySample/DictionarySample.php                                     : Sample of Get the list of EditorialReason snd Geo code via DictionaryService.
+- dynamicAdsForSearchSample/PageFeedItemServiceSample.php                   : Sample of Get, Get Review Summary, Upload and Download operation for page feed item via PageFeedItemService.
+- dynamicAdsForSearchSample/CampaignWebpageServiceSample.php                : Sample of Get and Mutate operation for exclude settings of page feed via CampaignWebpageService.
+- dynamicAdsForSearchSample/AdGroupWebpageServiceSample.php                 : Sample of Get and Mutate operation for allow or exclude settings of page feed via AdGroupWebpageService.
+- dynamicAdsForSearchSample/DynamicAdsForSearchSample.php                   : Sample of Get and Mutate operation of dynamic ads for search via FeedFolderService/PageFeedItemService/CampaignService/AdGroupService/AdGroupAdService/CampaignWebpageService/AdGroupWebpageService.
 - keywordEstimatorSample/KeywordEstimatorSample.php                         : Sample of Get the estimate keyword Data from the existing campaign via KeywordEstimatorService.
 - reportDownloadSample/ReportDownloadSample.php                             : Sample of Get report via ReportDefinitionService/ReportService
 - sharedCriterionSample/AccountSharedServiceSample.php                      : Sample of Get and Mutate operation for shared Negative Keyword List in campaign-level of the account via AccountSharedService.
@@ -107,10 +114,10 @@ The following programs are stored.
 - SoapUtils.class.php : It is a Sample for the process via LocationService and the common process.
 
 [download directory]
-It stores the downloded file when you execute ReportDownloadSample,CampaignExportSample.
+It stores the downloded data file when you execute ReportDownloadSample,CampaignExportSample,AuditLogSample,PageFeedItemService,DynamicAdsForSearchSample.
 
 [upload directory]
-Currently not available.
+It stores the upload data file when PageFeedItemServiceSample, DynamicAdsForSearchSample is executed.
 
 
 --------------------------------
@@ -179,6 +186,10 @@ php src/balanceSample/BalanceSample.php
 php src/bidLandscapeSample/BidLandscapeSample.php
 php src/conversionTrackerSample/ConversionTrackerSample.php
 php src/dictionarySample/DictionarySample.php
+php src/dynamicAdsForSearchSample/PageFeedItemServiceSample.php
+php src/dynamicAdsForSearchSample/CampaignWebpageServiceSample.php
+php src/dynamicAdsForSearchSample/AdGroupWebpageServiceSample.php
+php src/dynamicAdsForSearchSample/DynamicAdsForSearchSample.php
 php src/keywordEstimatorSample/KeywordEstimatorSample.php
 php src/reportDownloadSample/ReportDownloadSample.php
 php src/sharedCriterionSample/AccountSharedServiceSample.php
@@ -195,3 +206,9 @@ php src/auditLogSample/AuditLogSample.php
 ---------------------------------------
 
 When the operation for data download is executed, the file will be stored in the directory of download.
+
+When the operation for data upload is executed, please store the file you want to upload under the upload directory.
+File name is fixed in each sample program.
+
+ - In case of PageFeedItemServiceSample, DynamicAdsForSearchSample      : pageFeedItemUploadSample.csv
+ 

@@ -1,5 +1,5 @@
 <?php
-require_once (dirname(__FILE__) . '/Service.class.php');
+require_once(dirname(__FILE__) . '/Service.class.php');
 
 define('LOCATION_CACHE_FILE', dirname(__FILE__) . '/location_cache.txt');
 
@@ -7,7 +7,8 @@ define('LOCATION_CACHE_FILE', dirname(__FILE__) . '/location_cache.txt');
  * Utility method collection for PHP Sample Program.
  * Copyright (C) 2012 Yahoo Japan Corporation. All Rights Reserved.
  */
-class SoapUtils{
+class SoapUtils
+{
 
     private static $locationCache; // cache of location for accountId.
 
@@ -17,7 +18,8 @@ class SoapUtils{
      * @return long account ID
      * @access public
      */
-    public static function getAccountId(){
+    public static function getAccountId()
+    {
         return ACCOUNTID;
     }
 
@@ -27,7 +29,8 @@ class SoapUtils{
      * @return long biddingStrategy ID
      * @access public
      */
-    public static function getBiddingStrategyId(){
+    public static function getBiddingStrategyId()
+    {
         return BIDDINGSTRATEGYID;
     }
 
@@ -37,7 +40,8 @@ class SoapUtils{
      * @return long campaign ID
      * @access public
      */
-    public static function getCampaignId(){
+    public static function getCampaignId()
+    {
         return CAMPAIGNID;
     }
 
@@ -47,7 +51,8 @@ class SoapUtils{
      * @return long appCampaign ID
      * @access public
      */
-    public static function getAppCampaignId(){
+    public static function getAppCampaignId()
+    {
         return APPCAMPAIGNID;
     }
 
@@ -57,7 +62,8 @@ class SoapUtils{
      * @return long adGroup ID
      * @access public
      */
-    public static function getAdGroupId(){
+    public static function getAdGroupId()
+    {
         return ADGROUPID;
     }
 
@@ -67,7 +73,8 @@ class SoapUtils{
      * @return long appAdGroup ID
      * @access public
      */
-    public static function getAppAdGroupId(){
+    public static function getAppAdGroupId()
+    {
         return APPADGROUPID;
     }
 
@@ -77,7 +84,8 @@ class SoapUtils{
      * @return string adGroupCriterion ID
      * @access public
      */
-    public static function getAdGroupCriterionIds(){
+    public static function getAdGroupCriterionIds()
+    {
         return ADGROUPCRITERIONIDS;
     }
 
@@ -87,7 +95,8 @@ class SoapUtils{
      * @return long feedFolder ID
      * @access public
      */
-    public static function getFeedFolderId(){
+    public static function getFeedFolderId()
+    {
         return FEEDFOLDERID;
     }
 
@@ -97,7 +106,8 @@ class SoapUtils{
      * @return long Integer Type FeedAttribute ID
      * @access public
      */
-    public static function getIntegerFeedAttributeId(){
+    public static function getIntegerFeedAttributeId()
+    {
         return INTEGERFEEDATTRIBUTEID;
     }
 
@@ -107,7 +117,8 @@ class SoapUtils{
      * @return long Price Type FeedAttribute ID
      * @access public
      */
-    public static function getPriceFeedAttributeId(){
+    public static function getPriceFeedAttributeId()
+    {
         return PRICEFEEDFOLDERID;
     }
 
@@ -117,7 +128,8 @@ class SoapUtils{
      * @return long Date Type FeedAttribute ID
      * @access public
      */
-    public static function getDateFeedAttributeId(){
+    public static function getDateFeedAttributeId()
+    {
         return DATEFEEDFOLDERID;
     }
 
@@ -127,7 +139,8 @@ class SoapUtils{
      * @return long String Type FeedAttribute ID
      * @access public
      */
-    public static function getStringFeedAttributeId(){
+    public static function getStringFeedAttributeId()
+    {
         return STRINGFEEDFOLDERID;
     }
 
@@ -137,7 +150,8 @@ class SoapUtils{
      * @return long TargetList ID
      * @access public
      */
-    public static function getTargetListId(){
+    public static function getTargetListId()
+    {
         return TARGETLISTID;
     }
 
@@ -148,7 +162,8 @@ class SoapUtils{
      * @return string WSDL URL
      * @access public
      */
-    public static function getWsdlURL($service_name){
+    public static function getWsdlURL($service_name)
+    {
         return 'https://' . LOCATION . '/services/' . API_VERSION . '/' . $service_name . '?wsdl';
     }
 
@@ -159,7 +174,8 @@ class SoapUtils{
      * @return string endpoint URL
      * @access public
      */
-    public static function getServiceEndPointURL($service_name){
+    public static function getServiceEndPointURL($service_name)
+    {
         return 'https://' . self::getLocation(self::getAccountId()) . '/services/' . API_VERSION . '/' . $service_name;
     }
 
@@ -169,21 +185,22 @@ class SoapUtils{
      * @return colocation server name for accountId.
      * @access public
      */
-    public static function getLocation($accountId){
-        if(isset(self::$locationCache[$accountId])){
+    public static function getLocation($accountId)
+    {
+        if (isset(self::$locationCache[$accountId])) {
             return self::$locationCache[$accountId];
-        }else{
+        } else {
             // read location cache file
             self::$locationCache = array();
-            if(is_readable(LOCATION_CACHE_FILE)){
+            if (is_readable(LOCATION_CACHE_FILE)) {
                 $cache = file_get_contents(LOCATION_CACHE_FILE);
                 self::$locationCache = unserialize($cache);
             }
 
-            if(isset(self::$locationCache[$accountId])){
+            if (isset(self::$locationCache[$accountId])) {
                 // return cached location
                 $cachedLocation = self::$locationCache[$accountId];
-            }else{
+            } else {
                 // get LocationService Stub
                 $locationService = self::getService('LocationService');
                 // call API
@@ -191,13 +208,13 @@ class SoapUtils{
                     'accountId' => $accountId
                 ));
                 // response
-                if(isset($response->rval->value)){
+                if (isset($response->rval->value)) {
                     // save cache
                     $cachedLocation = $response->rval->value;
                     self::$locationCache[$accountId] = $cachedLocation;
                     $cache = serialize(self::$locationCache);
                     file_put_contents(LOCATION_CACHE_FILE, $cache);
-                }else{
+                } else {
                     echo 'Error : Fail to get Location.';
                     exit();
                 }
@@ -213,7 +230,8 @@ class SoapUtils{
      * @param string $file_name save file name(not path, file name only).
      * @access public
      */
-    public static function download($download_url, $file_name){
+    public static function download($download_url, $file_name)
+    {
         $file_path = dirname(__FILE__) . '/../../download/' . $file_name;
 
         $ch = curl_init();
@@ -242,12 +260,20 @@ class SoapUtils{
      * @param string $file_name upload file name(not path, file name only).
      * @access public
      */
-    public static function upload($upload_url, $file_name){
+    public static function upload($upload_url, $file_name)
+    {
         $file_path = dirname(__FILE__) . '/../../upload/' . $file_name;
 
-        $req = new HttpRequest($upload_url, HttpRequest::METH_POST);
+        $req = new http\Client\Request("POST", $upload_url);
+        $client = new http\Client;
 
-        $req->addPostFile('upfile', $file_path);
+        $req->getBody()->addForm([], [
+            [
+                "name" => "upfile",
+                "type" => "text/csv",
+                "file" => $file_path
+            ]
+        ]);
 
         echo "------------------------------------\n";
         echo "Start upload. \n";
@@ -255,23 +281,24 @@ class SoapUtils{
         echo "UPLOAD_FILE = $file_path \n";
         echo "------------------------------------\n";
 
-        try{
-            $message = $req->send();
-            echo "$message\n";
-        }catch(Exception $e){
-            echo 'Fail to upload file.';
+        try {
+            $client->enqueue($req)->send();
+            $response = $client->getResponse($req);
+            echo "$response\n";
+        } catch (Exception $e) {
+            echo "Fail to upload file.\n";
             var_dump($e);
             return false;
         }
 
-        if($req->getResponseCode() != 200){
-            echo 'Fail to upload file.';
+        if ($response->getTransferInfo("response_code") != 200) {
+            echo "Fail to upload file.\n";
             var_dump($req);
             return false;
         }
 
-        echo 'Success to upload file.';
-        return $message->getBody();
+        echo "Success to upload file.\n";
+        return $response->getBody();
     }
 
     /**
@@ -281,10 +308,11 @@ class SoapUtils{
      * @return Service SOAP API Service Stub Object
      * @access public
      */
-    public static function getService($service_name){
-        if($service_name === 'LocationService'){
+    public static function getService($service_name)
+    {
+        if ($service_name === 'LocationService') {
             return new Service(self::getWsdlURL('LocationService'), 'https://' . LOCATION . '/services/' . API_VERSION . '/LocationService');
-        }else{
+        } else {
             return new Service(self::getWsdlURL($service_name), self::getServiceEndPointURL($service_name));
         }
     }
@@ -295,7 +323,8 @@ class SoapUtils{
      * @return current timestamp
      * @access public
      */
-    public static function getCurrentTimestamp(){
+    public static function getCurrentTimestamp()
+    {
         return date("YmdHis");
     }
 
@@ -305,15 +334,17 @@ class SoapUtils{
      * @param object $soapResponseObject
      * @return array soap response
      */
-    public static function convertArray($soapResponseObject){
-        $list = (array) $soapResponseObject;
-        foreach($list as $key => $value){
-            if(is_object($value) || is_array($value)){
+    public static function convertArray($soapResponseObject)
+    {
+        $list = (array)$soapResponseObject;
+        foreach ($list as $key => $value) {
+            if (is_object($value) || is_array($value)) {
                 $list[$key] = self::convertArray($value);
             }
         }
         return $list;
     }
+
     /**
      * encoding from Array to SoapVar.
      *
@@ -323,7 +354,8 @@ class SoapUtils{
      * @param $node_name
      * @return array
      */
-    public static function encodingSoapVar(array $data, $type_name, $service_name, $node_name){
+    public static function encodingSoapVar(array $data, $type_name, $service_name, $node_name)
+    {
         $result = array();
         if (isset($type_name) && isset($service_name)) {
             $result = new SoapVar($data, SOAP_ENC_OBJECT, $type_name, API_NS . '/' . $service_name, $node_name, XMLSCHEMANS);

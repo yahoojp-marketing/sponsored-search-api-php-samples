@@ -1,7 +1,6 @@
 <?php
 require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
-require_once(dirname(__FILE__) . '/../adSample/BiddingStrategyServiceSample.php');
 require_once(dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
 require_once(dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
 require_once(dirname(__FILE__) . '/../adCustomizerSample/FeedItemServiceSample.php');
@@ -20,7 +19,8 @@ class StructuredSnippetSample
      * @param long $accountId AccountID
      * @return FeedItemOperation entity.
      */
-    public function createSampleStructuredSnippetFeedItemAddRequest($accountId) {
+    public function createSampleStructuredSnippetFeedItemAddRequest($accountId)
+    {
         $request = array(
             'operations' => array(
                 'operator' => 'ADD',
@@ -63,10 +63,10 @@ class StructuredSnippetSample
             switch ($feedItemAttribute['placeholderField']) {
                 default:
                 case 'STRUCTURED_SNIPPET_HEADER':
-                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute', 'FeedItem', 'feedItemAttribute');
                     break;
                 case 'STRUCTURED_SNIPPET_VALUES':
-                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'MultipleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'MultipleFeedItemAttribute', 'FeedItem', 'feedItemAttribute');
                     break;
             }
         }
@@ -81,7 +81,8 @@ class StructuredSnippetSample
      * @param array $feedItemValues FeedItemValues entity.
      * @return FeedItemOperation entity.
      */
-    public function createSampleStructuredSnippetFeedItemSetRequest($accountId, $feedItemValues) {
+    public function createSampleStructuredSnippetFeedItemSetRequest($accountId, $feedItemValues)
+    {
         $request = array(
             'operations' => array(
                 'operator' => 'SET',
@@ -112,10 +113,10 @@ class StructuredSnippetSample
             switch ($feedItemAttribute['placeholderField']) {
                 default:
                 case 'STRUCTURED_SNIPPET_HEADER':
-                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute', 'FeedItem', 'feedItemAttribute');
                     break;
                 case 'STRUCTURED_SNIPPET_VALUES':
-                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'MultipleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
+                    $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'MultipleFeedItemAttribute', 'FeedItem', 'feedItemAttribute');
                     break;
             }
         }
@@ -135,7 +136,6 @@ try {
     // =================================================================
     // Setting
     // =================================================================
-    $biddingStrategyServiceSample = new BiddingStrategyServiceSample();
     $campaignServiceSample = new CampaignServiceSample();
     $adGroupServiceSample = new AdGroupServiceSample();
     $feedItemServiceSample = new FeedItemServiceSample();
@@ -143,52 +143,21 @@ try {
     $adDisplayOptionSample = new AdDisplayOptionSample();
 
     $accountId = SoapUtils::getAccountId();
-    $biddingStrategyId = SoapUtils::getBiddingStrategyId();
     $campaignId = SoapUtils::getCampaignId();
-    $appCampaignId = SoapUtils::getAppCampaignId();
     $adGroupId = SoapUtils::getAdGroupId();
     $feedItemId = null;
     $placeholderType = null;
-
-    // =================================================================
-    // BiddingStrategyService::mutate(ADD)
-    // =================================================================
-    $biddingStrategyValues = array();
-    if ($biddingStrategyId === 'xxxxxxxx') {
-        $operation = $biddingStrategyServiceSample->createSampleAddRequest($accountId);
-        $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'ADD');
-        foreach ($biddingStrategyValues as $biddingStrategyValue) {
-            switch ($biddingStrategyValue->biddingStrategy->biddingStrategyType) {
-                default :
-                    break;
-                case 'PAGE_ONE_PROMOTED' :
-                    $biddingStrategyId = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
-                    break 2;
-            }
-        }
-
-        // sleep 30 second.
-        sleep(30);
-    }
 
     // =================================================================
     // CampaignService::mutate(ADD)
     // =================================================================
     $campaignValues = array();
     if ($campaignId === 'xxxxxxxx') {
-        $operation = $campaignServiceSample->createSampleAddRequest($accountId, $biddingStrategyId);
-        $campaignValues = $campaignServiceSample->mutate($operation, 'ADD');
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcStandardCampaign($accountId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
         foreach ($campaignValues as $campaignValue) {
-            switch ($campaignValue->campaign->campaignType) {
-                default :
-                    break;
-                case 'STANDARD' :
-                    $campaignId = $campaignValue->campaign->campaignId;
-                    break;
-                case 'MOBILE_APP' :
-                    $appCampaignId = $campaignValue->campaign->campaignId;
-                    break;
-            }
+            $campaignId = $campaignValue->campaign->campaignId;
         }
     }
 
@@ -197,13 +166,11 @@ try {
     // =================================================================
     $adGroupValues = array();
     if ($adGroupId === 'xxxxxxxx') {
-        $operation = $adGroupServiceSample->createSampleAddRequest($accountId, $campaignId, $appCampaignId);
-        $adGroupValues = $adGroupServiceSample->mutate($operation, 'ADD');
+        $addAdGroupRequest = $adGroupServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addAdGroupRequest['operations']['operand'], $adGroupServiceSample->createAddStandardAdGroup($accountId, $campaignId));
+        $adGroupValues = $adGroupServiceSample->mutate($addAdGroupRequest, 'ADD');
         foreach ($adGroupValues as $adGroupValue) {
-            if ($adGroupValue->adGroup->campaignId === $campaignId) {
-                $adGroupId = $adGroupValue->adGroup->adGroupId;
-                break;
-            }
+            $adGroupId = $adGroupValue->adGroup->adGroupId;
         }
     }
 
@@ -215,7 +182,7 @@ try {
     $feedItemValues = $feedItemServiceSample->mutate($operation, 'ADD');
 
     // GET
-    $feedItemValues = $feedItemServiceSample->getFeedItem($accountId, $feedItemValues);
+    $feedItemServiceSample->checkApprovalStatus($accountId, $feedItemValues);
 
     // SET
     $operation = $structuredSnippetSample->createSampleStructuredSnippetFeedItemSetRequest($accountId, $feedItemValues);
@@ -246,27 +213,21 @@ try {
     $campaignFeedValues = $adDisplayOptionSample->get($selector, 'AdGroupFeedService');
 
     // =================================================================
-    // remove FeefItemService, AdGroupService, Campaign, BiddingStrategy
+    // remove FeefItemService, AdGroupService, Campaign
     // =================================================================
     // FeefItemService
     $operation = $feedItemServiceSample->removeFeedItem($accountId, $feedItemValues);
 
     // AdGroup
-    if(count($adGroupValues) > 0) {
+    if (count($adGroupValues) > 0) {
         $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
         $adGroupServiceSample->mutate($operation, 'REMOVE');
     }
 
     // Campaign
-    if(count($campaignValues) > 0) {
+    if (count($campaignValues) > 0) {
         $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
         $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
-    }
-
-    // BiddingStrategy
-    if(count($biddingStrategyValues) > 0) {
-        $operation = $biddingStrategyServiceSample->createSampleRemoveRequest($accountId, $biddingStrategyValues);
-        $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
     }
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

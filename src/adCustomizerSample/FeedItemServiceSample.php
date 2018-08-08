@@ -1,6 +1,9 @@
 <?php
 require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/../adSample/CampaignServiceSample.php');
+require_once(dirname(__FILE__) . '/../adSample/AdGroupServiceSample.php');
+require_once(dirname(__FILE__) . '/FeedFolderServiceSample.php');
 
 /**
  * Sample Program for FeedItemServiceSample.
@@ -35,13 +38,13 @@ class FeedItemServiceSample
                 );
             }
         } else {
-            throw new Exception("No response of ".$method." FeedItemService.");
+            throw new Exception("No response of " . $method . " FeedItemService.");
         }
 
         // Error
         foreach ($feedItemReturnValues as $feedItemReturnValue) {
             if (!isset($feedItemReturnValue->feedItem)) {
-                throw new Exception("Fail to ".$method." FeedItemService.");
+                throw new Exception("Fail to " . $method . " FeedItemService.");
             }
         }
 
@@ -171,7 +174,7 @@ class FeedItemServiceSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute', 'FeedItem', 'feedItemAttribute');
         }
 
         return $this->mutate($feedItemRequest, 'ADD');
@@ -237,7 +240,7 @@ class FeedItemServiceSample
 
         //xsi:type for SimpleFeedItemAttribute
         foreach ($feedItemRequest['operations']['operand']['feedItemAttribute'] as &$feedItemAttribute) {
-            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute','FeedItem' , 'feedItemAttribute');
+            $feedItemAttribute = SoapUtils::encodingSoapVar($feedItemAttribute, 'SimpleFeedItemAttribute', 'FeedItem', 'feedItemAttribute');
         }
 
         return $this->mutate($feedItemRequest, 'SET');
@@ -323,6 +326,47 @@ class FeedItemServiceSample
 
         return $this->get($feedItemRequest);
     }
+
+    /**
+     * Sample Program for FeedItemService Get.
+     *
+     * @param string $accountId Account ID
+     * @param array $feedItemValues FeedItemValues entity for set.
+     * @return array FeedItemValues entity
+     * @throws Exception
+     */
+    public function checkApprovalStatus($accountId, $feedItemValues)
+    {
+        // call 30sec sleep * 30 = 15minute
+        for ($i = 0; $i < 30; $i++) {
+            // sleep 30 second.
+            echo "\n***** sleep 30 seconds for Feed Item Review Status Check *****\n";
+            sleep(30);
+
+            // FeedItemServiceSample GET
+            $feedItemValues = $this->getFeedItem($accountId, $feedItemValues);
+
+            // status
+            foreach ($feedItemValues as $feedItemValue) {
+                if (isset($feedItemValue->feedItem->approvalStatus)) {
+                    $approvalStatus = $feedItemValue->feedItem->approvalStatus;
+                    if ($approvalStatus != 'APPROVED') {
+                        if ($approvalStatus === 'PRE_DISAPPROVED' || $approvalStatus === 'POST_DISAPPROVED') {
+                            echo 'Feed Item Review Status failed.';
+                            exit();
+                        } else {
+                            continue 2;
+                        }
+                    } else {
+                        return $feedItemValues;
+                    }
+                } else {
+                    echo 'Fail to add FeedItemService.';
+                    exit();
+                }
+            }
+        }
+    }
 }
 
 if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
@@ -333,6 +377,9 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
  * FeedItemServiceSample
  */
 try {
+    $campaignServiceSample = new CampaignServiceSample();
+    $adGroupServiceSample = new AdGroupServiceSample();
+    $feedFolderServiceSample = new FeedFolderServiceSample();
     $feedItemServiceSample = new FeedItemServiceSample();
 
     $accountId = SoapUtils::getAccountId();
@@ -346,42 +393,82 @@ try {
         'AD_CUSTOMIZER_STRING' => SoapUtils::getStringFeedAttributeId()
     );
 
-    // FeedItemServiceSample(AD_CUSTOMIZER) ADD
-    $feedItemValues = $feedItemServiceSample->addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeIds);
+    // =================================================================
+    // CampaignService::mutate(ADD)
+    // =================================================================
+    $campaignValues = array();
+    if ($campaignId === 'xxxxxxxx') {
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcStandardCampaign($accountId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
+        foreach ($campaignValues as $campaignValue) {
+            $campaignId = $campaignValue->campaign->campaignId;
+        }
+    }
 
-    // call 30sec sleep * 30 = 15minute
-    for ($i = 0; $i < 30; $i++) {
-        // sleep 30 second.
-        echo "\n***** sleep 30 seconds for Feed Item Review Status Check *****\n";
-        sleep(30);
+    // =================================================================
+    // AdGroupService::mutate(ADD)
+    // =================================================================
+    $adGroupValues = array();
+    if ($adGroupId === 'xxxxxxxx') {
+        $addAdGroupRequest = $adGroupServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addAdGroupRequest['operations']['operand'], $adGroupServiceSample->createAddStandardAdGroup($accountId, $campaignId));
+        $adGroupValues = $adGroupServiceSample->mutate($addAdGroupRequest, 'ADD');
+        foreach ($adGroupValues as $adGroupValue) {
+            $adGroupId = $adGroupValue->adGroup->adGroupId;
+        }
+    }
 
-        // FeedItemServiceSample GET
-        $feedItemValues = $feedItemServiceSample->getFeedItem($accountId, $feedItemValues);
-
-        // status
-        foreach ($feedItemValues as $feedItemValue) {
-            if (isset($feedItemValue->feedItem->approvalStatus)) {
-                $approvalStatus = $feedItemValue->feedItem->approvalStatus;
-                if ($approvalStatus != 'APPROVED') {
-                    if ($approvalStatus === 'PRE_DISAPPROVED' || $approvalStatus === 'POST_DISAPPROVED') {
-                        echo 'Feed Item Review Status failed.';
-                        exit();
-                    } else {
-                        continue 2;
-                    }
-                }
-            } else {
-                echo 'Fail to add FeedItemService.';
-                exit();
+    //=================================================================
+    // FeedFolderService::mutate(ADD)
+    //=================================================================
+    $feedFolderValues = array();
+    if ($feedFolderId === 'xxxxxxxx') {
+        $feedFolderAddRequest = $feedFolderServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($feedFolderAddRequest['operations']['operand'], $feedFolderServiceSample->createAddAdCustomizerFeedFolder($accountId));
+        $feedFolderValues = $feedFolderServiceSample->mutate($feedFolderAddRequest, 'ADD');
+        foreach ($feedFolderValues as $feedFolderValue) {
+            $feedFolderId = $feedFolderValue->feedFolder->feedFolderId;
+            foreach ($feedFolderValue->feedFolder->feedAttribute as $feedAttribute) {
+                $feedAttributeIds[$feedAttribute->placeholderField] = $feedAttribute->feedAttributeId;
             }
         }
     }
+
+    //=================================================================
+    // FeedItemServiceSample
+    //=================================================================
+    // ADD
+    $feedItemValues = $feedItemServiceSample->addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeIds);
+
+    // FeedItemServiceSample GET
+    $feedItemServiceSample->checkApprovalStatus($accountId, $feedItemValues);
 
     // FeedItemServiceSample(AD_CUSTOMIZER) SET
     $feedItemServiceSample->setFeedItem($accountId, $feedAttributeIds, $feedItemValues);
 
     // FeedItemServiceSample REMOVE
     $feedItemServiceSample->removeFeedItem($accountId, $feedItemValues);
+
+    // =================================================================
+    // remove FeedFolder, AdGroup, Campaign
+    // =================================================================
+    // AdGroup
+    if (count($adGroupValues) > 0) {
+        $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
+        $adGroupServiceSample->mutate($operation, 'REMOVE');
+    }
+
+    // Campaign
+    if (count($campaignValues) > 0) {
+        $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+        $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    }
+
+    // FeedFolderService
+    if(count($feedFolderValues) > 0) {
+        $feedFolderServiceSample->removeFeedFolder($accountId, $feedFolderValues);
+    }
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

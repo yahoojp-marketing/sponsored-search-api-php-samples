@@ -9,58 +9,21 @@ require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
 class FeedFolderServiceSample
 {
 
+    private $serviceName = 'FeedFolderService';
+
     /**
-     * Sample Program for FeedFolderService ADD.
+     * Sample Program for FeedFolderService MUTATE.
      *
-     * @param string $accountId Account ID
-     * @return array FeedFolderValues entity
+     * @param array $operation FeedFolderOperation entity.
+     * @param string $method Operator enum.
+     * @return array FeedFolderReturnValue entity.
      * @throws Exception
      */
-    function addFeedFolder($accountId)
+    public function mutate($operation, $method)
     {
-        // Set Operand
-        $operand = array(
-            array(
-                'accountId' => $accountId,
-                'feedFolderName' => 'SampleFeedFolder_' . SoapUtils::getCurrentTimestamp(),
-                'feedAttribute' => array(
-                    // Set AdCustomizerInteger
-                    array(
-                        'feedAttributeName' => 'SampleInteger_' . SoapUtils::getCurrentTimestamp(),
-                        'placeholderField' => 'AD_CUSTOMIZER_INTEGER'
-                    ),
-                    // Set AdCustomizerPrice
-                    array(
-                        'feedAttributeName' => 'SamplePrice_' . SoapUtils::getCurrentTimestamp(),
-                        'placeholderField' => 'AD_CUSTOMIZER_PRICE'
-                    ),
-                    // Set AdCustomizerDate
-                    array(
-                        'feedAttributeName' => 'SampleDate_' . SoapUtils::getCurrentTimestamp(),
-                        'placeholderField' => 'AD_CUSTOMIZER_DATE'
-                    ),
-                    // Set AdCustomizerString
-                    array(
-                        'feedAttributeName' => 'SampleString_' . SoapUtils::getCurrentTimestamp(),
-                        'placeholderField' => 'AD_CUSTOMIZER_STRING'
-                    )
-                ),
-                'placeholderType' => 'AD_CUSTOMIZER'
-            )
-        );
-
-        // Set Request
-        $feedFolderRequest = array(
-            'operations' => array(
-                'operator' => 'ADD',
-                'accountId' => $accountId,
-                'operand' => $operand
-            )
-        );
-
         // Call API
-        $feedFolderService = SoapUtils::getService('FeedFolderService');
-        $feedFolderResponse = $feedFolderService->invoke('mutate', $feedFolderRequest);
+        $feedFolderService = SoapUtils::getService($this->serviceName);
+        $feedFolderResponse = $feedFolderService->invoke('mutate', $operation);
 
         // Response
         if (isset($feedFolderResponse->rval->values)) {
@@ -72,17 +35,141 @@ class FeedFolderServiceSample
                 );
             }
         } else {
-            throw new Exception("No response of add FeedFolderService.");
+            throw new Exception("No response of " . $method . " FeedFolderService.");
         }
 
         // Error
         foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
             if (!isset($feedFolderReturnValue->feedFolder)) {
-                throw new Exception("Fail to add FeedFolderService.");
+                throw new Exception("Fail to " . $method . " FeedFolderService.");
             }
         }
 
         return $feedFolderReturnValues;
+    }
+
+    /**
+     * Sample Program for FeedFolderService GET.
+     *
+     * @param array $selector FeedFolderSelector entity.
+     * @return array FeedFolderReturnValue entity.
+     * @throws Exception
+     */
+    public function get($selector)
+    {
+
+        // Call API
+        $feedFolderService = SoapUtils::getService($this->serviceName);
+        $feedFolderResponse = $feedFolderService->invoke('get', $selector);
+
+        // Response
+        if (isset($feedFolderResponse->rval->values)) {
+            if (is_array($feedFolderResponse->rval->values)) {
+                $feedFolderReturnValues = $feedFolderResponse->rval->values;
+            } else {
+                $feedFolderReturnValues = array(
+                    $feedFolderResponse->rval->values
+                );
+            }
+        } else {
+            throw new Exception("No response of get FeedFolderService.");
+        }
+
+        // Error
+        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
+            if (!isset($feedFolderReturnValue->feedFolder)) {
+                throw new Exception("Fail to get FeedFolderService.");
+            }
+        }
+
+        return $feedFolderReturnValues;
+    }
+
+    /**
+     * Example Mutate Request Base.
+     *
+     * @param string $operator Operator
+     * @param string $accountId Account ID
+     * @return array Mutate entity.
+     */
+    public function createMutateRequest($operator, $accountId)
+    {
+        return array(
+            'operations' => array(
+                'operator' => $operator,
+                'accountId' => $accountId,
+                'operand' => array()
+            )
+        );
+    }
+
+    /**
+     * Example AdCustomizer entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array FeedFolder entity.
+     */
+    public function createAddAdCustomizerFeedFolder($accountId)
+    {
+        return array(
+            'accountId' => $accountId,
+            'feedFolderName' => 'SampleAdCustomizerFeedFolder_' . SoapUtils::getCurrentTimestamp(),
+            'feedAttribute' => array(
+                // Set AdCustomizerInteger
+                array(
+                    'feedAttributeName' => 'SampleInteger_' . SoapUtils::getCurrentTimestamp(),
+                    'placeholderField' => 'AD_CUSTOMIZER_INTEGER'
+                ),
+                // Set AdCustomizerPrice
+                array(
+                    'feedAttributeName' => 'SamplePrice_' . SoapUtils::getCurrentTimestamp(),
+                    'placeholderField' => 'AD_CUSTOMIZER_PRICE'
+                ),
+                // Set AdCustomizerDate
+                array(
+                    'feedAttributeName' => 'SampleDate_' . SoapUtils::getCurrentTimestamp(),
+                    'placeholderField' => 'AD_CUSTOMIZER_DATE'
+                ),
+                // Set AdCustomizerString
+                array(
+                    'feedAttributeName' => 'SampleString_' . SoapUtils::getCurrentTimestamp(),
+                    'placeholderField' => 'AD_CUSTOMIZER_STRING'
+                )
+            ),
+            'placeholderType' => 'AD_CUSTOMIZER'
+        );
+    }
+
+    /**
+     * Example DynamicAdForSearch entity.
+     *
+     * @param string $accountId Account ID
+     * @return  array FeedFolder entity.
+     */
+    public function createAddDynamicAdForSearchFeedFolder($accountId)
+    {
+        return array(
+            'accountId' => $accountId,
+            'feedFolderName' => 'SampleDASFeedFolder_' . SoapUtils::getCurrentTimestamp(),
+            'domain' => 'http://yahoo.co.jp',
+            'placeholderType' => 'DYNAMIC_AD_FOR_SEARCH_PAGE_FEEDS'
+        );
+    }
+
+    /**
+     * Sample Program for FeedFolderService ADD.
+     *
+     * @param string $accountId Account ID
+     * @return array FeedFolderValues entity
+     * @throws Exception
+     */
+    function addFeedFolder($accountId)
+    {
+        // Set Request
+        $feedFolderRequest = $this->createMutateRequest('ADD', $accountId);
+        array_push($feedFolderRequest['operations']['operand'], $this->createAddAdCustomizerFeedFolder($accountId));
+        array_push($feedFolderRequest['operations']['operand'], $this->createAddDynamicAdForSearchFeedFolder($accountId));
+        return $this->mutate($feedFolderRequest, 'ADD');
     }
 
     /**
@@ -95,14 +182,18 @@ class FeedFolderServiceSample
      */
     function setFeedFolder($accountId, $feedFolderValues)
     {
-        // Set Operand
-        $operand = array();
-        foreach ($feedFolderValues as $feedFolderValue) {
 
-            $operand = array(
-                array(
+        // Set Request
+        $feedFolderRequest = $this->createMutateRequest('SET', $accountId);
+
+        // Set Operand
+        foreach ($feedFolderValues as $feedFolderValue) {
+            // for AdCustomizer
+            if ($feedFolderValue->feedFolder->placeholderType === 'AD_CUSTOMIZER') {
+                $operand = array(
                     'accountId' => $accountId,
                     'feedFolderId' => $feedFolderValue->feedFolder->feedFolderId,
+                    'placeholderType' => $feedFolderValue->feedFolder->placeholderType,
                     'feedAttribute' => array(
                         // Set AdCustomizerInteger
                         array(
@@ -124,46 +215,13 @@ class FeedFolderServiceSample
                             'feedAttributeName' => 'SampleString2_' . SoapUtils::getCurrentTimestamp(),
                             'placeholderField' => 'AD_CUSTOMIZER_STRING'
                         )
-                    ),
-                    'placeholderType' => 'AD_CUSTOMIZER'
-                )
-            );
-        }
-
-        // Set Request
-        $feedFolderRequest = array(
-            'operations' => array(
-                'operator' => 'SET',
-                'accountId' => $accountId,
-                'operand' => $operand
-            )
-        );
-
-        // Call API
-        $feedFolderService = SoapUtils::getService('FeedFolderService');
-        $feedFolderResponse = $feedFolderService->invoke('mutate', $feedFolderRequest);
-
-        // Response
-        if (isset($feedFolderResponse->rval->values)) {
-            if (is_array($feedFolderResponse->rval->values)) {
-                $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            } else {
-                $feedFolderReturnValues = array(
-                    $feedFolderResponse->rval->values
+                    )
                 );
-            }
-        } else {
-            throw new Exception("No response of set FeedFolderService.");
-        }
-
-        // Error
-        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
-            if (!isset($feedFolderReturnValue->feedFolder)) {
-                throw new Exception("Fail to set FeedFolderService.");
+                array_push($feedFolderRequest['operations']['operand'], $operand);
             }
         }
 
-        return $feedFolderReturnValues;
+        return $this->mutate($feedFolderRequest, 'SET');
     }
 
     /**
@@ -176,50 +234,20 @@ class FeedFolderServiceSample
      */
     function removeFeedFolder($accountId, $feedFolderValues)
     {
+        // Set Request
+        $feedFolderRequest = $this->createMutateRequest('REMOVE', $accountId);
+
         // Set Operand
-        $operands = array();
         foreach ($feedFolderValues as $feedFolderValue) {
             $operand = array(
                 'accountId' => $accountId,
+                'placeholderType' => $feedFolderValue->feedFolder->placeholderType,
                 'feedFolderId' => $feedFolderValue->feedFolder->feedFolderId
             );
-            array_push($operands, $operand);
+            array_push($feedFolderRequest['operations']['operand'], $operand);
         }
 
-        // Set Request
-        $feedFolderRequest = array(
-            'operations' => array(
-                'operator' => 'REMOVE',
-                'accountId' => $accountId,
-                'operand' => $operands
-            )
-        );
-
-        // Call API
-        $feedFolderService = SoapUtils::getService('FeedFolderService');
-        $feedFolderResponse = $feedFolderService->invoke('mutate', $feedFolderRequest);
-
-        // Response
-        if (isset($feedFolderResponse->rval->values)) {
-            if (is_array($feedFolderResponse->rval->values)) {
-                $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            } else {
-                $feedFolderReturnValues = array(
-                    $feedFolderResponse->rval->values
-                );
-            }
-        } else {
-            throw new Exception("No response of set FeedFolderService.");
-        }
-
-        // Error
-        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
-            if (!isset($feedFolderReturnValue->feedFolder)) {
-                throw new Exception("Fail to set FeedFolderService.");
-            }
-        }
-
-        return $feedFolderReturnValues;
+        return $this->mutate($feedFolderRequest, 'REMOVE');
     }
 
     /**
@@ -250,31 +278,7 @@ class FeedFolderServiceSample
             )
         );
 
-        // Call API
-        $feedFolderService = SoapUtils::getService('FeedFolderService');
-        $feedFolderResponse = $feedFolderService->invoke('get', $feedFolderRequest);
-
-        // Response
-        if (isset($feedFolderResponse->rval->values)) {
-            if (is_array($feedFolderResponse->rval->values)) {
-                $feedFolderReturnValues = $feedFolderResponse->rval->values;
-            } else {
-                $feedFolderReturnValues = array(
-                    $feedFolderResponse->rval->values
-                );
-            }
-        } else {
-            throw new Exception("No response of get FeedFolderService.");
-        }
-
-        // Error
-        foreach ($feedFolderReturnValues as $feedFolderReturnValue) {
-            if (!isset($feedFolderReturnValue->feedFolder)) {
-                throw new Exception("Fail to get FeedFolderService.");
-            }
-        }
-
-        return $feedFolderReturnValues;
+        return $this->get($feedFolderRequest);
     }
 }
 

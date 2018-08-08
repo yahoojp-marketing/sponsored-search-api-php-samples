@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/CampaignServiceSample.php');
 
 /**
  * Sample Program for CampaignCriterionServiceSample.
@@ -115,8 +116,8 @@ class CampaignCriterionServiceSample
         );
 
         // Set xsi:type
-        $operands[0]['criterion'] = SoapUtils::encodingSoapVar($operands[0]['criterion'], 'Keyword','CampaignCriterion' , 'criterion');
-        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'NegativeCampaignCriterion','CampaignCriterion' , 'operand');
+        $operands[0]['criterion'] = SoapUtils::encodingSoapVar($operands[0]['criterion'], 'Keyword', 'CampaignCriterion', 'criterion');
+        $operands[0] = SoapUtils::encodingSoapVar($operands[0], 'NegativeCampaignCriterion', 'CampaignCriterion', 'operand');
 
         // Set Request
         $operation = array(
@@ -215,10 +216,24 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
  * execute CampaignServiceSample.
  */
 try {
+    $campaignServiceSample = new CampaignServiceSample();
     $campaignCriterionServiceSample = new CampaignCriterionServiceSample();
 
     $accountId = SoapUtils::getAccountId();
     $campaignId = SoapUtils::getCampaignId();
+
+    // =================================================================
+    // CampaignService::mutate(ADD)
+    // =================================================================
+    $campaignValues = array();
+    if ($campaignId === 'xxxxxxxx') {
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcStandardCampaign($accountId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
+        foreach ($campaignValues as $campaignValue) {
+            $campaignId = $campaignValue->campaign->campaignId;
+        }
+    }
 
     // =================================================================
     // CampaignCriterionService ADD
@@ -247,6 +262,13 @@ try {
     // Run
     $campaignCriterionValues = $campaignCriterionServiceSample->mutate($operation, 'REMOVE');
 
+    // =================================================================
+    // remove Campaign
+    // =================================================================
+    if (count($campaignValues) > 0) {
+        $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+        $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    }
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");
 }

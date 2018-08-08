@@ -13,234 +13,7 @@ require_once(dirname(__FILE__) . '/FeedFolderServiceSample.php');
 require_once(dirname(__FILE__) . '/FeedItemServiceSample.php');
 
 /**
- * CampaignService::mutate(ADD)
- *
- * @param string $accountId Account ID
- * @return array CampaignValues entity
- * @throws Exception
- */
-function createCampaign($accountId)
-{
-    // Set Operand
-    $operand = array(
-        // Set ManualCpc Campaign
-        array(
-            'accountId' => $accountId,
-            'campaignName' => 'SampleCampaign_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'ACTIVE',
-            'startDate' => '20300101',
-            'endDate' => '20301231',
-            'budget' => array(
-                'period' => 'DAILY',
-                'amount' => 1000,
-                'deliveryMethod' => 'STANDARD',
-            ),
-            'biddingStrategyConfiguration' => array(
-                'biddingStrategyType' => 'MANUAL_CPC',
-            ),
-            'adServingOptimizationStatus' => 'ROTATE_INDEFINITELY',
-            'settings' => array(
-                array(
-                    'type' => 'GEO_TARGET_TYPE_SETTING',
-                    'positiveGeoTargetType' => 'AREA_OF_INTENT',
-                ),
-            ),
-            'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-            'customParameters' => array(
-                'parameters' => array(
-                    'key' => 'id1',
-                    'value' => '1234',
-                ),
-            ),
-        ),
-    );
-
-    //xsi:type for settings
-    $operand[0]['settings'][0] = SoapUtils::encodingSoapVar($operand[0]['settings'][0], 'GeoTargetTypeSetting','Campaign' , 'settings');
-
-    // Set Request
-    $campaignRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $campaignService = SoapUtils::getService('CampaignService');
-    $campaignResponse = $campaignService->invoke('mutate', $campaignRequest);
-
-    // Response
-    if (isset($campaignResponse->rval->values)) {
-        if (is_array($campaignResponse->rval->values)) {
-            $campaignReturnValues = $campaignResponse->rval->values;
-        } else {
-            $campaignReturnValues = array($campaignResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of add CampaignService.");
-    }
-
-    // Error
-    foreach ($campaignReturnValues as $campaignReturnValue) {
-        if (!isset($campaignReturnValue->campaign)) {
-            throw new Exception("Fail to add CampaignService.");
-        }
-    }
-
-    return $campaignReturnValues;
-}
-
-/**
- * AdGroupService::mutate(ADD)
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @return array AdGroupValues entity
- * @throws Exception
- */
-function createAdGroup($accountId, $campaignId)
-{
-    // Set Operand
-    $operand = array(
-        // Set ManualCpc AdGroup
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'adGroupName' => 'SampleAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-            'userStatus' => 'ACTIVE',
-            'trackingUrl' => 'http://yahoo.co.jp?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-            'customParameters' => array(
-                'parameters' => array(
-                    'key' => 'id1',
-                    'value' => '1234',
-                ),
-            ),
-        ),
-    );
-
-    // Set Request
-    $adGroupRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $adGroupService = SoapUtils::getService('AdGroupService');
-    $adGroupResponse = $adGroupService->invoke('mutate', $adGroupRequest);
-
-    // Response
-    if (isset($adGroupResponse->rval->values)) {
-        if (is_array($adGroupResponse->rval->values)) {
-            $adGroupReturnValues = $adGroupResponse->rval->values;
-        } else {
-            $adGroupReturnValues = array($adGroupResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of add AdGroupService.");
-    }
-
-    // Error
-    foreach ($adGroupReturnValues as $adGroupReturnValue) {
-        if (!isset($adGroupReturnValue->adGroup)) {
-            throw new Exception("Fail to add AdGroupService.");
-        }
-    }
-
-    return $adGroupReturnValues;
-}
-
-/**
- * AdGroupCriterionService::mutate(ADD)
- *
- * @param string $accountId Account ID
- * @param string $campaignId Campaign ID
- * @param string $adGroupId Ad group ID
- * @return array AdGroupCriterionValues entity
- * @throws Exception
- */
-function createAdGroupCriterion($accountId, $campaignId, $adGroupId)
-{
-    // Set Operand
-    $operand = array(
-        array(
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'adGroupId' => $adGroupId,
-            'criterionUse' => 'BIDDABLE',
-            'criterion' => array(
-                'type' => 'KEYWORD',
-                'text' => 'sample Value',
-                'matchType' => 'EXACT'
-            ),
-            'userStatus' => 'ACTIVE',
-            'destinationUrl' => 'http://www.yahoo.co.jp/',
-            'biddingStrategyConfiguration' => array(
-                'bid' => array(
-                    'maxCpc' => 100,
-                ),
-            ),
-            'advancedUrl' => 'http://www.yahoo.co.jp',
-            'advancedMobileUrl' => 'http://www.yahoo.co.jp/mobile',
-            'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-            'customParameters' => array(
-                'parameters' => array(
-                    'key' => 'id1',
-                    'value' => '1234',
-                ),
-            ),
-        ),
-    );
-
-    //xsi:type for criterion Keyword
-    $operand[0]['criterion'] = SoapUtils::encodingSoapVar($operand[0]['criterion'], 'Keyword','AdGroupCriterion' , 'criterion');
-    //xsi:type for operand BiddableAdGroupCriterion
-    $operand[0] = SoapUtils::encodingSoapVar($operand[0], 'BiddableAdGroupCriterion','AdGroupCriterion' , 'operand');
-
-    // Set Request
-    $adGroupCriterionRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'campaignId' => $campaignId,
-            'adGroupId' => $adGroupId,
-            'criterionUse' => 'BIDDABLE',
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $adGroupCriterionService = SoapUtils::getService('AdGroupCriterionService');
-    $adGroupCriterionResponse = $adGroupCriterionService->invoke('mutate', $adGroupCriterionRequest);
-
-    // Response
-    if (isset($adGroupCriterionResponse->rval->values)) {
-        if (is_array($adGroupCriterionResponse->rval->values)) {
-            $adGroupCriterionReturnValues = $adGroupCriterionResponse->rval->values;
-        } else {
-            $adGroupCriterionReturnValues = array($adGroupCriterionResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of add AdGroupCriterionService.");
-    }
-
-    // Error
-    foreach ($adGroupCriterionReturnValues as $adGroupCriterionReturnValue) {
-        if (!isset($adGroupCriterionReturnValue->adGroupCriterion)) {
-            throw new Exception("Fail to add AdGroupCriterionService.");
-        }
-    }
-
-    return $adGroupCriterionReturnValues;
-}
-
-/**
- * AdGroupAdService(ADD)
+ * Example AdCustomizer DynamicSearchLinkedAd entity.
  *
  * @param string $accountId Account ID
  * @param string $campaignId Campaign ID
@@ -362,9 +135,9 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
             'adName' => 'SampleAdCustomizer_IF_function_' . SoapUtils::getCurrentTimestamp(),
             'ad' => array(
                 'type' => 'EXTENDED_TEXT_AD',
-                'headline' => '{=IF(device=mobile, MOBILE):PC}Headline',
-                'headline2' => '{=IF(device=mobile, MOBILE):PC}Headline2',
-                'description' => '{=IF(device=mobile, MOBILE):PC}Description',
+                'headline' => '{=IF(device=mobile,MOBILE):PC}Headline',
+                'headline2' => '{=IF(device=mobile,MOBILE):PC}Headline2',
+                'description' => '{=IF(device=mobile,MOBILE):PC}Description',
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
                 'advancedUrl' => 'http://www.yahoo.co.jp',
@@ -387,9 +160,9 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
             'adName' => 'SampleAdCustomizer_IF_And_Default' . SoapUtils::getCurrentTimestamp(),
             'ad' => array(
                 'type' => 'EXTENDED_TEXT_AD',
-                'headline' => '{=IF(device=mobile, MOBILE):PC}test + {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline' ,
-                'headline2' => '{=IF(device=mobile, MOBILE):PC}test + {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline2' ,
-                'description' => '{=IF(device=mobile, MOBILE):PC}test + {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}description' ,
+                'headline' => '{=IF(device=mobile,MOBILE):PC}test {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline' ,
+                'headline2' => '{=IF(device=mobile,MOBILE):PC}test {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}headline2' ,
+                'description' => '{=IF(device=mobile,MOBILE):PC}test {=' . $feedFolderName . "." . $feedAttributeNames['AD_CUSTOMIZER_STRING'] . ':default}description' ,
                 'displayUrl' => 'www.yahoo.co.jp',
                 'devicePreference' => 'SMART_PHONE',
                 'advancedUrl' => 'http://www.yahoo.co.jp',
@@ -411,38 +184,7 @@ function createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $
         $operand[$adGroupAdKey]['ad'] = SoapUtils::encodingSoapVar($operand[$adGroupAdKey]['ad'], 'ExtendedTextAd','AdGroupAd' , 'ad');
     }
 
-    // Set Request
-    $adGroupAdRequest = array(
-        'operations' => array(
-            'operator' => 'ADD',
-            'accountId' => $accountId,
-            'operand' => $operand,
-        ),
-    );
-
-    // Call API
-    $adGroupAdService = SoapUtils::getService('AdGroupAdService');
-    $adGroupAdResponse = $adGroupAdService->invoke('mutate', $adGroupAdRequest);
-
-    // Response
-    if (isset($adGroupAdResponse->rval->values)) {
-        if (is_array($adGroupAdResponse->rval->values)) {
-            $adGroupAdReturnValues = $adGroupAdResponse->rval->values;
-        } else {
-            $adGroupAdReturnValues = array($adGroupAdResponse->rval->values);
-        }
-    } else {
-        throw new Exception("No response of add AdGroupAdService.");
-    }
-
-    // Error
-    foreach ($adGroupAdReturnValues as $adGroupAdReturnValue) {
-        if (!isset($adGroupAdReturnValue->adGroupAd)) {
-            throw new Exception("Fail to add AdGroupAdService.");
-        }
-    }
-
-    return $adGroupAdReturnValues;
+    return $operand;
 }
 
 if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
@@ -450,17 +192,23 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
 }
 
 try {
-    $campaignService = new CampaignServiceSample();
-    $adGroupService = new AdGroupServiceSample();
-    $adGroupCriterionService = new AdGroupCriterionServiceSample();
-    $feedFolderService = new FeedFolderServiceSample();
-    $feedItemService = new FeedItemServiceSample();
-    $adGroupAdService = new AdGroupAdServiceSample();
+    $campaignServiceSample = new CampaignServiceSample();
+    $adGroupServiceSample = new AdGroupServiceSample();
+    $adGroupCriterionServiceSample = new AdGroupCriterionServiceSample();
+    $feedFolderServiceSample = new FeedFolderServiceSample();
+    $feedItemServiceSample = new FeedItemServiceSample();
+    $adGroupAdServiceSample = new AdGroupAdServiceSample();
 
     $accountId = SoapUtils::getAccountId();
-    $campaignId = 0;
-    $adGroupId = 0;
-    $feedFolderId = 0;
+    $campaignId = SoapUtils::getCampaignId();
+    $adGroupId = SoapUtils::getAdGroupId();
+    $feedFolderId = SoapUtils::getFeedFolderId();
+    $feedAttributeIds = array(
+        'AD_CUSTOMIZER_INTEGER' => SoapUtils::getIntegerFeedAttributeId(),
+        'AD_CUSTOMIZER_PRICE' => SoapUtils::getPriceFeedAttributeId(),
+        'AD_CUSTOMIZER_DATE' => SoapUtils::getDateFeedAttributeId(),
+        'AD_CUSTOMIZER_STRING' => SoapUtils::getStringFeedAttributeId(),
+    );
     $feedFolderName = null;
     $feedAttributeNames = array(
         'AD_CUSTOMIZER_INTEGER' => null,
@@ -468,108 +216,111 @@ try {
         'AD_CUSTOMIZER_DATE' => null,
         'AD_CUSTOMIZER_STRING' => null,
     );
-    $feedAttributeIds = array(
-        'AD_CUSTOMIZER_INTEGER' => 0,
-        'AD_CUSTOMIZER_PRICE' => 0,
-        'AD_CUSTOMIZER_DATE' => 0,
-        'AD_CUSTOMIZER_STRING' => 0,
-    );
 
     //=================================================================
     // add CampaignService,AdGroupService,AdGroupCriterionService,
     //=================================================================
     // CampaignService
-    $campaignValues = createCampaign($accountId);
-    foreach ($campaignValues as $campaignValue) {
-        if ($campaignId === 0) {
+    $campaignValues = array();
+    if ($campaignId === 'xxxxxxxx') {
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcStandardCampaign($accountId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
+        foreach ($campaignValues as $campaignValue) {
             $campaignId = $campaignValue->campaign->campaignId;
         }
     }
 
     // AdGroupService
-    $adGroupValues = createAdGroup($accountId, $campaignId);
-    foreach ($adGroupValues as $adGroupValue) {
-        if ($adGroupId === 0) {
+    $adGroupValues = array();
+    if ($adGroupId === 'xxxxxxxx') {
+        $addAdGroupRequest = $adGroupServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addAdGroupRequest['operations']['operand'], $adGroupServiceSample->createAddStandardAdGroup($accountId, $campaignId));
+        $adGroupValues = $adGroupServiceSample->mutate($addAdGroupRequest, 'ADD');
+        foreach ($adGroupValues as $adGroupValue) {
             $adGroupId = $adGroupValue->adGroup->adGroupId;
         }
     }
 
     // AdGroupCriterionService
-    $adGroupCriterionValues = createAdGroupCriterion($accountId, $campaignId, $adGroupId);
+    $adGroupCriterionAddRequest = $adGroupCriterionServiceSample->createSampleAddRequest($accountId,$campaignId,$adGroupId);
+    $adGroupCriterionValues = $adGroupCriterionServiceSample->mutate($adGroupCriterionAddRequest, 'ADD');
 
     //=================================================================
     // FeedFolderService
     //=================================================================
     // FeedFolderServiceSample ADD
-    $feedFolderValues = $feedFolderService->addFeedFolder($accountId);
-    foreach ($feedFolderValues as $feedFolderValue) {
-        if ($feedFolderId === 0) {
-            $feedFolderId = $feedFolderValue->feedFolder->feedFolderId;
-        }
-        if (is_null($feedFolderName)) {
+    $feedFolderValues = array();
+    if ($feedFolderId === 'xxxxxxxx') {
+        $feedFolderAddRequest = $feedFolderServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($feedFolderAddRequest['operations']['operand'], $feedFolderServiceSample->createAddAdCustomizerFeedFolder($accountId));
+        $feedFolderValues = $feedFolderServiceSample->mutate($feedFolderAddRequest, 'ADD');
+        foreach ($feedFolderValues as $feedFolderValue) {
             $feedFolderName = $feedFolderValue->feedFolder->feedFolderName;
-        }
-        foreach ($feedFolderValue->feedFolder->feedAttribute as $feedAttributeKey => $feedAttributeValue) {
-            if (is_null($feedAttributeNames[$feedAttributeValue->placeholderField])) {
-                $feedAttributeNames[$feedAttributeValue->placeholderField] = $feedAttributeValue->feedAttributeName;
-            }
-            if ($feedAttributeIds[$feedAttributeValue->placeholderField] === 0) {
-                $feedAttributeIds[$feedAttributeValue->placeholderField] = $feedAttributeValue->feedAttributeId;
+            $feedFolderId = $feedFolderValue->feedFolder->feedFolderId;
+            foreach ($feedFolderValue->feedFolder->feedAttribute as $feedAttribute) {
+                $feedAttributeNames[$feedAttribute->placeholderField] = $feedAttribute->feedAttributeName;
+                $feedAttributeIds[$feedAttribute->placeholderField] = $feedAttribute->feedAttributeId;
             }
         }
     }
 
     // FeedFolderServiceSample SET
-    $feedFolderService->setFeedFolder($accountId, $feedFolderValues);
+    $feedFolderServiceSample->setFeedFolder($accountId, $feedFolderValues);
 
     // FeedFolderServiceSample GET
-    $feedFolderService->getFeedFolder($accountId, $feedFolderValues);
+    $feedFolderServiceSample->getFeedFolder($accountId, $feedFolderValues);
 
     //=================================================================
     // FeedItemService
     //=================================================================
     // FeedItemServiceSample(AD_CUSTOMIZER) ADD
-    $feedItemValues = $feedItemService->addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeIds);
-
-    //waiting for sandbox review process
-    sleep(20);
-
-    // FeedItemServiceSample(AD_CUSTOMIZER) SET
-    $feedItemService->setFeedItem($accountId, $feedAttributeIds, $feedItemValues);
+    $feedItemValues = $feedItemServiceSample->addFeedItem($accountId, $campaignId, $adGroupId, $feedFolderId, $feedAttributeIds);
 
     // FeedItemServiceSample GET
-    $feedItemService->getFeedItem($accountId, $feedItemValues);
+    $feedItemServiceSample->checkApprovalStatus($accountId, $feedItemValues);
+
+    // FeedItemServiceSample(AD_CUSTOMIZER) SET
+    $feedItemServiceSample->setFeedItem($accountId, $feedAttributeIds, $feedItemValues);
 
     //=================================================================
     // add AdGroupAdService
     //=================================================================
-    $adGroupAdValues = createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $feedAttributeNames);
+    $adGroupAdAddRequest = $adGroupAdServiceSample->createMutateRequest('ADD',$accountId);
+    $adGroupAdAddRequest['operations']['operand'] = createAdGroupAd($accountId, $campaignId, $adGroupId, $feedFolderName, $feedAttributeNames);
+    $adGroupAdValues = $adGroupAdServiceSample->mutate($adGroupAdAddRequest, 'ADD');
 
     //=================================================================
     // remove AdGroupAdService,FeedItemService,FeedFolderService,
     // AdGroupCriterionService,AdGroupService,CampaignService
     //=================================================================
     // AdGroupAdService
-    $operation = $adGroupAdService->createSampleRemoveRequest($accountId, $adGroupAdValues);
-    $adGroupAdService->mutate($operation, 'REMOVE');
+    $operation = $adGroupAdServiceSample->createSampleRemoveRequest($accountId, $adGroupAdValues);
+    $adGroupAdServiceSample->mutate($operation, 'REMOVE');
 
     // FeedItemService
-    $feedItemService->removeFeedItem($accountId, $feedItemValues);
-
-    // FeedFolderService
-    $feedFolderService->removeFeedFolder($accountId, $feedFolderValues);
+    $feedItemServiceSample->removeFeedItem($accountId, $feedItemValues);
 
     // AdGroupCriterionService
-    $operation = $adGroupCriterionService->createSampleRemoveRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
-    $adGroupCriterionService->mutate($operation, 'REMOVE');
+    $operation = $adGroupCriterionServiceSample->createSampleRemoveRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
+    $adGroupCriterionServiceSample->mutate($operation, 'REMOVE');
 
-    // AdGroupService
-    $operation = $adGroupService->createSampleRemoveRequest($accountId, $adGroupValues);
-    $adGroupService->mutate($operation, 'REMOVE');
+    // AdGroup
+    if (count($adGroupValues) > 0) {
+        $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
+        $adGroupServiceSample->mutate($operation, 'REMOVE');
+    }
 
-    // CampaignService
-    $operation = $campaignService->createSampleRemoveRequest($accountId, $campaignValues);
-    $campaignService->mutate($operation, 'REMOVE');
+    // Campaign
+    if (count($campaignValues) > 0) {
+        $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+        $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    }
+
+    // FeedFolderService
+    if(count($feedFolderValues) > 0) {
+        $feedFolderServiceSample->removeFeedFolder($accountId, $feedFolderValues);
+    }
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

@@ -25,55 +25,44 @@ try {
     $adGroupAdServiceSample = new AdGroupAdServiceSample();
 
     $accountId = SoapUtils::getAccountId();
-    $biddingStrategyId = 0;
-    $campaignId = 0;
-    $appCampaignId = 0;
-    $adGroupId = 0;
-    $appAdGroupId = 0;
+    $biddingStrategyId = SoapUtils::getBiddingStrategyId();
+    $campaignId = SoapUtils::getCampaignId();
+    $appCampaignId = SoapUtils::getAppCampaignId();
+    $adGroupId = SoapUtils::getAdGroupId();
+    $appAdGroupId = SoapUtils::getAppAdGroupId();
 
     // =================================================================
     // BiddingStrategy
     // =================================================================
     // ADD
-    $operation = $biddingStrategyServiceSample->createSampleAddRequest($accountId);
-    $biddingStrategyValues = $biddingStrategyServiceSample->mutate($operation, 'ADD');
-
-    // sleep 30 second.
-    sleep(30);
-
-    // GET
-    $selector = $biddingStrategyServiceSample->createSampleGetRequest($accountId, $biddingStrategyValues);
-    $biddingStrategyValues = $biddingStrategyServiceSample->get($selector);
-
-    // Get BiddingStrategyType for TARGET_SPEND
-    foreach ($biddingStrategyValues as $biddingStrategyValue) {
-        if ($biddingStrategyId === 0) {
-            switch ($biddingStrategyValue->biddingStrategy->biddingStrategyType) {
-                default :
-                    break;
-                case 'TARGET_SPEND' :
-                    $biddingStrategyId = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
-                    break 2;
-            }
+    $biddingStrategyValues = array();
+    if ($biddingStrategyId === 'xxxxxxxx') {
+        $biddingStrategyAddRequest = $biddingStrategyServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($biddingStrategyAddRequest['operations']['operand'], $biddingStrategyServiceSample->createTargetSpendBidding($accountId));
+        $biddingStrategyValues = $biddingStrategyServiceSample->mutate($biddingStrategyAddRequest, 'ADD');
+        foreach ($biddingStrategyValues as $biddingStrategyValue) {
+            $biddingStrategyId = $biddingStrategyValue->biddingStrategy->biddingStrategyId;
         }
+
+        // sleep 30 second.
+        sleep(30);
     }
 
-    // sleep 20 second.
-    sleep(20);
+    // GET
+    $biddingStrategyGetRequest = $biddingStrategyServiceSample->createSampleGetRequest($accountId, $biddingStrategyValues);
+    $biddingStrategyServiceSample->get($biddingStrategyGetRequest);
 
     // =================================================================
     // CampaignService
     // =================================================================
     // ADD
-    $operation = $campaignServiceSample->createSampleAddRequest($accountId, $biddingStrategyId);
-    $campaignValues = $campaignServiceSample->mutate($operation, 'ADD');
-
-    // GET
-    $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
-    $campaignValues = $campaignServiceSample->get($selector);
-
-    foreach ($campaignValues as $campaignValue) {
-        if (($campaignId === 0 || $appCampaignId === 0) && $campaignValue->campaign->biddingStrategyConfiguration->biddingStrategyType === 'TARGET_SPEND') {
+    $campaignValues = array();
+    if ($campaignId === 'xxxxxxxx') {
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddAutoBiddingStandardCampaign($accountId,$biddingStrategyId));
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddAutoBiddingMobileAppCampaignForIOS($accountId,$biddingStrategyId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
+        foreach ($campaignValues as $campaignValue) {
             switch ($campaignValue->campaign->campaignType) {
                 default :
                     break;
@@ -87,6 +76,10 @@ try {
         }
     }
 
+    // GET
+    $selector = $campaignServiceSample->createSampleGetRequest($accountId, $campaignValues);
+    $campaignServiceSample->get($selector);
+
     // =================================================================
     // CampaignTargetService
     // =================================================================
@@ -96,7 +89,7 @@ try {
 
     // GET
     $selector = $campaignTargetServiceSample->createSampleGetRequest($accountId, $campaignTargetValues);
-    $campaignTargetValues = $campaignTargetServiceSample->get($selector);
+    $campaignTargetServiceSample->get($selector);
 
     foreach ($campaignTargetValues as $campaignTargetKey => $campaignTargetValue) {
         if ($campaignTargetValue->campaignTarget->target->targetType === 'PLATFORM') {
@@ -113,7 +106,7 @@ try {
 
     // GET
     $selector = $campaignCriterionServiceSample->createSampleGetRequest($accountId, $campaignId, $campaignCriterionValues);
-    $campaignCriterionValues = $campaignCriterionServiceSample->get($selector);
+    $campaignCriterionServiceSample->get($selector);
 
     // =================================================================
     // AdGroupService
@@ -124,10 +117,10 @@ try {
 
     // GET
     $selector = $adGroupServiceSample->createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupValues);
-    $adGroupValues = $adGroupServiceSample->get($selector);
+    $adGroupServiceSample->get($selector);
 
     foreach ($adGroupValues as $adGroupValue) {
-        if ($adGroupId === 0 || $appAdGroupId === 0) {
+        if ($adGroupId === 'xxxxxxxx' || $appAdGroupId === 'xxxxxxxx') {
             if ($adGroupValue->adGroup->campaignId === $campaignId) {
                 $adGroupId = $adGroupValue->adGroup->adGroupId;
             } elseif ($adGroupValue->adGroup->campaignId === $appCampaignId) {
@@ -145,7 +138,7 @@ try {
 
     // GET
     $selector = $adGroupCriterionServiceSample->createSampleGetRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
-    $adGroupCriterionValues = $adGroupCriterionServiceSample->get($selector);
+    $adGroupCriterionServiceSample->get($selector);
 
     // =================================================================
     // AdGroupBidMultiplierService
@@ -156,18 +149,20 @@ try {
 
     // GET
     $selector = $adGroupBidMultiplierServiceSample->createSampleGetRequest($accountId, $campaignId, $adGroupId);
-    $adGroupBidMultiplierValues = $adGroupBidMultiplierServiceSample->get($selector);
+    $adGroupBidMultiplierServiceSample->get($selector);
 
     // =================================================================
     // AdGroupAdService
     // =================================================================
     // ADD
-    $operation = $adGroupAdServiceSample->createSampleAddRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId);
-    $adGroupAdValues = $adGroupAdServiceSample->mutate($operation, 'ADD');
+    $adGroupAdAddRequest = $adGroupAdServiceSample->createMutateRequest('ADD',$accountId);
+    array_push($adGroupAdAddRequest['operations']['operand'], $adGroupAdServiceSample->createAddExtendedTextAd($accountId,$campaignId,$adGroupId));
+    array_push($adGroupAdAddRequest['operations']['operand'], $adGroupAdServiceSample->createAddAppAd($accountId,$appCampaignId,$appAdGroupId));
+    $adGroupAdValues = $adGroupAdServiceSample->mutate($adGroupAdAddRequest, 'ADD');
 
     // GET
-    $selector = $adGroupAdServiceSample->createSampleGetRequest($accountId, $campaignId, $appCampaignId, $adGroupId, $appAdGroupId, $adGroupAdValues);
-    $adGroupAdValues = $adGroupAdServiceSample->get($selector);
+    $selector = $adGroupAdServiceSample->createSampleGetRequest($accountId, $adGroupAdValues);
+    $adGroupAdServiceSample->get($selector);
 
     // =================================================================
     // remove AsGroupAdService, AsGroupCriterionService, AsGroupService,
@@ -175,11 +170,11 @@ try {
     // =================================================================
     // AdGroupAdService
     $operation = $adGroupAdServiceSample->createSampleRemoveRequest($accountId, $adGroupAdValues);
-    $adGroupAdValues = $adGroupAdServiceSample->mutate($operation, 'REMOVE');
+    $adGroupAdServiceSample->mutate($operation, 'REMOVE');
 
     // AdGroupCriterion
     $operation = $adGroupCriterionServiceSample->createSampleRemoveRequest($accountId, $campaignId, $adGroupId, $adGroupCriterionValues);
-    $adGroupCriterionValues = $adGroupCriterionServiceSample->mutate($operation, 'REMOVE');
+    $adGroupCriterionServiceSample->mutate($operation, 'REMOVE');
 
     // AdGroup
     $operation = $adGroupServiceSample->createSampleRemoveRequest($accountId, $adGroupValues);
@@ -187,19 +182,23 @@ try {
 
     // CampaignCriterion
     $operation = $campaignCriterionServiceSample->createSampleRemoveRequest($accountId, $campaignId, $campaignCriterionValues);
-    $campaignCriterionValues = $campaignCriterionServiceSample->mutate($operation, 'REMOVE');
+    $campaignCriterionServiceSample->mutate($operation, 'REMOVE');
 
     // CampaignTarget
     $operation = $campaignTargetServiceSample->createSampleRemoveRequest($accountId, $campaignTargetValues);
     $campaignTargetServiceSample->mutate($operation, 'REMOVE');
 
     // Campaign
-    $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
-    $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    if (count($campaignValues) > 0) {
+        $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+        $campaignServiceSample->mutate($operation, 'REMOVE');
+    }
 
     // BiddingStrategy
-    $operation = $biddingStrategyServiceSample->createSampleRemoveRequest($accountId, $biddingStrategyValues);
-    $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
+    if(count($biddingStrategyValues) > 0) {
+        $operation = $biddingStrategyServiceSample->createSampleRemoveRequest($accountId, $biddingStrategyValues);
+        $biddingStrategyServiceSample->mutate($operation, 'REMOVE');
+    }
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");

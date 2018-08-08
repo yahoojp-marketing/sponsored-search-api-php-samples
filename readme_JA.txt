@@ -1,10 +1,13 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Version 201805
+Version 201808
 
 ■変更履歴
 -----------
+2018/08/08:
+- Version 201808に対応しました。
+
 2018/05/23:
 - Version 201805に対応しました。
 
@@ -87,6 +90,10 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - bidLandscapeSample/BidLandscapeSample.php                              : BidLandscapeServiceによるビットのシュミレート情報を参照する処理のサンプルです。
 - conversionTrackerSample/ConversionTrackerSample.php                    : ConversionTrackerServiceによるコンバージョントラック情報の登録、参照、更新処理のサンプルです。
 - dictionarySample/DictionarySample.php                                  : DictionaryServiceによる審査否認理由の参照、地域コード参照処理のサンプルです。
+- dynamicAdsForSearchSample/PageFeedItemServiceSample.php                : PageFeedItemServiceによるPageFeedItemのアップロード/ダウンロード処理、審査状況確認、設定参照処理のサンプルです。
+- dynamicAdsForSearchSample/CampaignWebpageServiceSample.php             : CampaignWebpageServiceによるPageFeed除外設定の参照、登録、削除処理のサンプルです。
+- dynamicAdsForSearchSample/AdGroupWebpageServiceSample.php              : AdGroupWebpageServiceによるPageFeed配信/除外設定の参照、登録、更新、削除処理のサンプルです。
+- dynamicAdsForSearchSample/DynamicAdsForSearchSample.php                : FeedFolderService/PageFeedItemService/CampaignService/AdGroupService/AdGroupAdService/CampaignWebpageService/AdGroupWebpageServiceによる動的検索連動型広告の処理サンプルです。
 - keywordEstimatorSample/KeywordEstimatorSample.php                      : KeywordEstimatorServiceによるキャンペーン及び広告グループのキーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
 - reportDownloadSample/ReportDownloadSample.php                          : ReportDefinitionService, ReportServiceを使用したレポートダウンロード処理のサンプルです。
 - sharedCriterionSample/AccountSharedServiceSample.php                   : AccountSharedServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、更新、削除処理のサンプルです。
@@ -106,10 +113,10 @@ PHPのSoapClientライブラリを使用してAPIを呼び出す形になって�
 - SoapUtils.class.php ：LocationServiceを使用したリクエスト先の取得処理のサンプル及びその他共通処理です。
 
 ■downloadディレクトリ
-ReportDownloadSample,CampaignExportSample,AuditLogSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
+ReportDownloadSample,CampaignExportSample,AuditLogSample,PageFeedItemService,DynamicAdsForSearchSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
 
 ■uploadディレクトリ
-現在は利用しません。
+PageFeedItemServiceSample, DynamicAdsForSearchSampleでアップロードするファイルをあらかじめ格納しておくディレクトリです。
 
 
 --------------------------------
@@ -158,38 +165,47 @@ TARGETLISTID  : ターゲットリストID（任意、存在しない場合は�
 
 ■実行例
 ---------------------------------------
-php src/accountSample/AccountSample.php
-php src/accountTrackingURLSample/AccountTrackingUrlSample.php
-php src/adCustomizerSample/AdCustomizerSample.php
-php src/adCustomizerSample/FeedFolderServiceSample.php
-php src/adCustomizerSample/FeedItemServiceSample.php
-php src/adDisplayOptionSample/AdDisplayOptionSample.php
-php src/adSample/AdGroupAdServiceSample.php
-php src/adSample/AdGroupBidMultiplierServiceSample.php
-php src/adSample/AdGroupCriterionServiceSample.php
-php src/adSample/AdGroupServiceSample.php
-php src/adSample/AdSample.php
-php src/adSample/BiddingStrategyServiceSample.php
-php src/adSample/CampaignCriterionServiceSample.php
-php src/adSample/CampaignServiceSample.php
-php src/adSample/CampaignTargetServiceSample.php
-php src/advancedURLSample/advancedURLSample.php
-php src/balanceSample/BalanceSample.php
-php src/bidLandscapeSample/BidLandscapeSample.php
-php src/conversionTrackerSample/ConversionTrackerSample.php
-php src/dictionarySample/DictionarySample.php
-php src/keywordEstimatorSample/KeywordEstimatorSample.php
-php src/reportDownloadSample/ReportDownloadSample.php
-php src/sharedCriterionSample/AccountSharedServiceSample.php
-php src/sharedCriterionSample/CampaignSharedSetServiceSample.php
-php src/sharedCriterionSample/SharedCriterionServiceSample.php
-php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
-php src/siteRetargetingSample/CampaignRetargetingListServiceSample.php
-php src/siteRetargetingSample/RetargetingListServiceSample.php
-php src/siteRetargetingSample/SiteRetargetingSample.php
-php src/targetingIdeaSample/TargetingIdeaSample.php
-php src/campaignExportSample/CampaignExportSample.php
-php src/auditLogSample/AuditLogSample.php
+$ php src/accountSample/AccountSample.php
+$ php src/accountTrackingURLSample/AccountTrackingUrlSample.php
+$ php src/adCustomizerSample/AdCustomizerSample.php
+$ php src/adCustomizerSample/FeedFolderServiceSample.php
+$ php src/adCustomizerSample/FeedItemServiceSample.php
+$ php src/adDisplayOptionSample/AdDisplayOptionSample.php
+$ php src/adSample/AdGroupAdServiceSample.php
+$ php src/adSample/AdGroupBidMultiplierServiceSample.php
+$ php src/adSample/AdGroupCriterionServiceSample.php
+$ php src/adSample/AdGroupServiceSample.php
+$ php src/adSample/AdSample.php
+$ php src/adSample/BiddingStrategyServiceSample.php
+$ php src/adSample/CampaignCriterionServiceSample.php
+$ php src/adSample/CampaignServiceSample.php
+$ php src/adSample/CampaignTargetServiceSample.php
+$ php src/advancedURLSample/advancedURLSample.php
+$ php src/balanceSample/BalanceSample.php
+$ php src/bidLandscapeSample/BidLandscapeSample.php
+$ php src/conversionTrackerSample/ConversionTrackerSample.php
+$ php src/dictionarySample/DictionarySample.php
+$ php src/dynamicAdsForSearchSample/PageFeedItemServiceSample.php
+$ php src/dynamicAdsForSearchSample/CampaignWebpageServiceSample.php
+$ php src/dynamicAdsForSearchSample/AdGroupWebpageServiceSample.php
+$ php src/dynamicAdsForSearchSample/DynamicAdsForSearchSample.php
+$ php src/keywordEstimatorSample/KeywordEstimatorSample.php
+$ php src/reportDownloadSample/ReportDownloadSample.php
+$ php src/sharedCriterionSample/AccountSharedServiceSample.php
+$ php src/sharedCriterionSample/CampaignSharedSetServiceSample.php
+$ php src/sharedCriterionSample/SharedCriterionServiceSample.php
+$ php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
+$ php src/siteRetargetingSample/CampaignRetargetingListServiceSample.php
+$ php src/siteRetargetingSample/RetargetingListServiceSample.php
+$ php src/siteRetargetingSample/SiteRetargetingSample.php
+$ php src/targetingIdeaSample/TargetingIdeaSample.php
+$ php src/campaignExportSample/CampaignExportSample.php
+$ php src/auditLogSample/AuditLogSample.php
 ---------------------------------------
 
 データをダウンロードする処理を実行した場合には、downloadディレクトリにファイルが格納されます。
+
+データをアップロードする処理を実行する場合には、あらかじめuploadディレクトリ配下にアップロードしたいファイルを格納しておく必要があります。
+サンプルプログラムごとにファイル名は固定です。
+
+・PageFeedItemServiceSample, DynamicAdsForSearchSampleの場合　　　 ：pageFeedItemUploadSample.csv

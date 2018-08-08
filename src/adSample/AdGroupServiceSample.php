@@ -1,6 +1,7 @@
 <?php
 require_once(dirname(__FILE__) . '/../../conf/api_config.php');
 require_once(dirname(__FILE__) . '/../util/SoapUtils.class.php');
+require_once(dirname(__FILE__) . '/CampaignServiceSample.php');
 
 /**
  * Sample Program for AdGroupServiceSample.
@@ -89,87 +90,84 @@ class AdGroupServiceSample
     }
 
     /**
+     * Example Mutate Request Base.
+     *
+     * @param string $operator Operator
+     * @param string $accountId Account ID
+     * @return array Mutate entity.
+     */
+    public function createMutateRequest($operator, $accountId)
+    {
+        return array(
+            'operations' => array(
+                'operator' => $operator,
+                'accountId' => $accountId,
+                'operand' => array()
+            )
+        );
+    }
+
+    /**
+     * Example Standard AdGroup entity.
+     *
+     * @param string $accountId Account ID
+     * @param array $campaignId Campaign ID
+     * @return  array AdGroup entity.
+     */
+    public function createAddStandardAdGroup($accountId, $campaignId)
+    {
+        return array(
+            'accountId' => $accountId,
+            'campaignId' => $campaignId,
+            'adGroupName' => 'SampleStandardAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'userStatus' => 'ACTIVE',
+            'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
+            'customParameters' => array(
+                'parameters' => array(
+                    'key' => 'id1',
+                    'value' => '1234'
+                )
+            ),
+            'adGroupAdRotationMode' => array(
+                'adRotationMode' => 'ROTATE_FOREVER'
+            )
+        );
+    }
+
+    /**
+     * Example App AdGroup entity.
+     *
+     * @param string $accountId Account ID
+     * @param array $campaignId Campaign ID
+     * @return  array AdGroup entity.
+     */
+    public function createAddAppAdGroup($accountId, $campaignId)
+    {
+        return array(
+            'accountId' => $accountId,
+            'campaignId' => $campaignId,
+            'adGroupName' => 'SampleAppAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
+            'userStatus' => 'ACTIVE',
+            'adGroupAdRotationMode' => array(
+                'adRotationMode' => 'ROTATE_FOREVER'
+            )
+        );
+    }
+
+    /**
      * create sample request.
      *
-     * @param long $accountId AccountID
-     * @param long $campaignId CampaignID
-     * @param long $appCampaignId AppCampaignID
-     * @return AdGroupOperation entity.
+     * @param string $accountId AccountID
+     * @param string $campaignId CampaignID
+     * @param string $appCampaignId AppCampaignID
+     * @return array AdGroupOperation entity.
      */
     public function createSampleAddRequest($accountId, $campaignId, $appCampaignId)
     {
-
-        // Create operands
-        $operands = array(
-
-            // Create AutoBidding AdGroup for Standard Campaign
-            array(
-                'accountId' => $accountId,
-                'campaignId' => $campaignId,
-                'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE',
-                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-                'customParameters' => array(
-                    'parameters' => array(
-                        'key' => 'id1',
-                        'value' => '1234'
-                    )
-                ),
-                'adGroupAdRotationMode' => array(
-                    'adRotationMode' => 'ROTATE_FOREVER'
-                )
-            ),
-
-            // Create ManualCpc AdGroup for Standard Campaign
-            array(
-                'accountId' => $accountId,
-                'campaignId' => $campaignId,
-                'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE',
-                'trackingUrl' => 'http://www.yahoo.co.jp/?url={lpurl}&amp;a={creative}&amp;pid={_id1}',
-                'customParameters' => array(
-                    'parameters' => array(
-                        'key' => 'id1',
-                        'value' => '1234'
-                    )
-                ),
-                'adGroupAdRotationMode' => array(
-                    'adRotationMode' => 'ROTATE_FOREVER'
-                )
-            ),
-
-            // Create AdGroup for MobileApp Campaign
-            array(
-                'accountId' => $accountId,
-                'campaignId' => $appCampaignId,
-                'adGroupName' => 'SampleAutoBiddingAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE',
-                'adGroupAdRotationMode' => array(
-                    'adRotationMode' => 'ROTATE_FOREVER'
-                )
-            ),
-
-            // Create ManualCpc AdGroup for MobileApp Campaign
-            array(
-                'accountId' => $accountId,
-                'campaignId' => $appCampaignId,
-                'adGroupName' => 'SampleManualCpcAdGroup_CreateOn_' . SoapUtils::getCurrentTimestamp(),
-                'userStatus' => 'ACTIVE',
-                'adGroupAdRotationMode' => array(
-                    'adRotationMode' => 'ROTATE_FOREVER'
-                )
-            )
-        );
-
         // Create operation
-        $operation = array(
-            'operations' => array(
-                'operator' => 'ADD',
-                'accountId' => $accountId,
-                'operand' => $operands
-            )
-        );
-
+        $operation = $this->createMutateRequest('ADD', $accountId);
+        array_push($operation['operations']['operand'], $this->createAddStandardAdGroup($accountId, $campaignId));
+        array_push($operation['operations']['operand'], $this->createAddAppAdGroup($accountId, $appCampaignId));
         return $operation;
     }
 
@@ -312,11 +310,35 @@ if (__FILE__ != realpath($_SERVER['PHP_SELF'])) {
  * execute AdGroupServiceSample.
  */
 try {
+    $campaignServiceSample = new CampaignServiceSample();
     $adGroupServiceSample = new AdGroupServiceSample();
 
     $accountId = SoapUtils::getAccountId();
     $campaignId = SoapUtils::getCampaignId();
     $appCampaignId = SoapUtils::getAppCampaignId();
+
+    // =================================================================
+    // CampaignService::mutate(ADD)
+    // =================================================================
+    $campaignValues = array();
+    if ($campaignId === 'xxxxxxxx') {
+        $addCampaignRequest = $campaignServiceSample->createMutateRequest('ADD', $accountId);
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcStandardCampaign($accountId));
+        array_push($addCampaignRequest['operations']['operand'], $campaignServiceSample->createAddManualCpcMobileAppCampaignForIOS($accountId));
+        $campaignValues = $campaignServiceSample->mutate($addCampaignRequest, 'ADD');
+        foreach ($campaignValues as $campaignValue) {
+            switch ($campaignValue->campaign->campaignType) {
+                default :
+                    break;
+                case 'STANDARD' :
+                    $campaignId = $campaignValue->campaign->campaignId;
+                    break;
+                case 'MOBILE_APP' :
+                    $appCampaignId = $campaignValue->campaign->campaignId;
+                    break;
+            }
+        }
+    }
 
     // =================================================================
     // AdGroupService ADD
@@ -353,6 +375,14 @@ try {
 
     // Run
     $adGroupServiceSample->mutate($operation, 'REMOVE');
+
+    // =================================================================
+    // remove Campaign
+    // =================================================================
+    if (count($campaignValues) > 0) {
+        $operation = $campaignServiceSample->createSampleRemoveRequest($accountId, $campaignValues);
+        $campaignValues = $campaignServiceSample->mutate($operation, 'REMOVE');
+    }
 
 } catch (Exception $e) {
     printf($e->getMessage() . "\n");
