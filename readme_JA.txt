@@ -1,211 +1,75 @@
 --------------------------------
 【バージョン】
 --------------------------------
-Version 201808
+Version 201901
 
 ■変更履歴
 -----------
-2018/08/08:
-- Version 201808に対応しました。
-
-2018/05/23:
-- Version 201805に対応しました。
-
-2018/01/24:
-- Version 6.5に対応しました。
-
-2017/11/01:
-- Version 6.4に対応しました。
-
-2017/07/20:
-- Version 6.3に対応しました。
-
-2016/11/24:
-- Version 6.2に対応しました。
-
-2016/08/31:
-- Version 6.1に対応しました。
-
-2016/05/13:
-- CampaignExportSample(Version 6.0)を追加しました。
-
-2016/04/13:
-- Version 6.0に対応しました。
-
-2015/09/16:
-- Version 5.3に対応しました。
-
-2015/05/20:
-- Version 5.2に対応しました。
-
-2014/06/13:
-- Version 5.1に対応しました。
-
-2013/12/15:
-- Version 5.0に対応しました。
-
-2013/08/28:
-- Version 4.2追加API：AdGroupBidMultiplierServiceに対応しました。
-
-2013/07/22:
-- Version 4.2に対応しました。Version 4.0からの変更点は以下になります。
--- AdDisplayOptionSample.phpの追加
+2019/01/29:
+- Version 201901に対応しました。
 
 --------------------------------
 【概要】
 --------------------------------
-このサンプルプログラムは、PHPを使用して各APIを呼び出す処理サンプルです。
-PHPのSoapClientライブラリを使用してAPIを呼び出す形になっています。
+このサンプルプログラムは、PHPを使用して各APIを呼び出す処理のサンプルです。
+PHPのSoapClientライブラリを使用してAPIを呼び出します。
+
 
 --------------------------------
 【内容物】
 --------------------------------
-■confディレクトリ
-サンプルプログラム実行時の各種設定を記述するPHPファイルが格納されています。
+conf/
+  - api_config.ini      : 各種IDを記述する設定ファイルです。
+src/Jp/YahooApis/SS/
+  - V201901             : 対象のAPIバージョンのPHP用EntityサンプルClassです。
+  - AdApiSample/
+    - Basic/            : プロモーション広告APIの各種Serviceサンプル集です。
+    - Feature/          : プロモーション広告APIを利用した広告入稿、ターゲティングなどのサンプル集です。
+    - Repository/       : プロモーション広告API各種サンプルを利用するための補助ユーティリティです。
+    - Util/             : プロモーション広告API各種サンプルを利用するための補助ユーティリティです。
+download/               : 各種Downloadサービスを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
+upload/                 : 各種Uploadサービスを実行する際に、利用するデータファイルを格納するディレクトリです。
 
-- api_config.php：各種IDを記述する設定ファイルです。
 
-■srcディレクトリ
-以下の各プログラムが格納されています。
-
-・以下は直接実行できるサンプルプログラムです。
-
-- accountSample/AccountSample.php                                        : AccountServiceによるアカウント参照、更新処理のサンプルです。
-- accountTrackingURLSample/AccountTrackingUrlSample.php                  : AccountTrackingUrlServiceによるアカウントレイヤーのトラッキングURL参照、更新処理のサンプルです。
-- adCustomizerSample/AdCustomizerSample.php                              : AdGroupAdService/FeedItemService/FeedFolderService/AdGroupCriterionService/AdGroupService/CampaignServiceによるデータ自動挿入機能の登録、参照、更新、削除処理のサンプルです。
-- adCustomizerSample/FeedFolderServiceSample.php                         : FeedFolderServiceによるフィードフォルダーの登録、参照、更新、削除処理のサンプルです。
-- adCustomizerSample/FeedItemServiceSample.php                           : FeedItemServiceによるフィードアイテムの登録、参照、更新、削除処理のサンプルです。
-- adDisplayOptionSample/AdDisplayOptionSample.php                        : FeedItemService/CampaignFeedService/AdGroupFeedServiceによる広告表示オプションの登録、参照、更新処理のサンプルです。
-- adSample/AdGroupAdServiceSample.php                                    : AdGroupAdServiceによる広告の登録、参照、更新、削除処理のサンプルです。
-- adSample/AdGroupBidMultiplierServiceSample.php                         : AdGroupBidMultiplierServiceによる広告グループ入札価格調整率の参照、更新処理のサンプルです。
-- adSample/AdGroupCriterionServiceSample.php                             : AdGroupCriterionServiceによる広告グループクライテリアの登録、参照、更新、削除処理のサンプルです。
-- adSample/AdGroupServiceSample.php                                      : AdGroupServiceによる広告グループの登録、参照、更新、削除処理のサンプルです。
-- adSample/AdSample.php                                                  : BiddingStrategyService/CampaignService/CampaignTargetService/CampaignCriterionService/AdGroupService/AdGroupCriterionService/AdGroupAdService/AdGroupBidMultiplierServiceによる入稿処理のサンプルです。
-- adSample/BiddingStrategyServiceSample.php                              : BiddingStrategyServiceによる自動入札設定の登録、参照、更新、削除処理のサンプルです。
-- adSample/CampaignCriterionServiceSample.php                            : CampaignCriterionServiceによるキャンペーン除外クライテリアの登録、参照処理のサンプルです。
-- adSample/CampaignServiceSample.php                                     : CampaignServiceによるキャンペーンの登録、参照、更新、削除処理のサンプルです。
-- adSample/CampaignTargetServiceSample.php                               : CampaignTargetServiceによるキャンペーンターゲティング設定の登録、参照、更新、削除処理のサンプルです。
-- advancedURLSample/advancedURLSample.php                                : AccountTrackingUrlService/CampaignService/AdGroupService/AdGroupCriterionService/AdGroupAdService/FeedItemServiceによるアドバンスドURLシステムを利用した入稿処理のサンプルです。
-- balanceSample/BalanceSample.php                                        : BalanceServiceによるアカウント残高を参照する処理のサンプルです。
-- bidLandscapeSample/BidLandscapeSample.php                              : BidLandscapeServiceによるビットのシュミレート情報を参照する処理のサンプルです。
-- conversionTrackerSample/ConversionTrackerSample.php                    : ConversionTrackerServiceによるコンバージョントラック情報の登録、参照、更新処理のサンプルです。
-- dictionarySample/DictionarySample.php                                  : DictionaryServiceによる審査否認理由の参照、地域コード参照処理のサンプルです。
-- dynamicAdsForSearchSample/PageFeedItemServiceSample.php                : PageFeedItemServiceによるPageFeedItemのアップロード/ダウンロード処理、審査状況確認、設定参照処理のサンプルです。
-- dynamicAdsForSearchSample/CampaignWebpageServiceSample.php             : CampaignWebpageServiceによるPageFeed除外設定の参照、登録、削除処理のサンプルです。
-- dynamicAdsForSearchSample/AdGroupWebpageServiceSample.php              : AdGroupWebpageServiceによるPageFeed配信/除外設定の参照、登録、更新、削除処理のサンプルです。
-- dynamicAdsForSearchSample/DynamicAdsForSearchSample.php                : FeedFolderService/PageFeedItemService/CampaignService/AdGroupService/AdGroupAdService/CampaignWebpageService/AdGroupWebpageServiceによる動的検索連動型広告の処理サンプルです。
-- keywordEstimatorSample/KeywordEstimatorSample.php                      : KeywordEstimatorServiceによるキャンペーン及び広告グループのキーワードのクリック単価や掲載順位などの予測値を参照する処理のサンプルです。
-- reportDownloadSample/ReportDownloadSample.php                          : ReportDefinitionService, ReportServiceを使用したレポートダウンロード処理のサンプルです。
-- sharedCriterionSample/AccountSharedServiceSample.php                   : AccountSharedServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、更新、削除処理のサンプルです。
-- sharedCriterionSample/CampaignSharedSetServiceSample.php               : AccountSharedService/CampaignService/CampaignSharedSetServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、削除処理のサンプルです。
-- sharedCriterionSample/SharedCriterionServiceSample.php                 : AccountSharedService/SharedCriterionServiceによるアカウント配下のキャンペーンで除外キーワードの共有リスト情報の登録、参照、削除処理のサンプルです。
-- siteRetargetingSample/AdGroupRetargetingListServiceSample.php          : AdGroupRetargetingListServiceによる広告グループ用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
-- siteRetargetingSample/CampaignRetargetingListServiceSample.php         : CampaignRetargetingListServiceによるキャンペーン用リターゲティングリストの登録、参照、更新、削除処理のサンプルです。
-- siteRetargetingSample/RetargetingListServiceSample.php                 : RetargetingListServiceによるリターゲティングリストの登録、参照、更新処理のサンプルです。
-- siteRetargetingSample/SiteRetargetingSample.php                        : RetargetingListService/BiddingStrategyService/CampaignService/CampaignRetargetingListService/AdGroupService/AdGroupRetargetingListServiceによるサイトリターゲティング機能の登録、参照、更新、削除処理のサンプルです。
-- targetingIdeaSample/TargetingIdeaSample.php                            : TargetingIdeaServiceによる推奨キーワードを参照する処理のサンプルです。
-- campaignExportSample/CampaignExportSample.php                          : CampaignExportServiceによるExportジョブ登録、CSVダウンロードのサンプルです。
-- auditLogSample/AuditLogSample.php                                      : AuditLogServiceによるジョブ登録、CSVダウンロードのサンプルです。
-
-・以下は各サンプルプログラムから利用されるクラスです。
-
-- Service.class.php   ：SoapClientを拡張してRequestHeaderの設定処理を追加したクラスのサンプルです。
-- SoapUtils.class.php ：LocationServiceを使用したリクエスト先の取得処理のサンプル及びその他共通処理です。
-
-■downloadディレクトリ
-ReportDownloadSample,CampaignExportSample,AuditLogSample,PageFeedItemService,DynamicAdsForSearchSampleを実行した際に、ダウンロードしたデータがファイルとして格納されるディレクトリです。
-
-■uploadディレクトリ
-PageFeedItemServiceSample, DynamicAdsForSearchSampleでアップロードするファイルをあらかじめ格納しておくディレクトリです。
+--------------------------------
+【Feature説明】
+--------------------------------
+src/Jp/YahooApis/SS/AdApiSample/Feature/
+  - AdCustomizerSample.php                      : データ自動挿入機能を利用した入稿処理のサンプルです。
+  - AdDisplayOptionSample.php                   : 広告表示オプションを利用した入稿処理のサンプルです。
+  - AdSample.php                                : アドバンスドURLシステムを利用した入稿処理のサンプルです。
+  - DynamicAdsForSearchSample.php               : 動的検索連動型広告を利用した入稿処理のサンプルです。
+  - LabelSample.php                             : ラベル機能を利用した処理のサンプルです。
+  - SharedNegativeCampaignCriterionSample.php   : 対象外キーワード共有機能を利用した処理のサンプルです。
+  - SiteRetargetingSample.php                   : サイトリターゲティング機能を利用した処理のサンプルです。
+  - StructuredSnippetSample.php                 : カテゴリ補足オプションを利用した入稿処理のサンプルです。
 
 
 --------------------------------
 【環境設定】
 --------------------------------
-ご使用のオペレーティング・システムがUnix系OSまたはWindowsに拘わらず、PHPの動作環境を構築するために、以下のものをインストールしてください。
+ご使用のオペレーティング・システムがUnix系OS、Windowsのいずれの場合でも、PHPの動作環境を構築するために、以下のものをインストールしてください。
 
-・PHP 5.3.13、またはそれ以上のバージョン
-※また、インストールする際は、以下のオプションが有効になるようにしてください。
-　(1) 日本語の使用
-　(2) SOAP拡張モジュールの使用
-　(3) openssl
-
-confディレクトリ配下にあるapi_config.phpに各IDを記述します。
-LOCATION            : リクエスト先毎にコメントアウトを外してください。
-LICENSE             : APIライセンスを記述(必須)
-APIACCOUNTID        : APIアカウントIDを記述(必須)
-APIACCOUNTPASSWORD  : APIアカウントパスワードを記述(必須)
-ONBEHALFOFACCOUNTID : 代行アカウントを記述(任意)
-ONBEHALFOFPASSWORD  : 代行アカウントパスワードを記述(任意)
-ACCOUNTID           : アカウントIDを記述(必須)
-
-以下、IDはBidLandscapeSampleを動作させる際に必要となります。
-BIDDINGSTRATEGYID        : 自動入札IDを記述（必須）
-CAMPAIGNID,APPCAMPAIGNID : キャンペーンIDを記述（必須）
-ADGROUPID,APPADGROUPID   : 広告グループIDを記述（必須）
-ADGROUPCRITERIONIDS      : 広告グループのクライテリアIDを記述（必須）
-                           ※カンマ区切りで複数IDを指定することができます。
-
-以下、IDはAdCustomizerSampleを動作させる際に必要となります。
-FEEDFOLDERID            : フィードフォルダーIDを記述（必須）
-INTEGERFEEDATTRIBUTEID  : PlaceholderFieldがAD_CUSTOMIZER_INTEGERで登録されたフィードアトリビュートIDを記述（必須）
-PRICEFEEDFOLDERID       : PlaceholderFieldがAD_CUSTOMIZER_PRICEで登録されたフィードアトリビュートIDを記述（必須）
-DATEFEEDFOLDERID        : PlaceholderFieldがAD_CUSTOMIZER_DATEで登録されたフィードアトリビュートIDを記述（必須）
-STRINGFEEDFOLDERID      : PlaceholderFieldがAD_CUSTOMIZER_STRINGで登録されたフィードアトリビュートIDを記述（必須）
-
-以下、IDはSiteRetargetingSampleを動作させる際に必要となります。
-TARGETLISTID  : ターゲットリストID（任意、存在しない場合は新規作成を試みます）
+1. PHP 7.2.x、またはそれ以上のバージョン
+2. composer.jsonに記載されている各種エクステンション
+3. confディレクトリ配下にあるapi_config.iniに各IDを記述します。
+  - location            : リクエスト先ごとにコメントアウトを外してください。
+  - license             : APIライセンスを記述してください。
+  - apiAccountId        : APIアカウントIDを記述してください。
+  - apiAccountPassword  : APIアカウントパスワードを記述してください。
+  - onBehalfOfAccountId : 代行アカウントを記述してください（任意）。
+  - onBehalfOfPassword  : 代行アカウントパスワードを記述してください（任意）。
+  - accountId           : アカウントIDを記述してください（必須）。
 
 
 --------------------------------
 【実行】
 --------------------------------
-サンプルプログラムのzipを展開したディレクトリに移動します。
-各サンプルプログラムを実行します。
+cloneしたサンプルプログラムのディレクトリに移動し、以下のコマンドを実行します。
 
 ■実行例
----------------------------------------
-$ php src/accountSample/AccountSample.php
-$ php src/accountTrackingURLSample/AccountTrackingUrlSample.php
-$ php src/adCustomizerSample/AdCustomizerSample.php
-$ php src/adCustomizerSample/FeedFolderServiceSample.php
-$ php src/adCustomizerSample/FeedItemServiceSample.php
-$ php src/adDisplayOptionSample/AdDisplayOptionSample.php
-$ php src/adSample/AdGroupAdServiceSample.php
-$ php src/adSample/AdGroupBidMultiplierServiceSample.php
-$ php src/adSample/AdGroupCriterionServiceSample.php
-$ php src/adSample/AdGroupServiceSample.php
-$ php src/adSample/AdSample.php
-$ php src/adSample/BiddingStrategyServiceSample.php
-$ php src/adSample/CampaignCriterionServiceSample.php
-$ php src/adSample/CampaignServiceSample.php
-$ php src/adSample/CampaignTargetServiceSample.php
-$ php src/advancedURLSample/advancedURLSample.php
-$ php src/balanceSample/BalanceSample.php
-$ php src/bidLandscapeSample/BidLandscapeSample.php
-$ php src/conversionTrackerSample/ConversionTrackerSample.php
-$ php src/dictionarySample/DictionarySample.php
-$ php src/dynamicAdsForSearchSample/PageFeedItemServiceSample.php
-$ php src/dynamicAdsForSearchSample/CampaignWebpageServiceSample.php
-$ php src/dynamicAdsForSearchSample/AdGroupWebpageServiceSample.php
-$ php src/dynamicAdsForSearchSample/DynamicAdsForSearchSample.php
-$ php src/keywordEstimatorSample/KeywordEstimatorSample.php
-$ php src/reportDownloadSample/ReportDownloadSample.php
-$ php src/sharedCriterionSample/AccountSharedServiceSample.php
-$ php src/sharedCriterionSample/CampaignSharedSetServiceSample.php
-$ php src/sharedCriterionSample/SharedCriterionServiceSample.php
-$ php src/siteRetargetingSample/AdGroupRetargetingListServiceSample.php
-$ php src/siteRetargetingSample/CampaignRetargetingListServiceSample.php
-$ php src/siteRetargetingSample/RetargetingListServiceSample.php
-$ php src/siteRetargetingSample/SiteRetargetingSample.php
-$ php src/targetingIdeaSample/TargetingIdeaSample.php
-$ php src/campaignExportSample/CampaignExportSample.php
-$ php src/auditLogSample/AuditLogSample.php
----------------------------------------
+$ php ./src/Jp/YahooApis/SS/AdApiSample/Basic/Account/AccountServiceSample.php
+$ php ./src/Jp/YahooApis/SS/AdApiSample/Feature/AdSample.php
 
-データをダウンロードする処理を実行した場合には、downloadディレクトリにファイルが格納されます。
-
-データをアップロードする処理を実行する場合には、あらかじめuploadディレクトリ配下にアップロードしたいファイルを格納しておく必要があります。
-サンプルプログラムごとにファイル名は固定です。
-
-・PageFeedItemServiceSample, DynamicAdsForSearchSampleの場合　　　 ：pageFeedItemUploadSample.csv
+※1　データをダウンロードする処理を実行した場合には、downloadディレクトリにファイルが格納されます。
+※2　データをアップロードする処理を実行する場合には、あらかじめuploadディレクトリ配下にアップロードしたいファイルを格納しておく必要があります。

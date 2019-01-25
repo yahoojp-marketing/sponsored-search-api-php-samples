@@ -1,0 +1,21 @@
+{
+  "name": "yahooapis/ad-api-sample",
+  "description": "Yahoo! Promotional Ads API Sample for PHP",
+  "require": {
+    "php": ">=7.2.12",
+    "ext-openssl": "*",
+    "ext-soap": "*",
+    "ext-dom": "*",
+    "ext-json": "*",
+    "ext-http": "*",
+    "ext-curl": "*"
+  },
+  "require-dev": {
+    "php": ">=7.2.12"
+  },
+  "autoload": {
+    "psr-4": {
+      "Jp\\YahooApis\\": "src/Jp/YahooApis/"
+    }
+  }
+}
