@@ -12,8 +12,8 @@ use Jp\YahooApis\SS\AdApiSample\Basic\AdGroup\AdGroupServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\FeedFolder\FeedFolderPlaceholderType;
-use Jp\YahooApis\SS\V201901\FeedItem\{ApprovalStatus,
+use Jp\YahooApis\SS\V201909\FeedFolder\FeedFolderPlaceholderType;
+use Jp\YahooApis\SS\V201909\FeedItem\{ApprovalStatus,
     CriterionTypeFeedItem,
     CustomParameter,
     CustomParameters,
@@ -43,7 +43,7 @@ use Jp\YahooApis\SS\V201901\FeedItem\{ApprovalStatus,
     TargetingAdGroup,
     TargetingCampaign,
     TargetingKeyword};
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example FeedItemService operation and Utility method collection.
@@ -405,14 +405,19 @@ class FeedItemServiceSample
      *
      * @param int $accountId
      * @param int[] $feedItemIds
+     * @param int[] $feedFolderIds
      * @return get
      */
-    public static function buildExampleGetRequest(int $accountId, array $feedItemIds): get
+    public static function buildExampleGetRequest(int $accountId, array $feedItemIds, array $feedFolderIds = null): get
     {
         $selector = new FeedItemSelector($accountId);
 
         if (!is_null($feedItemIds)) {
             $selector->setFeedItemIds($feedItemIds);
+        }
+
+        if (!is_null($feedFolderIds)) {
+            $selector->setFeedFolderIds($feedFolderIds);
         }
 
         $selector->setPlaceholderTypes([
@@ -592,6 +597,14 @@ class FeedItemServiceSample
             $feedAttributeValue6,
         ]);
 
+        $feedItemAttributeLinkDescription1 = new SimpleFeedItemAttribute();
+        $feedItemAttributeLinkDescription1->setPlaceholderField(FeedItemPlaceholderField::LINK_DESCRIPTION_1);
+        $feedItemAttributeLinkDescription1->setFeedAttributeValue('sampledescription1');
+
+        $feedItemAttributeLinkDescription2 = new SimpleFeedItemAttribute();
+        $feedItemAttributeLinkDescription2->setPlaceholderField(FeedItemPlaceholderField::LINK_DESCRIPTION_2);
+        $feedItemAttributeLinkDescription2->setFeedAttributeValue('sampledescription2');
+
         $feedItem->setFeedItemAttribute([
             $feedItemAttributeLinkText,
             $feedItemAttributeAdvancedUrl,
@@ -599,6 +612,8 @@ class FeedItemServiceSample
             $feedItemAttributeTrackingUrl,
             $feedItemAttributeAdditionalAdvancedUrls,
             $feedItemAttributeAdditionalAdvancedMobileUrls,
+            $feedItemAttributeLinkDescription1,
+            $feedItemAttributeLinkDescription2
         ]);
 
         // set scheduling

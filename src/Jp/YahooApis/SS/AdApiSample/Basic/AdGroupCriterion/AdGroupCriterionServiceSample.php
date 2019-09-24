@@ -12,7 +12,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\AdGroup\AdGroupServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupCriterion\{AdGroupCriterion,
+use Jp\YahooApis\SS\V201909\AdGroupCriterion\{AdGroupCriterion,
     AdGroupCriterionAdditionalAdvancedMobileUrls,
     AdGroupCriterionAdditionalAdvancedUrls,
     AdGroupCriterionAdditionalUrl,
@@ -35,8 +35,8 @@ use Jp\YahooApis\SS\V201901\AdGroupCriterion\{AdGroupCriterion,
     NegativeAdGroupCriterion,
     Operator,
     UserStatus};
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example AdGroupCriterionService operation and Utility method collection.

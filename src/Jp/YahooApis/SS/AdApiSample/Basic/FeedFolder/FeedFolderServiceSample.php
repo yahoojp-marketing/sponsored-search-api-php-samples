@@ -11,7 +11,7 @@ use Exception;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\FeedFolder\{FeedAttribute,
+use Jp\YahooApis\SS\V201909\FeedFolder\{FeedAttribute,
     FeedFolder,
     FeedFolderOperation,
     FeedFolderPlaceholderField,
@@ -23,7 +23,7 @@ use Jp\YahooApis\SS\V201901\FeedFolder\{FeedAttribute,
     mutate,
     mutateResponse,
     Operator};
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example FeedFolderService operation and Utility method collection.

@@ -6,8 +6,8 @@
 namespace Jp\YahooApis\SS\AdApiSample\Repository;
 
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\RetargetingList\TargetingList;
-use Jp\YahooApis\SS\V201901\RetargetingList\TargetListType;
+use Jp\YahooApis\SS\V201909\RetargetingList\TargetingList;
+use Jp\YahooApis\SS\V201909\RetargetingList\TargetListType;
 
 /**
  * Utility method collection for PHP Sample Program.

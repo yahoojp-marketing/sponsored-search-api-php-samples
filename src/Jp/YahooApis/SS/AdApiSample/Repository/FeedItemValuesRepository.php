@@ -6,8 +6,8 @@
 namespace Jp\YahooApis\SS\AdApiSample\Repository;
 
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\FeedItem\FeedItem;
-use Jp\YahooApis\SS\V201901\FeedItem\FeedItemPlaceholderType;
+use Jp\YahooApis\SS\V201909\FeedItem\FeedItem;
+use Jp\YahooApis\SS\V201909\FeedItem\FeedItemPlaceholderType;
 
 /**
  * Utility method collection for PHP Sample Program.

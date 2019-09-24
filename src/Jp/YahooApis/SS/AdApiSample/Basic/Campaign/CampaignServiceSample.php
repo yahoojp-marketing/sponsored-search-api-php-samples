@@ -12,8 +12,8 @@ use Jp\YahooApis\SS\AdApiSample\Basic\{BiddingStrategy\BiddingStrategyServiceSam
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\BiddingStrategy\BiddingStrategyType as BSBiddingStrategyType;
-use Jp\YahooApis\SS\V201901\Campaign\{AppStore,
+use Jp\YahooApis\SS\V201909\BiddingStrategy\BiddingStrategyType as BSBiddingStrategyType;
+use Jp\YahooApis\SS\V201909\Campaign\{AppStore,
     BiddingStrategyType,
     Budget,
     BudgetDeliveryMethod,
@@ -42,8 +42,8 @@ use Jp\YahooApis\SS\V201901\Campaign\{AppStore,
     TargetSpendBiddingScheme,
     UrlApprovalStatus,
     UserStatus};
-use Jp\YahooApis\SS\V201901\FeedFolder\FeedFolderPlaceholderType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\FeedFolder\FeedFolderPlaceholderType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example CampaignService operation and Utility method collection.
@@ -283,7 +283,7 @@ class CampaignServiceSample
             // =================================================================
             $valuesHolder = self::setup();
             $valuesRepositoryFacade = new ValuesRepositoryFacade($valuesHolder);
-            $biddingStrategyId = $valuesRepositoryFacade->getBiddingStrategyValuesRepository()->findBiddingStrategyId(BSBiddingStrategyType::PAGE_ONE_PROMOTED);
+            $biddingStrategyId = $valuesRepositoryFacade->getBiddingStrategyValuesRepository()->findBiddingStrategyId(BSBiddingStrategyType::TARGET_CPA);
 
             sleep(30);
 
@@ -646,7 +646,6 @@ class CampaignServiceSample
         $targetSpendBiddingScheme = new TargetSpendBiddingScheme();
         $targetSpendBiddingScheme->setBiddingStrategyType(BiddingStrategyType::TARGET_SPEND);
         $targetSpendBiddingScheme->setBidCeiling(700);
-        $targetSpendBiddingScheme->setSpendTarget(10);
         $biddingStrategyConfiguration->setBiddingScheme($targetSpendBiddingScheme);
         return $biddingStrategyConfiguration;
     }

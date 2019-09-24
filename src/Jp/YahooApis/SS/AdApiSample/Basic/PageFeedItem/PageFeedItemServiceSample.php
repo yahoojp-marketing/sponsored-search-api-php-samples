@@ -12,8 +12,8 @@ use Jp\YahooApis\SS\AdApiSample\Basic\FeedFolder\FeedFolderServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\FeedFolder\FeedFolderPlaceholderType;
-use Jp\YahooApis\SS\V201901\PageFeedItem\{addDownloadJob,
+use Jp\YahooApis\SS\V201909\FeedFolder\FeedFolderPlaceholderType;
+use Jp\YahooApis\SS\V201909\PageFeedItem\{addDownloadJob,
     addDownloadJobResponse,
     get,
     getJobStatus,

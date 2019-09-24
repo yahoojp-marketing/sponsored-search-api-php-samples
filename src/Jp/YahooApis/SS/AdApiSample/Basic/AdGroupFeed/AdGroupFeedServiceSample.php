@@ -12,7 +12,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\FeedItem\FeedItemServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupFeed\{AdGroupFeed,
+use Jp\YahooApis\SS\V201909\AdGroupFeed\{AdGroupFeed,
     AdGroupFeedList,
     AdGroupFeedOperation,
     AdGroupFeedPlaceholderType,
@@ -23,9 +23,9 @@ use Jp\YahooApis\SS\V201901\AdGroupFeed\{AdGroupFeed,
     mutate,
     mutateResponse,
     Operator};
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\FeedItem\FeedItemPlaceholderType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\FeedItem\FeedItemPlaceholderType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example AdGroupFeedService operation and Utility method collection.

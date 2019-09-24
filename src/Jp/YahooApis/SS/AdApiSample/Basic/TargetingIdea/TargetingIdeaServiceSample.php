@@ -9,17 +9,17 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\Paging;
-use Jp\YahooApis\SS\V201901\TargetingIdea\CriterionType;
-use Jp\YahooApis\SS\V201901\TargetingIdea\get;
-use Jp\YahooApis\SS\V201901\TargetingIdea\getResponse;
-use Jp\YahooApis\SS\V201901\TargetingIdea\KeywordMatchType;
-use Jp\YahooApis\SS\V201901\TargetingIdea\ProposalKeyword;
-use Jp\YahooApis\SS\V201901\TargetingIdea\RelatedToKeywordSearchParameter;
-use Jp\YahooApis\SS\V201901\TargetingIdea\RelatedToUrlSearchParameter;
-use Jp\YahooApis\SS\V201901\TargetingIdea\SearchParameterUse;
-use Jp\YahooApis\SS\V201901\TargetingIdea\TargetingIdeaSelector;
-use Jp\YahooApis\SS\V201901\TargetingIdea\TargetingIdeaService;
+use Jp\YahooApis\SS\V201909\Paging;
+use Jp\YahooApis\SS\V201909\TargetingIdea\CriterionType;
+use Jp\YahooApis\SS\V201909\TargetingIdea\get;
+use Jp\YahooApis\SS\V201909\TargetingIdea\getResponse;
+use Jp\YahooApis\SS\V201909\TargetingIdea\KeywordMatchType;
+use Jp\YahooApis\SS\V201909\TargetingIdea\ProposalKeyword;
+use Jp\YahooApis\SS\V201909\TargetingIdea\RelatedToKeywordSearchParameter;
+use Jp\YahooApis\SS\V201909\TargetingIdea\RelatedToUrlSearchParameter;
+use Jp\YahooApis\SS\V201909\TargetingIdea\SearchParameterUse;
+use Jp\YahooApis\SS\V201909\TargetingIdea\TargetingIdeaSelector;
+use Jp\YahooApis\SS\V201909\TargetingIdea\TargetingIdeaService;
 
 /**
  * example KeywordEstimatorService operation and Utility method collection.

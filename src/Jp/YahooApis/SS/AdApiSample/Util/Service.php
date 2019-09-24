@@ -102,7 +102,7 @@ abstract class Service extends \SoapClient
             // set soap SoapHeader
             //----------------------------------
             // api_account
-            $header = new \Jp\YahooApis\SS\V201901\SoapHeader(LICENSE, API_ACCOUNT_ID, API_ACCOUNT_PASSWORD);
+            $header = new \Jp\YahooApis\SS\V201909\SoapHeader(LICENSE, API_ACCOUNT_ID, API_ACCOUNT_PASSWORD);
 
             // on_behalf_of_account
             if (defined('ON_BEHALF_OF_ACCOUNT_ID') && ON_BEHALF_OF_ACCOUNT_ID !== '' && defined('ON_BEHALF_OF_PASSWORD') && ON_BEHALF_OF_PASSWORD !== '') {

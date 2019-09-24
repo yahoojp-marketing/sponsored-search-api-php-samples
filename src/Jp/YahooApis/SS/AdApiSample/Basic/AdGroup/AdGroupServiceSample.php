@@ -12,7 +12,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\Campaign\CampaignServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroup\{AdGroup,
+use Jp\YahooApis\SS\V201909\AdGroup\{AdGroup,
     AdGroupAdRotationMode,
     AdGroupOperation,
     AdGroupSelector,
@@ -31,8 +31,8 @@ use Jp\YahooApis\SS\V201901\AdGroup\{AdGroup,
     TargetingSetting,
     UrlApprovalStatus,
     UserStatus};
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example AdGroupService operation and Utility method collection.

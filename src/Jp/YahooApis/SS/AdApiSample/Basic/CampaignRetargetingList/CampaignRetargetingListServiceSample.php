@@ -13,8 +13,8 @@ use Jp\YahooApis\SS\AdApiSample\Basic\RetargetingList\RetargetingListServiceSamp
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\CampaignRetargetingList\{CampaignRetargetingList,
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\CampaignRetargetingList\{CampaignRetargetingList,
     CampaignRetargetingListOperation,
     CampaignRetargetingListSelector,
     CampaignRetargetingListService,
@@ -25,8 +25,8 @@ use Jp\YahooApis\SS\V201901\CampaignRetargetingList\{CampaignRetargetingList,
     mutate,
     mutateResponse,
     Operator};
-use Jp\YahooApis\SS\V201901\Paging;
-use Jp\YahooApis\SS\V201901\RetargetingList\TargetListType;
+use Jp\YahooApis\SS\V201909\Paging;
+use Jp\YahooApis\SS\V201909\RetargetingList\TargetListType;
 
 /**
  * example CampaignRetargetingListService operation and Utility method collection.
@@ -112,9 +112,7 @@ class CampaignRetargetingListServiceSample
             // Error
             foreach ($response->getRval()->getValues() as $values) {
                 if (!is_null($values->getError())) {
-                    if ($values->getError()[0]->getCode() != '210804') {
-                        throw new Exception('Fail to ' . self::SERVICE_NAME . '/' . (string)$request->getOperations()->getOperator() . '.' . PHP_EOL);
-                    }
+                    throw new Exception('Fail to ' . self::SERVICE_NAME . '/' . (string)$request->getOperations()->getOperator() . '.' . PHP_EOL);
                 }
             }
         }
@@ -188,7 +186,7 @@ class CampaignRetargetingListServiceSample
             $addResponse = self::mutate($addRequest);
             $campaignRetargetingLists = [];
             foreach ($addResponse->getRval()->getValues() as $campaignRetargetingListValues) {
-                $campaignRetargetingLists[] =$campaignRetargetingListValues->getCampaignRetargetingList();
+                $campaignRetargetingLists[] = $campaignRetargetingListValues->getCampaignRetargetingList();
             }
 
             // =================================================================
@@ -304,13 +302,13 @@ class CampaignRetargetingListServiceSample
      * @param CampaignRetargetingList[] $campaignRetargetingLists
      * @return CampaignRetargetingList[]
      */
-    public static function createExampleSetRequest(array $campaignRetargetingLists):array
+    public static function createExampleSetRequest(array $campaignRetargetingLists): array
     {
         // create operands
         $operands = [];
 
         foreach ($campaignRetargetingLists as $campaignRetargetingList) {
-            if($campaignRetargetingList->getExcludedType() === ExcludedType::INCLUDED) {
+            if ($campaignRetargetingList->getExcludedType() === ExcludedType::INCLUDED) {
                 $operand = new CampaignRetargetingList(
                     $campaignRetargetingList->getCampaignId(),
                     new CriterionTargetList($campaignRetargetingList->getCriterionTargetList()->getTargetListId())

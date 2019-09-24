@@ -6,10 +6,10 @@
 namespace Jp\YahooApis\SS\AdApiSample\Repository;
 
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupAd\AdGroupAd;
-use Jp\YahooApis\SS\V201901\AdGroupAd\AdType;
-use Jp\YahooApis\SS\V201901\AdGroupCriterion\AdGroupCriterion;
-use Jp\YahooApis\SS\V201901\AdGroupCriterion\AdGroupCriterionUse;
+use Jp\YahooApis\SS\V201909\AdGroupAd\AdGroupAd;
+use Jp\YahooApis\SS\V201909\AdGroupAd\AdType;
+use Jp\YahooApis\SS\V201909\AdGroupCriterion\AdGroupCriterion;
+use Jp\YahooApis\SS\V201909\AdGroupCriterion\AdGroupCriterionUse;
 
 /**
  * Utility method collection for PHP Sample Program.

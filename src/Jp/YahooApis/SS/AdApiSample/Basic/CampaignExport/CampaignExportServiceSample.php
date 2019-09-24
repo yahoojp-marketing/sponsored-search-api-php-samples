@@ -9,20 +9,20 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\CampaignExport\addJob;
-use Jp\YahooApis\SS\V201901\CampaignExport\addJobResponse;
-use Jp\YahooApis\SS\V201901\CampaignExport\CampaignExportService;
-use Jp\YahooApis\SS\V201901\CampaignExport\Encoding;
-use Jp\YahooApis\SS\V201901\CampaignExport\EntityType;
-use Jp\YahooApis\SS\V201901\CampaignExport\ExportSetting;
-use Jp\YahooApis\SS\V201901\CampaignExport\get;
-use Jp\YahooApis\SS\V201901\CampaignExport\getExportFields;
-use Jp\YahooApis\SS\V201901\CampaignExport\getExportFieldsResponse;
-use Jp\YahooApis\SS\V201901\CampaignExport\getResponse;
-use Jp\YahooApis\SS\V201901\CampaignExport\JobSelector;
-use Jp\YahooApis\SS\V201901\CampaignExport\JobStatus;
-use Jp\YahooApis\SS\V201901\CampaignExport\Lang;
-use Jp\YahooApis\SS\V201901\CampaignExport\Output;
+use Jp\YahooApis\SS\V201909\CampaignExport\addJob;
+use Jp\YahooApis\SS\V201909\CampaignExport\addJobResponse;
+use Jp\YahooApis\SS\V201909\CampaignExport\CampaignExportService;
+use Jp\YahooApis\SS\V201909\CampaignExport\Encoding;
+use Jp\YahooApis\SS\V201909\CampaignExport\EntityType;
+use Jp\YahooApis\SS\V201909\CampaignExport\ExportSetting;
+use Jp\YahooApis\SS\V201909\CampaignExport\get;
+use Jp\YahooApis\SS\V201909\CampaignExport\getExportFields;
+use Jp\YahooApis\SS\V201909\CampaignExport\getExportFieldsResponse;
+use Jp\YahooApis\SS\V201909\CampaignExport\getResponse;
+use Jp\YahooApis\SS\V201909\CampaignExport\JobSelector;
+use Jp\YahooApis\SS\V201909\CampaignExport\JobStatus;
+use Jp\YahooApis\SS\V201909\CampaignExport\Lang;
+use Jp\YahooApis\SS\V201909\CampaignExport\Output;
 
 /**
  * example CampaignExportService operation and Utility method collection.

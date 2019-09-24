@@ -5,7 +5,7 @@
 
 namespace Jp\YahooApis\SS\AdApiSample\Util;
 
-use Jp\YahooApis\SS\V201901\{AccountShared\AccountSharedValues,
+use Jp\YahooApis\SS\V201909\{AccountShared\AccountSharedValues,
     AdGroup\AdGroupValues,
     AdGroupAd\AdGroupAdValues,
     AdGroupCriterion\AdGroupCriterionValues,
@@ -14,7 +14,6 @@ use Jp\YahooApis\SS\V201901\{AccountShared\AccountSharedValues,
     FeedFolder\FeedFolderValues,
     FeedItem\FeedItemValues,
     Label\LabelValues,
-    ReportDefinition\ReportDefinitionValues,
     RetargetingList\RetargetingListValues};
 
 /**
@@ -235,26 +234,5 @@ class ValuesHolder
     public function setFeedItemValuesList(array $feedItemValuesList): void
     {
         $this->feedItemValuesList = array_merge($this->feedItemValuesList, $feedItemValuesList);
-    }
-
-    /**
-     * @var ReportDefinitionValues[] $reportDefinitionValuesList
-     */
-    private $reportDefinitionValuesList = [];
-
-    /**
-     * @return ReportDefinitionValues[]
-     */
-    public function getReportDefinitionValuesList(): array
-    {
-        return $this->reportDefinitionValuesList;
-    }
-
-    /**
-     * @param ReportDefinitionValues[] $reportDefinitionValuesList
-     */
-    public function setReportDefinitionValuesList(array $reportDefinitionValuesList): void
-    {
-        $this->reportDefinitionValuesList = array_merge($this->reportDefinitionValuesList, $reportDefinitionValuesList);
     }
 }

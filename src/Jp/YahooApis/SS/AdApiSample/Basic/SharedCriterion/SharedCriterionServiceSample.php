@@ -12,17 +12,17 @@ use Jp\YahooApis\SS\AdApiSample\Basic\AccountShared\AccountSharedServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\Paging;
-use Jp\YahooApis\SS\V201901\SharedCriterion\get;
-use Jp\YahooApis\SS\V201901\SharedCriterion\getResponse;
-use Jp\YahooApis\SS\V201901\SharedCriterion\KeywordMatchType;
-use Jp\YahooApis\SS\V201901\SharedCriterion\mutate;
-use Jp\YahooApis\SS\V201901\SharedCriterion\mutateResponse;
-use Jp\YahooApis\SS\V201901\SharedCriterion\Operator;
-use Jp\YahooApis\SS\V201901\SharedCriterion\SharedCriterion;
-use Jp\YahooApis\SS\V201901\SharedCriterion\SharedCriterionOperation;
-use Jp\YahooApis\SS\V201901\SharedCriterion\SharedCriterionSelector;
-use Jp\YahooApis\SS\V201901\SharedCriterion\SharedCriterionService;
+use Jp\YahooApis\SS\V201909\Paging;
+use Jp\YahooApis\SS\V201909\SharedCriterion\get;
+use Jp\YahooApis\SS\V201909\SharedCriterion\getResponse;
+use Jp\YahooApis\SS\V201909\SharedCriterion\KeywordMatchType;
+use Jp\YahooApis\SS\V201909\SharedCriterion\mutate;
+use Jp\YahooApis\SS\V201909\SharedCriterion\mutateResponse;
+use Jp\YahooApis\SS\V201909\SharedCriterion\Operator;
+use Jp\YahooApis\SS\V201909\SharedCriterion\SharedCriterion;
+use Jp\YahooApis\SS\V201909\SharedCriterion\SharedCriterionOperation;
+use Jp\YahooApis\SS\V201909\SharedCriterion\SharedCriterionSelector;
+use Jp\YahooApis\SS\V201909\SharedCriterion\SharedCriterionService;
 
 /**
  * example SharedCriterionService operation and Utility method collection.

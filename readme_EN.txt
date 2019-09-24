@@ -1,12 +1,12 @@
 --------------------------------
 [Version]
 --------------------------------
-Version 201901
+Version 201909
 
 - Change logs
 -----------
-2019/01/29:
-- 201901 is now available.
+2019/09/25:
+- 201909 is now available.
 
 --------------------------------
 [Overview]
@@ -20,7 +20,7 @@ We utilize SoapClient Library to call APIs.
 conf/
   - api_config.ini      : Config files to specify Ids.
 src/Jp/YahooApis/SS/
-  - V201901             : PHP Entity classes for written versions (V201901).
+  - V201909             : PHP Entity classes for written versions (V201909).
   - AdApiSample/
     - Basic/            : Examples of each services.
     - Feature/          : Examples of how to create ads, set targeting.
