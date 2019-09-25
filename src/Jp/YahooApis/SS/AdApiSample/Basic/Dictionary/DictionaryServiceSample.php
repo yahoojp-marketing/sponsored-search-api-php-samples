@@ -9,14 +9,14 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\Dictionary\DictionaryLang;
-use Jp\YahooApis\SS\V201901\Dictionary\DictionaryService;
-use Jp\YahooApis\SS\V201901\Dictionary\DisapprovalReasonSelector;
-use Jp\YahooApis\SS\V201901\Dictionary\GeographicLocationSelector;
-use Jp\YahooApis\SS\V201901\Dictionary\getDisapprovalReason;
-use Jp\YahooApis\SS\V201901\Dictionary\getDisapprovalReasonResponse;
-use Jp\YahooApis\SS\V201901\Dictionary\getGeographicLocation;
-use Jp\YahooApis\SS\V201901\Dictionary\getGeographicLocationResponse;
+use Jp\YahooApis\SS\V201909\Dictionary\DictionaryLang;
+use Jp\YahooApis\SS\V201909\Dictionary\DictionaryService;
+use Jp\YahooApis\SS\V201909\Dictionary\DisapprovalReasonSelector;
+use Jp\YahooApis\SS\V201909\Dictionary\GeographicLocationSelector;
+use Jp\YahooApis\SS\V201909\Dictionary\getDisapprovalReason;
+use Jp\YahooApis\SS\V201909\Dictionary\getDisapprovalReasonResponse;
+use Jp\YahooApis\SS\V201909\Dictionary\getGeographicLocation;
+use Jp\YahooApis\SS\V201909\Dictionary\getGeographicLocationResponse;
 
 /**
  * example DictionaryService operation and Utility method collection.

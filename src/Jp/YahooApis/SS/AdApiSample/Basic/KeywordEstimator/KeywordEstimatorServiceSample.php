@@ -9,16 +9,16 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\adGroupEstimateRequest;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\CampaignEstimateRequest;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\EstimateKeyword;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\get;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\getResponse;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\IsNegativeBool;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\keywordEstimateRequest;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\KeywordEstimatorSelector;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\KeywordEstimatorService;
-use Jp\YahooApis\SS\V201901\KeywordEstimator\KeywordMatchType;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\adGroupEstimateRequest;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\CampaignEstimateRequest;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\EstimateKeyword;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\get;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\getResponse;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\IsNegativeBool;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\keywordEstimateRequest;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\KeywordEstimatorSelector;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\KeywordEstimatorService;
+use Jp\YahooApis\SS\V201909\KeywordEstimator\KeywordMatchType;
 
 /**
  * example KeywordEstimatorService operation and Utility method collection.

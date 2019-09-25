@@ -69,11 +69,6 @@ class ValuesRepositoryFacade
     private $feedItemValuesRepository;
 
     /**
-     * @Var ReportDefinitionValuesRepository
-     */
-    private $reportDefinitionValuesRepository;
-
-    /**
      * ValuesRepositoryFacade constructor.
      * @param ValuesHolder $valuesHolder
      */
@@ -90,7 +85,6 @@ class ValuesRepositoryFacade
         $this->adGroupAdValuesRepository = new AdGroupAdValuesRepository($valuesHolder);
         $this->adGroupCriterionValuesRepository = new AdGroupCriterionValuesRepository($valuesHolder);
         $this->feedItemValuesRepository = new FeedItemValuesRepository($valuesHolder);
-        $this->reportDefinitionValuesRepository = new ReportDefinitionValuesRepository($valuesHolder);
     }
 
     /**
@@ -179,13 +173,5 @@ class ValuesRepositoryFacade
     public function getFeedItemValuesRepository(): FeedItemValuesRepository
     {
         return $this->feedItemValuesRepository;
-    }
-
-    /**
-     * @return ReportDefinitionValuesRepository
-     */
-    public function getReportDefinitionValuesRepository(): ReportDefinitionValuesRepository
-    {
-        return $this->reportDefinitionValuesRepository;
     }
 }

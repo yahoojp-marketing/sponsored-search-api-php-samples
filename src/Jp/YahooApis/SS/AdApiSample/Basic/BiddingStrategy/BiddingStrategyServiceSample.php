@@ -11,7 +11,7 @@ use Exception;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\BiddingStrategy\{BidChangesForRaisesOnly,
+use Jp\YahooApis\SS\V201909\BiddingStrategy\{
     BiddingStrategy,
     BiddingStrategyOperation,
     BiddingStrategySelector,
@@ -22,13 +22,10 @@ use Jp\YahooApis\SS\V201901\BiddingStrategy\{BidChangesForRaisesOnly,
     mutate,
     mutateResponse,
     Operator,
-    PageOnePromotedBiddingScheme,
-    RaiseBidWhenBudgetConstrained,
-    RaiseBidWhenLowQualityScore,
     TargetCpaBiddingScheme,
     TargetRoasBiddingScheme,
     TargetSpendBiddingScheme};
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example BiddingStrategyService operation and Utility method collection.
@@ -132,7 +129,7 @@ class BiddingStrategyServiceSample
     {
         $valuesHolder = new ValuesHolder();
         $request = self::buildExampleMutateRequest(Operator::ADD, SoapUtils::getAccountId(), [
-            self::createExamplePageOnePromotedBidding(),
+            self::createExampleTargetCpaBidding(),
         ]);
         $response = self::mutate($request);
         $valuesHolder->setBiddingStrategyValuesList($response->getRval()->getValues());
@@ -176,7 +173,7 @@ class BiddingStrategyServiceSample
             // =================================================================
             // create request.
             $addRequest = self::buildExampleMutateRequest(Operator::ADD, $accountId, [
-                self::createExamplePageOnePromotedBidding()
+                self::createExampleTargetCpaBidding()
             ]);
 
             // run
@@ -236,7 +233,6 @@ class BiddingStrategyServiceSample
         }
 
         $selector->setBiddingStrategyTypes([
-            BiddingStrategyType::PAGE_ONE_PROMOTED,
             BiddingStrategyType::TARGET_CPA,
             BiddingStrategyType::TARGET_SPEND,
             BiddingStrategyType::TARGET_ROAS,
@@ -259,27 +255,6 @@ class BiddingStrategyServiceSample
         return new mutate(
             new BiddingStrategyOperation($operator, $accountId, $operand)
         );
-    }
-
-    /**
-     * example PageOnePromotedBidding request.
-     *
-     * @return BiddingStrategy
-     */
-    public static function createExamplePageOnePromotedBidding(): BiddingStrategy
-    {
-        $biddingScheme = new PageOnePromotedBiddingScheme();
-        $biddingScheme->setBiddingStrategyType(BiddingStrategyType::PAGE_ONE_PROMOTED);
-        $biddingScheme->setBidCeiling(500);
-        $biddingScheme->setBidMultiplier(1.00);
-        $biddingScheme->setBidChangesForRaisesOnly(BidChangesForRaisesOnly::ACTIVE);
-        $biddingScheme->setRaiseBidWhenBudgetConstrained(RaiseBidWhenBudgetConstrained::ACTIVE);
-        $biddingScheme->setRaiseBidWhenLowQualityScore(RaiseBidWhenLowQualityScore::ACTIVE);
-
-        $biddingStrategy = new BiddingStrategy();
-        $biddingStrategy->setBiddingStrategyName('SamplePageOnePromoted_CreateOn_' . SoapUtils::getCurrentTimestamp());
-        $biddingStrategy->setBiddingScheme($biddingScheme);
-        return $biddingStrategy;
     }
 
     /**
@@ -311,7 +286,6 @@ class BiddingStrategyServiceSample
         $biddingScheme = new TargetSpendBiddingScheme();
         $biddingScheme->setBiddingStrategyType(BiddingStrategyType::TARGET_SPEND);
         $biddingScheme->setBidCeiling(700);
-        $biddingScheme->setSpendTarget(10);
 
         $biddingStrategy = new BiddingStrategy();
         $biddingStrategy->setBiddingStrategyName('SampleTargetSpend_CreateOn_' . SoapUtils::getCurrentTimestamp());
@@ -357,18 +331,6 @@ class BiddingStrategyServiceSample
 
             switch ($biddingStrategy->getBiddingStrategyType()) {
 
-                // PageOnePromotedBiddingScheme
-                case BiddingStrategyType::PAGE_ONE_PROMOTED:
-                    $biddingScheme = new PageOnePromotedBiddingScheme();
-                    $biddingScheme->setBiddingStrategyType(BiddingStrategyType::PAGE_ONE_PROMOTED);
-                    $biddingScheme->setBidCeiling(550);
-                    $biddingScheme->setBidMultiplier(5.00);
-                    $biddingScheme->setBidChangesForRaisesOnly(BidChangesForRaisesOnly::DEACTIVE);
-                    $biddingScheme->setRaiseBidWhenBudgetConstrained(RaiseBidWhenBudgetConstrained::DEACTIVE);
-                    $biddingScheme->setRaiseBidWhenLowQualityScore(RaiseBidWhenLowQualityScore::DEACTIVE);
-                    $operand->setBiddingScheme($biddingScheme);
-                    break;
-
                 // TargetCpaBiddingScheme
                 case BiddingStrategyType::TARGET_CPA:
                     $biddingScheme = new TargetCpaBiddingScheme();
@@ -384,7 +346,6 @@ class BiddingStrategyServiceSample
                     $biddingScheme = new TargetSpendBiddingScheme();
                     $biddingScheme->setBiddingStrategyType(BiddingStrategyType::TARGET_SPEND);
                     $biddingScheme->setBidCeiling(750);
-                    $biddingScheme->setSpendTarget(20);
                     $operand->setBiddingScheme($biddingScheme);
                     break;
 

@@ -6,7 +6,7 @@
 namespace Jp\YahooApis\SS\AdApiSample\Repository;
 
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AccountShared\AccountShared;
+use Jp\YahooApis\SS\V201909\AccountShared\AccountShared;
 
 /**
  * Utility method collection for PHP Sample Program.

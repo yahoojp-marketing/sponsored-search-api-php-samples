@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\AuditLog\{addJob,
+use Jp\YahooApis\SS\V201909\AuditLog\{addJob,
     addJobResponse,
     AuditLogEncoding,
     AuditLogEventType,
@@ -249,31 +249,27 @@ class AuditLogServiceSample
      */
     public static function buildExampleAddJobRequest(int $accountId, array $operand): addJob
     {
-        $operation = new AuditLogOperation();
+        $operation = new AuditLogOperation($operand);
         $operation->setAccountId($accountId);
-        $operation->setOperand($operand);
         return new addJob($operation);
     }
 
     /**
      * example AuditLogJob request.
      *
-     * @param int $accountId
-     * @param string[] $exportFields
      * @return AuditLogJob
      */
     public static function createAuditLogJob(): AuditLogJob
     {
-        $operand = new AuditLogJob();
+        $eventSelector = new EventSelector();
+        $eventSelector->setEntityType('ALL');
+        $eventSelector->setEventTypes([AuditLogEventType::ALL]);
+
+        $operand = new AuditLogJob([$eventSelector]);
         $operand->setJobName('sampleAuditLog');
         $operand->setLang(AuditLogLang::EN);
         $operand->setOutput(AuditLogOutput::CSV);
         $operand->setEncoding(AuditLogEncoding::UTF_8);
-
-        $eventSelector = new EventSelector();
-        $eventSelector->setEntityType('ALL');
-        $eventSelector->setEventTypes([AuditLogEventType::ALL]);
-        $operand->setEventSelector([$eventSelector]);
 
         $dateRange = new DateRange();
         $dateRange->setStartDate('20190101000000');

@@ -12,14 +12,14 @@ use Jp\YahooApis\SS\AdApiSample\Basic\AdGroupCriterion\AdGroupCriterionServiceSa
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupCriterion\AdGroupCriterionUse;
-use Jp\YahooApis\SS\V201901\BidLandscape\BidLandscapeSelector;
-use Jp\YahooApis\SS\V201901\BidLandscape\BidLandscapeService;
-use Jp\YahooApis\SS\V201901\BidLandscape\get;
-use Jp\YahooApis\SS\V201901\BidLandscape\getResponse;
-use Jp\YahooApis\SS\V201901\BidLandscape\SimType;
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\AdGroupCriterion\AdGroupCriterionUse;
+use Jp\YahooApis\SS\V201909\BidLandscape\BidLandscapeSelector;
+use Jp\YahooApis\SS\V201909\BidLandscape\BidLandscapeService;
+use Jp\YahooApis\SS\V201909\BidLandscape\get;
+use Jp\YahooApis\SS\V201909\BidLandscape\getResponse;
+use Jp\YahooApis\SS\V201909\BidLandscape\SimType;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example BidLandscapeService operation and Utility method collection.

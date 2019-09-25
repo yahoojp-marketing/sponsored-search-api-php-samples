@@ -13,7 +13,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\RetargetingList\RetargetingListServiceSamp
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupRetargetingList\{AdGroupRetargetingList,
+use Jp\YahooApis\SS\V201909\AdGroupRetargetingList\{AdGroupRetargetingList,
     AdGroupRetargetingListOperation,
     AdGroupRetargetingListSelector,
     AdGroupRetargetingListService,
@@ -24,9 +24,9 @@ use Jp\YahooApis\SS\V201901\AdGroupRetargetingList\{AdGroupRetargetingList,
     mutate,
     mutateResponse,
     Operator};
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\Paging;
-use Jp\YahooApis\SS\V201901\RetargetingList\TargetListType;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\Paging;
+use Jp\YahooApis\SS\V201909\RetargetingList\TargetListType;
 
 /**
  * example AdGroupRetargetingListService operation and Utility method collection.
@@ -112,9 +112,7 @@ class AdGroupRetargetingListServiceSample
             // Error
             foreach ($response->getRval()->getValues() as $values) {
                 if (!is_null($values->getError())) {
-                    if ($values->getError()[0]->getCode() != '210804') {
-                        throw new Exception('Fail to ' . self::SERVICE_NAME . '/' . (string)$request->getOperations()->getOperator() . '.' . PHP_EOL);
-                    }
+                    throw new Exception('Fail to ' . self::SERVICE_NAME . '/' . (string)$request->getOperations()->getOperator() . '.' . PHP_EOL);
                 }
             }
         }
@@ -313,13 +311,13 @@ class AdGroupRetargetingListServiceSample
      * @param AdGroupRetargetingList[] $adGroupRetargetingLists
      * @return AdGroupRetargetingList[]
      */
-    public static function createExampleSetRequest(array $adGroupRetargetingLists):array
+    public static function createExampleSetRequest(array $adGroupRetargetingLists): array
     {
         // create operands
         $operands = [];
 
         foreach ($adGroupRetargetingLists as $adGroupRetargetingList) {
-            if($adGroupRetargetingList->getExcludedType() === ExcludedType::INCLUDED) {
+            if ($adGroupRetargetingList->getExcludedType() === ExcludedType::INCLUDED) {
                 $operand = new AdGroupRetargetingList(
                     $adGroupRetargetingList->getCampaignId(),
                     $adGroupRetargetingList->getAdGroupId(),

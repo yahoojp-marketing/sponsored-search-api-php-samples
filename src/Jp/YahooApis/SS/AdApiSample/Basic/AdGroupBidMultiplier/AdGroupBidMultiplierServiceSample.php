@@ -12,7 +12,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\AdGroup\AdGroupServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupBidMultiplier\{AdGroupBidMultiplier,
+use Jp\YahooApis\SS\V201909\AdGroupBidMultiplier\{AdGroupBidMultiplier,
     AdGroupBidMultiplierOperation,
     AdGroupBidMultiplierSelector,
     AdGroupBidMultiplierService,
@@ -22,8 +22,8 @@ use Jp\YahooApis\SS\V201901\AdGroupBidMultiplier\{AdGroupBidMultiplier,
     mutateResponse,
     Operator,
     PlatformType};
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example AdGroupBidMultiplierService operation and Utility method collection.

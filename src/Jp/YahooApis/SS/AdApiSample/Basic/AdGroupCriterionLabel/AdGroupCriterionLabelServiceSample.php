@@ -13,9 +13,9 @@ use Jp\YahooApis\SS\AdApiSample\Basic\Label\LabelServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupCriterion\AdGroupCriterionUse;
-use Jp\YahooApis\SS\V201901\AdGroupCriterionLabel\{AdGroupCriterionLabel, AdGroupCriterionLabelOperation, AdGroupCriterionLabelService, mutate, mutateResponse, Operator};
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\AdGroupCriterion\AdGroupCriterionUse;
+use Jp\YahooApis\SS\V201909\AdGroupCriterionLabel\{AdGroupCriterionLabel, AdGroupCriterionLabelOperation, AdGroupCriterionLabelService, mutate, mutateResponse, Operator};
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
 
 /**
  * example AdGroupCriterionLabelService operation and Utility method collection.

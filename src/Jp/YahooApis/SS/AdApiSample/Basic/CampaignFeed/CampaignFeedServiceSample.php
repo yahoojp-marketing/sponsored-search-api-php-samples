@@ -12,8 +12,8 @@ use Jp\YahooApis\SS\AdApiSample\Basic\FeedItem\FeedItemServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\CampaignFeed\{CampaignFeed,
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\CampaignFeed\{CampaignFeed,
     CampaignFeedList,
     CampaignFeedOperation,
     CampaignFeedPlaceholderType,
@@ -24,8 +24,8 @@ use Jp\YahooApis\SS\V201901\CampaignFeed\{CampaignFeed,
     mutate,
     mutateResponse,
     Operator};
-use Jp\YahooApis\SS\V201901\FeedItem\FeedItemPlaceholderType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\FeedItem\FeedItemPlaceholderType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example CampaignFeedService operation and Utility method collection.

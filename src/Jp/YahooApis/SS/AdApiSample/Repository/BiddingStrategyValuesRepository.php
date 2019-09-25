@@ -6,8 +6,8 @@
 namespace Jp\YahooApis\SS\AdApiSample\Repository;
 
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\BiddingStrategy\BiddingStrategy;
-use Jp\YahooApis\SS\V201901\BiddingStrategy\BiddingStrategyType;
+use Jp\YahooApis\SS\V201909\BiddingStrategy\BiddingStrategy;
+use Jp\YahooApis\SS\V201909\BiddingStrategy\BiddingStrategyType;
 
 /**
  * Utility method collection for PHP Sample Program.

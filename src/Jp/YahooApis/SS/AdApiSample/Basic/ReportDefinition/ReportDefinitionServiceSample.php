@@ -11,9 +11,9 @@ use Exception;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\Label\Operator;
-use Jp\YahooApis\SS\V201901\Paging;
-use Jp\YahooApis\SS\V201901\ReportDefinition\{get,
+use Jp\YahooApis\SS\V201909\Label\Operator;
+use Jp\YahooApis\SS\V201909\Paging;
+use Jp\YahooApis\SS\V201909\ReportDefinition\{get,
     getReportFields,
     getReportFieldsResponse,
     getResponse,
@@ -29,8 +29,7 @@ use Jp\YahooApis\SS\V201901\ReportDefinition\{get,
     ReportDownloadFormat,
     ReportIncludeDeleted,
     ReportIncludeZeroImpressions,
-    ReportIntervalType,
-    ReportIsTemplate,
+    ReportJobStatus,
     ReportLanguage,
     ReportSortField,
     ReportSortType,
@@ -190,38 +189,53 @@ class ReportDefinitionServiceSample
     }
 
     /**
-     * create basic FeedFolder.
+     * example check Report job status.
      *
-     * @return ValuesHolder
+     * @param int[] $jobIds
+     * @return void
      * @throws Exception
      */
-    public static function create(): ValuesHolder
+    public static function checkStatus($jobIds): void
     {
-        $valuesHolder = new ValuesHolder();
-        $accountId = SoapUtils::getAccountId();
-        $addRequest = self::buildExampleMutateRequest(Operator::ADD, $accountId, [self::createExampleReportDefinition($accountId)]);
-        $addResponse = self::mutate($addRequest);
-        $valuesHolder->setReportDefinitionValuesList($addResponse->getRval()->getValues());
-        return $valuesHolder;
-    }
 
-    /**
-     * cleanup service object.
-     *
-     * @param ValuesHolder $valuesHolder
-     * @throws Exception
-     */
-    public static function cleanup(ValuesHolder $valuesHolder): void
-    {
-        if (count($valuesHolder->getReportDefinitionValuesList()) === 0) {
-            return;
+        // call 30sec sleep * 30 = 15minute
+        for ($i = 0; $i < 30; $i++) {
+
+            // sleep 30 second.
+            print PHP_EOL . "***** sleep 30 seconds for Report Job Status Check *****" . PHP_EOL;
+            sleep(30);
+
+            // get
+            $getRequest = self::buildExampleGetRequest(SoapUtils::getAccountId(), $jobIds);
+            $getResponse = self::get($getRequest);
+
+            $completedCount = 0;
+
+            // check status
+            foreach ($getResponse->getRval()->getValues() as $reportValues) {
+                if (!is_null($reportValues->getReportDefinition()->getReportJobStatus())) {
+                    switch ($reportValues->getReportDefinition()->getReportJobStatus()) {
+                        default:
+                        case ReportJobStatus::WAIT:
+                        case ReportJobStatus::IN_PROGRESS:
+                            continue 1;
+                        case ReportJobStatus::FAILED:
+                            throw new Exception('Report Job Status failed.');
+                        case ReportJobStatus::COMPLETED:
+                            $completedCount++;
+                            continue 1;
+                    }
+                } else {
+                    throw new Exception('Fail to get Report.');
+                }
+            }
+
+            if (count($getResponse->getRval()->getValues()) === $completedCount) {
+                return;
+            }
         }
-        $valuesRepositoryFacade = new ValuesRepositoryFacade($valuesHolder);
-        self::mutate(
-            self::buildExampleMutateRequest(Operator::REMOVE, SoapUtils::getAccountId(),
-                $valuesRepositoryFacade->getReportDefinitionValuesRepository()->getReportDefinitions()
-            )
-        );
+
+        throw new Exception('Fail to get Report.');
     }
 
     /**
@@ -252,28 +266,45 @@ class ReportDefinitionServiceSample
             // ReportDefinitionService ADD
             // =================================================================
             // create request.
-            $addRequest = self::buildExampleMutateRequest(Operator::ADD, $accountId, [self::createExampleReportDefinition($accountId)]);
+            $addRequest = self::buildExampleMutateRequest(Operator::ADD, $accountId, [self::createExampleReportDefinition()]);
 
             // run
             $addResponse = self::mutate($addRequest);
-            $valuesHolder->setReportDefinitionValuesList($addResponse->getRval()->getValues());
+
+            $reportDefinitions = [];
+            $jobIds = [];
+            foreach ($addResponse->getRval()->getValues() as $reportDefinitionValues) {
+                $reportDefinitions[] = $reportDefinitionValues->getReportDefinition();
+                $jobIds[] = $reportDefinitionValues->getReportDefinition()->getReportJobId();
+            }
 
             // =================================================================
             // ReportDefinitionService GET
             // =================================================================
+            // check job status
+            self::checkStatus($jobIds);
+
             // create request.
-            $getRequest = self::buildExampleGetRequest($accountId, $valuesRepositoryFacade->getReportDefinitionValuesRepository()->getReportIds());
+            $getRequest = self::buildExampleGetRequest($accountId, $jobIds);
 
             // run
-            self::get($getRequest);
+            $getResponse = self::get($getRequest);
+
+            $downloadUrl = null;
+            foreach ($getResponse->getRval()->getValues() as $reportDefinitionValues) {
+                $downloadUrl = $reportDefinitionValues->getReportDefinition()->getReportDownloadURL();
+            }
+
+            // =================================================================
+            // ReportService download (http request)
+            // =================================================================
+            SoapUtils::download($downloadUrl, 'reportDownloadSample.csv');
 
             // =================================================================
             // ReportDefinitionService REMOVE
             // =================================================================
             // create request.
-            $removeRequest = self::buildExampleMutateRequest(Operator::REMOVE, $accountId,
-                $valuesRepositoryFacade->getReportDefinitionValuesRepository()->getReportDefinitions()
-            );
+            $removeRequest = self::buildExampleMutateRequest(Operator::REMOVE, $accountId, $reportDefinitions);
 
             // run
             self::mutate($removeRequest);
@@ -288,15 +319,15 @@ class ReportDefinitionServiceSample
      * example get request.
      *
      * @param int $accountId
-     * @param int[] $reportIds
+     * @param int[] $jobIds
      * @return get
      */
-    public static function buildExampleGetRequest(int $accountId, array $reportIds): get
+    public static function buildExampleGetRequest(int $accountId, array $jobIds): get
     {
         $selector = new ReportDefinitionSelector($accountId);
 
-        if (!is_null($reportIds)) {
-            $selector->setReportIds($reportIds);
+        if (!is_null($jobIds)) {
+            $selector->setReportJobIds($jobIds);
         }
 
         $paging = new Paging(1, 20);
@@ -333,16 +364,16 @@ class ReportDefinitionServiceSample
     /**
      * example ReportDefinition request.
      *
-     * @param int $accountId
      * @return ReportDefinition
      */
-    public static function createExampleReportDefinition(int $accountId): ReportDefinition
+    public static function createExampleReportDefinition(): ReportDefinition
     {
         $operand = new ReportDefinition();
-        $operand->setAccountId($accountId);
-        $operand->setReportName('sampleReport');
+        $operand->setReportName('sampleReport'. SoapUtils::getCurrentTimestamp());
         $operand->setReportType(ReportType::CAMPAIGN);
+
         $operand->setDateRangeType(ReportDateRangeType::YESTERDAY);
+
         $operand->setFields(self::CAMPAIGN_REPORT_FIELDS);
 
         $reportSortField = new ReportSortField();
@@ -350,8 +381,6 @@ class ReportDefinitionServiceSample
         $reportSortField->setField(self::CAMPAIGN_REPORT_FIELDS[0]);
         $operand->setSortFields($reportSortField);
 
-        $operand->setIsTemplate(ReportIsTemplate::TRUE);
-        $operand->setIntervalType(ReportIntervalType::ONETIME);
         $operand->setFormat(ReportDownloadFormat::CSV);
         $operand->setEncode(ReportDownloadEncode::UTF8);
         $operand->setLanguage(ReportLanguage::EN);

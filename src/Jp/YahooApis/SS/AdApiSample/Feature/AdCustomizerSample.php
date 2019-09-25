@@ -19,7 +19,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\{
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\{
+use Jp\YahooApis\SS\V201909\{
     AdGroup\Operator as AdGroupOperator,
     AdGroupAd\Operator as AdGroupAdOperator,
     AdGroupCriterion\AdGroupCriterionUse,

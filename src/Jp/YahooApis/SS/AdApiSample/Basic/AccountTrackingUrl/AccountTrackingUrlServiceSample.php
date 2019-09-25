@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\AccountTrackingUrl\{AccountTrackingUrl,
+use Jp\YahooApis\SS\V201909\AccountTrackingUrl\{AccountTrackingUrl,
     AccountTrackingUrlOperation,
     AccountTrackingUrlSelector,
     AccountTrackingUrlService,
@@ -18,7 +18,7 @@ use Jp\YahooApis\SS\V201901\AccountTrackingUrl\{AccountTrackingUrl,
     mutate,
     mutateResponse,
     Operator};
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example AccountTrackingUrlService operation and Utility method collection.

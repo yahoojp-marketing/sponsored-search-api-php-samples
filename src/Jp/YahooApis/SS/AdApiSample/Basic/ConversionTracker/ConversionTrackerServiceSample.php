@@ -9,7 +9,7 @@ require_once __DIR__ . '/../../../../../../../vendor/autoload.php';
 
 use Exception;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
-use Jp\YahooApis\SS\V201901\ConversionTracker\{AppConversion,
+use Jp\YahooApis\SS\V201909\ConversionTracker\{AppConversion,
     AppConversionType,
     AppPlatform,
     AppPostbackUrl,
@@ -31,7 +31,7 @@ use Jp\YahooApis\SS\V201901\ConversionTracker\{AppConversion,
     Operator,
     TrackingCodeType,
     WebConversion};
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example ConversionTrackerService operation and Utility method collection.
@@ -117,9 +117,7 @@ class ConversionTrackerServiceSample
             // Error
             foreach ($response->getRval()->getValues() as $values) {
                 if (!is_null($values->getError())) {
-                    if ($values->getError()[0]->getCode() != '210804') {
-                        throw new Exception('Fail to ' . self::SERVICE_NAME . '/' . (string)$request->getOperations()->getOperator() . '.' . PHP_EOL);
-                    }
+                    throw new Exception('Fail to ' . self::SERVICE_NAME . '/' . (string)$request->getOperations()->getOperator() . '.' . PHP_EOL);
                 }
             }
         }

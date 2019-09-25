@@ -12,7 +12,7 @@ use Jp\YahooApis\SS\AdApiSample\Basic\AdGroup\AdGroupServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\AdGroupAd\{AdGroupAd,
+use Jp\YahooApis\SS\V201909\AdGroupAd\{AdGroupAd,
     AdGroupAdAdditionalAdvancedMobileUrls,
     AdGroupAdAdditionalAdvancedUrls,
     AdGroupAdOperation,
@@ -32,9 +32,9 @@ use Jp\YahooApis\SS\V201901\AdGroupAd\{AdGroupAd,
     mutateResponse,
     Operator,
     UserStatus};
-use Jp\YahooApis\SS\V201901\Campaign\AppStore;
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Campaign\AppStore;
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example AdGroupAdService operation and Utility method collection.

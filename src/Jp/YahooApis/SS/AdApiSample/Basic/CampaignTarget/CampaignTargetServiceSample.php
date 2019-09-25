@@ -12,8 +12,8 @@ use Jp\YahooApis\SS\AdApiSample\Basic\Campaign\CampaignServiceSample;
 use Jp\YahooApis\SS\AdApiSample\Repository\ValuesRepositoryFacade;
 use Jp\YahooApis\SS\AdApiSample\Util\SoapUtils;
 use Jp\YahooApis\SS\AdApiSample\Util\ValuesHolder;
-use Jp\YahooApis\SS\V201901\Campaign\CampaignType;
-use Jp\YahooApis\SS\V201901\CampaignTarget\{CampaignTarget,
+use Jp\YahooApis\SS\V201909\Campaign\CampaignType;
+use Jp\YahooApis\SS\V201909\CampaignTarget\{CampaignTarget,
     CampaignTargetOperation,
     CampaignTargetSelector,
     CampaignTargetService,
@@ -32,7 +32,7 @@ use Jp\YahooApis\SS\V201901\CampaignTarget\{CampaignTarget,
     PlatformType,
     ScheduleTarget,
     TargetType};
-use Jp\YahooApis\SS\V201901\Paging;
+use Jp\YahooApis\SS\V201909\Paging;
 
 /**
  * example CampaignTargetService operation and Utility method collection.
